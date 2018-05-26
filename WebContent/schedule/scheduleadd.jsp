@@ -5,16 +5,18 @@
 		<table>
 			<tr>
 				<td><label>제목 </label></td>
-				<td><input style="width: 300px" name="title" autocomplete="off"></td>
+				<td><input style="width: 300px" name="title" autocomplete="off" id="schtitle"></td>
 			</tr>
 			<tr>
 				<td><label>일정종류</label></td>
-				<td><select class="sp" name="schtype">
+				<td><select class="sp" name="schtype" id="schtype">
 						<option>업무</option>
 						<option>회의</option>
 						<option>외근</option>
 						<option>출장</option>
 						<option>교육</option>
+						<option>워크샵</option>
+						<option>미팅</option>
 						<option>휴가</option>
 						<option>기타</option>
 				</select></td>
@@ -22,7 +24,7 @@
 			<tr>
 				<td><label>START</label></td>
 				<td><input type="text" class="date" name="startdate" id="testDatepicker"
-					value="시작일"> <select name="starthour">
+					value="시작일"> <select name="starthour" id="starthour">
 						<option>00</option>
 						<option>01</option>
 						<option>02</option>
@@ -47,7 +49,7 @@
 						<option>21</option>
 						<option>22</option>
 						<option>23</option>
-				</select> <label>시</label> <select name="startminute">
+				</select> <label>시</label> <select name="startminute" id="startmin">
 						<option>00</option>
 						<option>01</option>
 						<option>02</option>
@@ -115,7 +117,7 @@
 			<tr id="repeatok2">
 				<td><label>END</label></td>
 				<td><input type="text" class="date" name="enddate" id="testDatepicker2"
-					value="종료일"> <select name="endhour">
+					value="종료일"> <select name="endhour" id="endhour" >
 						<option>00</option>
 						<option>01</option>
 						<option>02</option>
@@ -140,7 +142,7 @@
 						<option>21</option>
 						<option>22</option>
 						<option>23</option>
-				</select> <label>시</label> <select name="endminute">
+				</select> <label>시</label> <select name="endminute" id="endmin">
 						<option>00</option>
 						<option>01</option>
 						<option>02</option>
@@ -234,15 +236,15 @@
 			</tr>
 			<tr>
 				<td><label>내용</label></td>
-				<td><textarea autocomplete="off" name="contents" rows="6" cols="50"></textarea></td>
+				<td><textarea autocomplete="off" name="contents" rows="6" cols="50" id="contents"></textarea></td>
 				<td><input id="code" type="hidden" name="schcode" ></td>
 			</tr>
 		</table>
 		<div class="modal-footer">
 			
 			<input type="submit" value="추가" class="btn btn-default addschedule">
-			<input type="submit" value="수정" class="btn btn-default editschedule">
-			<input type="submit" value="삭제" class="btn btn-default delschedule">
+			<input type="submit" value="수정"  class="btn btn-default editschedule">
+			<input type="submit" value="삭제"  class="btn btn-default delschedule">
 			<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
 		</div>
 		</form>

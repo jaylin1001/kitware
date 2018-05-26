@@ -200,7 +200,7 @@ select.sp {
 											// event click 및  hover
 											eventRender: function(eventObj, element) {
 												var test = element.attr("category",eventObj.category);
-												/* 이벤트 마우스 갖다대면 상세일정 나타내기. */
+												<%--Hover 이벤트--%>
 												element.popover({
 										          title: eventObj.title,
 										          content: eventObj.description,
@@ -209,14 +209,43 @@ select.sp {
 										          container: 'body'
 										        });
 												
-												
-												console.log($(test).attr("category"));
+												<%--Click 이벤트--%>
 												if($(test).attr("category")==${session.emp_num}){
 													element.click(function() {
 														$("div.modal-header>h4").html("일정수정");
 														$("div.modal-footer>input").hide();
 														$("div.modal-footer>input.editschedule").show();
 														$("div.modal-footer>input.delschedule").show();
+														$("div.modal-body input#schtitle").val(eventObj.title);
+														$("div.modal-body select#schtype").val(eventObj.type);
+														$("div.modal-body input#testDatepicker").val(eventObj.start.format('YYYY-MM-DD'));
+														
+														<%--종일 일정은 enddate가 null 이므로 null일 때 startdate와 동일--%>
+														var enddateObj = eventObj.end;
+														if(enddateObj == null){
+															$("div.modal-body input#testDatepicker2").val(eventObj.start.format('YYYY-MM-DD'));
+														}else{
+															$("div.modal-body input#testDatepicker2").val(enddateObj.format('YYYY-MM-DD'));
+														}
+														
+														 <%--시간 지정--%>
+														var starthourObj = eventObj.starthour;
+														var startminObj = eventObj.startmin;
+														var endhourObj = eventObj.endhour;
+														var endminObj = eventObj.endmin;
+														if(starthourObj == null || startminObj ==null || endhourObj == null){<%--종일일정--%>
+															$("div.modal-body select#starthour").val("00");
+															$("div.modal-body select#startmin").val("00");
+															$("div.modal-body select#endhour").val("00");
+															$("div.modal-body select#endmin").val("00");
+														}else{
+															$("div.modal-body select#starthour").val(starthourObj);
+															$("div.modal-body select#startmin").val(startminObj);
+															$("div.modal-body select#endhour").val(endhourObj);
+															$("div.modal-body select#endmin").val(endminObj);
+														}
+														
+														$("div.modal-body textarea").text(eventObj.contents);
 														$('#myModal').modal('toggle');
 														
 												   });
@@ -244,7 +273,7 @@ select.sp {
 												        
 												        $.each(data.schedule, function(index,sc){
 												        	contents = sc.contents;
-											        		if (contents == "null" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
+											        		if (contents == "" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
 											        			contents = "없음";
 											        		}
 												        	
@@ -254,16 +283,35 @@ select.sp {
 														            start: sc.startdate,
 														            color : "#41a6f4",
 														            description: "[일정상세] "+contents,
-														            category : sc.empno
+														            category : sc.empno,
+														            type : sc.type,
+														            contents : sc.contents
 													         	 });
+												        	}else if(sc.starthour == ""  && sc.endhour == ""){
+												        		events.push({
+														            title: sc.title,
+														            start: sc.startdate,
+														            end: sc.enddate,
+														            color : "#41a6f4",
+														            description: "[일정상세] "+contents,
+														            category : sc.empno,
+														            type : sc.type,
+														            contents : sc.contents
+													         	 });												        		
 												        	}else{
 																events.push({
 														            title: sc.title,
 														            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-														            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+														            end:sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 														            color : "#41a6f4",
 														            description: "[일정상세] "+contents,
-														            category : sc.empno
+														            category : sc.empno,
+														            type : sc.type,
+														            starthour : sc.starthour,
+														            startmin : sc.startmin,
+														            endhour : sc.endhour,
+														            endmin : sc.endmin,
+														            contents : sc.contents
 													         	 });
 												        	}
 																
@@ -295,16 +343,24 @@ select.sp {
 															            start: sc.startdate,
 															            color : "#ff9000",
 															            category : sc.empno,
-															            description: "[일정상세]  "+contents
+															            description: "[일정상세]  "+contents,
+															            type : sc.type,
+															            contents : sc.contents
 														         	 });
 													        	}else{
 																	events.push({
 															            title: sc.title,
-															            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-															            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+															            start:sc.startdate+'T'+sc.starthour+':'+sc.startmin,
+															            end:sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 															            color : "#ff9000",
 															            description: "[일정상세]  "+contents,
-															            category : sc.empno
+															            category : sc.empno,
+															            type : sc.type,
+															            starthour : sc.starthour,
+															            startmin : sc.startmin,
+															            endhour : sc.endhour,
+															            endmin : sc.endmin,
+															            contents : sc.contents
 												        			
 														         	 });
 													        	}
@@ -337,7 +393,9 @@ select.sp {
 															            start: sc.startdate,
 															            color : "#56d61b",
 															            description: "[일정상세]  "+contents,
-															            category : sc.empno
+															            category : sc.empno,
+															            type : sc.type,
+															            contents : sc.contents
 														         	 });
 													        	}else{
 																	events.push({
@@ -346,8 +404,13 @@ select.sp {
 															            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 															            color : "#56d61b",
 															            description: "[일정상세]  "+contents,
-															            category : sc.empno
-												        			
+															            category : sc.empno,
+															            type : sc.type,
+															            starthour : sc.starthour,
+															            startmin : sc.startmin,
+															            endhour : sc.endhour,
+															            endmin : sc.endmin,
+															            contents : sc.contents
 														         	 });
 													        	}
 																	
@@ -382,7 +445,9 @@ select.sp {
 																            start: sc.startdate,
 																            color : "#41a6f4",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents
 															         	 });
 														        	}else{
 																		events.push({
@@ -391,7 +456,13 @@ select.sp {
 																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 																            color : "#41a6f4",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            starthour : sc.starthour,
+																            startmin : sc.startmin,
+																            endhour : sc.endhour,
+																            endmin : sc.endmin,
+																            contents : sc.contents
 															         	 });
 														        	}
 													        		break;
@@ -402,7 +473,9 @@ select.sp {
 																            start: sc.startdate,
 																            color : "#ff9000",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents
 															         	 });
 														        	}else{
 																		events.push({
@@ -411,7 +484,13 @@ select.sp {
 																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 																            color : "#ff9000",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            starthour : sc.starthour,
+																            startmin : sc.startmin,
+																            endhour : sc.endhour,
+																            endmin : sc.endmin,
+																            contents : sc.contents
 															         	 });
 														        	}
 													        		break;
@@ -422,7 +501,9 @@ select.sp {
 																            start: sc.startdate,
 																            color : "#56d61b",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents
 															         	 });
 														        	}else{
 																		events.push({
@@ -431,7 +512,13 @@ select.sp {
 																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
 																            color : "#56d61b",
 																            description: "[일정상세]  "+contents,
-																            category : sc.empno
+																            category : sc.empno,
+																            type : sc.type,
+																            starthour : sc.starthour,
+																            startmin : sc.startmin,
+																            endhour : sc.endhour,
+																            endmin : sc.endmin,
+																            contents : sc.contents
 															         	 });
 														        	}
 													        		break;
@@ -459,6 +546,15 @@ select.sp {
 			$("div.modal-header>h4").html("일정추가");
 			$("div.modal-footer>input").hide();
 			$("div.modal-footer>input.addschedule").show();
+			$("div.modal-body input#schtitle").val("");
+			$("div.modal-body select#schtype option:eq(0)").attr("selected", "selected");
+			$("div.modal-body input#testDatepicker").val("시작일");
+			$("div.modal-body input#testDatepicker2").val("종료일");
+			$("div.modal-body select#starthour").val("00");
+			$("div.modal-body select#startmin").val("00");
+			$("div.modal-body select#endhour").val("00");
+			$("div.modal-body select#endmin").val("00");
+			$("div.modal-body textarea").text("");
 		});
 		
 		//개인일정,부서일정,회사일정,전체일정을 숨겨진 input에 담는다.
@@ -486,7 +582,21 @@ select.sp {
 			dateFormat : "yy-mm-dd"
 		});
 
-
+		
+		$('input[type=checkbox]').click(function(){
+			if($('input[type=checkbox]').prop("checked")){
+				$("div.modal-body select#starthour").val("");
+				$("div.modal-body select#startmin").val("");
+				$("div.modal-body select#endhour").val("");
+				$("div.modal-body select#endmin").val("");
+			}else{
+				$("div.modal-body select#starthour").val("00");
+				$("div.modal-body select#startmin").val("00");
+				$("div.modal-body select#endhour").val("00");
+				$("div.modal-body select#endmin").val("00");
+			}
+		});
+		
 		$('input:radio[name=repeatbl]').change(function() {
 			var radioValue = $(this).val();
 			if (radioValue == "Y") {
@@ -508,34 +618,40 @@ select.sp {
 			}
 			
 		});
-		  $('form#addsc').submit(function(){
-			  $.ajax({
-				  url:'${pageContext.request.contextPath}/schadd.do',
-				  method:'post',
-				  data:$('form').serialize(),
-				  success:function(data){
-					  if(data.trim() == '1'){ //일정추가 성공
-					  	  //일정추가가 성공하면 개인일정 탭을 누른것과 같은 효과.
-					  	  if(codeStringObj == '개인일정'){
-						 	 var $triggerObj = $("li.schedule>a#schperson");
-					  	  }else if(codeStringObj == '부서일정'){
-					  		$triggerObj = $("li.schedule>a#schdept");
-					  	  }else if(codeStringObj == '회사일정'){
-					  		$triggerObj = $("li.schedule>a#schcompany");  
-					  	  }else if(codeStringObj == '전체일정'){
-					  		$triggerObj = $("li.schedule>a#schtotal");
-					  	  }
-					     $('#myModal').modal('toggle');
-				  		 $triggerObj.trigger('click');
+		
+			
+		
+		$('form#addsc').submit(function(){
+					  $.ajax({
+						  url:'${pageContext.request.contextPath}/schadd.do',
+						  method:'post',
+						  data:$('form').serialize(),
+						  success:function(data){
+							  if(data.trim() == '1'){ //일정추가 성공
+							  	  //일정추가가 성공하면 개인일정 탭을 누른것과 같은 효과.
+							  	  if(codeStringObj == '개인일정'){
+								 	 var $triggerObj = $("li.schedule>a#schperson");
+							  	  }else if(codeStringObj == '부서일정'){
+							  		$triggerObj = $("li.schedule>a#schdept");
+							  	  }else if(codeStringObj == '회사일정'){
+							  		$triggerObj = $("li.schedule>a#schcompany");  
+							  	  }else if(codeStringObj == '전체일정'){
+							  		$triggerObj = $("li.schedule>a#schtotal");
+							  	  }
+							     $('#myModal').modal('toggle');
+						  		 $triggerObj.trigger('click');
+							  
+							  }else if(data.trim() == '-1'){ //일정추가 실패
+								 alert('일정추가 실패'); 
+							  }
+						  }
+					  });
 					  
-					  }else if(data.trim() == '-1'){ //일정추가 실패
-						 alert('일정추가 실패'); 
-					  }
-				  }
-			  });
-			  
-			  return false;
-		  });
+					  return false;
+		 }); 
+			
+	
+
 
 	});
 	var className = 'schedule';

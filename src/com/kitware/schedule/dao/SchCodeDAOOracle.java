@@ -169,7 +169,7 @@ public class SchCodeDAOOracle implements SchCodeDAO {
 	public static void main(String[] args) {
 		SchCodeDAOOracle test = new SchCodeDAOOracle();
 		try {
-			List<Schedule> testlist = test.selectDepartment("1");
+			List<Schedule> testlist = test.selectPersonal("1");
 			System.out.println(testlist);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
