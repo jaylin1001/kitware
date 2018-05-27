@@ -1,14 +1,18 @@
 package com.kitware.authorization.dao;
 
 import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.kitware.authorization.vo.DocDetailVO;
+import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocKindVO;
 import com.kitware.authorization.vo.DocVO;
+import com.kitware.member.vo.Members;
+
 
 
 
@@ -35,9 +39,82 @@ public class DocDAOOracle implements DocDAO {
 	}
 
 	@Override
-	public List<DocVO> selectAll() throws Exception {
-		return null;
+	public DocVO selectAll(String doc_num) throws Exception {
+		//문서 상세보기
+		//매개변수 id 보여주는 갯수 제한 필요
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectAllSQL = "select d.doc_num, dk.doc_name,d.start_date,d.rcv_dept,"
+							+" d.refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content"
+							+" from document d, doc_kind dk, doc_gigan dg"
+							+" where dk.doc_kind = d.doc_kind"
+							+" and d.doc_num = ?";
+		
+		//List<DocVO> doclist = new ArrayList<>(); 
+		DocVO docvo = null;	//doc 데이터 담음
+		
+	try {
+		con= MyConnection.getConnection();
+		pstmt = con.prepareStatement(selectAllSQL);
+		pstmt.setString(1, doc_num);
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			docvo = new DocVO();
+			docvo.setDoc_num(rs.getString("doc_num"));
+			DocKindVO dock = new DocKindVO(docvo.getDoc_kind(),rs.getString("doc_name"));
+			docvo.setStart_date(rs.getString("start_date"));
+			docvo.setRcv_dept(rs.getString("rcv_dept"));
+			docvo.setRefer(rs.getString("refer"));
+			docvo.setDoc_title(rs.getString("doc_title"));
+			DocGiganVO giganvo = new DocGiganVO(rs.getString("start_date"),
+						   rs.getString("end_date"));
+			docvo.setDoc_content(rs.getString("doc_content"));
+			docvo.setDoc_kindvo(dock);
+			docvo.setDoc_gigan(giganvo);
+			/*doclist.add(docvo);*/
+		}
+		
+	}finally{
+		MyConnection.close(rs,pstmt,con);
 	}
+		return docvo;
+	}
+	
+	@Override
+	public List<DocDetailVO> selectConf(String doc_num) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectConfSQL = "select dd.conf_num ,dd.acs_yn, m.name"
+							+" from doc_detail dd, members m"
+							+" where m.emp_num =dd.conf_num" 
+							+" and dd.doc_num =?";
+		List<DocDetailVO> doc_detaillist = new ArrayList<>();
+		DocDetailVO doc_detailvo = null;	//doc_detail 데이터 담음
+		
+		try {
+			con= MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectConfSQL);
+			pstmt.setString(1, doc_num);
+			rs = pstmt.executeQuery();
+			while(rs.next()) {
+				doc_detailvo = new DocDetailVO();
+				doc_detailvo.setConf_num(rs.getString("conf_num"));
+				doc_detailvo.setAcs_yn(rs.getString("acs_yn"));
+				Members mems = new Members(rs.getString("name"));
+				doc_detailvo.setMembers(mems);
+				doc_detaillist.add(doc_detailvo);	
+			}
+			
+		}finally{
+			MyConnection.close(rs,pstmt,con);
+		}
+			return doc_detaillist;
+	}
+		
+
 
 	@Override
 	public List<DocVO> selectIng(String emp_num) throws Exception { 
@@ -318,12 +395,16 @@ public class DocDAOOracle implements DocDAO {
 			System.out.println("3333aa"+list3.size());
 			List<DocVO> list4 = test.selectOk("kim",1);
 			System.out.println("44aa"+list4.size());
-			Integer sc = test.selectCount();
-			System.out.println("listsc"+sc.SIZE);
 			List<DocVO> list5 = test.selectExpected("3", 1);
 			System.out.println(list5.size());
 			List<DocVO> list6 = test.selectGJOk("3", 1);
 			System.out.println("list6:"+list6.size());
+			DocVO list7 = test.selectAll("1805-0001");
+			System.out.println(list7);
+			System.out.println("--------------");
+			List<DocDetailVO> list8 = test.selectConf("1805-0001");
+			System.out.println("list8="+list8);
+			
 			
 			
 
@@ -332,6 +413,7 @@ public class DocDAOOracle implements DocDAO {
 		}
 	}
 
+	
 	
 	
 }

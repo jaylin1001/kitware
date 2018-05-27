@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.kitware.authorization.dao.DocDAO;
 import com.kitware.authorization.dao.DocDAOOracle;
+import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocVO;
 
 public class DocSelectService {
@@ -41,6 +42,13 @@ public class DocSelectService {
 	public List<DocVO> selectGJOk(String conf_num, int page) throws Exception{
 		return dao.selectGJOk(conf_num, page);
 		
+	}
+	public DocVO selectAll(String doc_num) throws Exception{
+		return dao.selectAll("1805-0001");
+		
+	}
+	public List<DocDetailVO> selectConf(String doc_num) throws Exception{
+		return dao.selectConf(doc_num);
 	}
 
 	public DocSelectService() {
