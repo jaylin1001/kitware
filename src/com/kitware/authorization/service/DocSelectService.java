@@ -44,10 +44,12 @@ public class DocSelectService {
 		
 	}
 	public DocVO selectAll(String doc_num) throws Exception{
-		return dao.selectAll("1805-0001");
+		System.out.println(dao.selectAll(doc_num));
+		return dao.selectAll(doc_num);
 		
 	}
 	public List<DocDetailVO> selectConf(String doc_num) throws Exception{
+		System.out.println(dao.selectConf(doc_num));
 		return dao.selectConf(doc_num);
 	}
 

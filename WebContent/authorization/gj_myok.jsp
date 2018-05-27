@@ -23,8 +23,9 @@
 			<%-- <c:forEach begin="${1}" end="${totalCount}" var="j" > --%>
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
 		<tr class = "doc_list_content">					
-					<td><a href ="#">${b.doc_num}</a></td>
-								<td>${b.doc_title}</td>
+								<td>${b.doc_num}</td>
+								<td><!--  onclick="docContent()" -->
+								<a href="docreadcj.do?doc_num=${b.doc_num}">${b.doc_title}</a></td>
 								<td>${b.doc_state}</td>
 								<td>${b.start_date}</td>
 							    <td>${b.doc_kindvo.doc_name}</td>
@@ -92,8 +93,13 @@ thead{
 <c:set var="prePage" value="${requestScope.prePage}"/> 
 <c:set var="nextPage" value="${requestScope.nextPage}"/> 
 <script>
+
+function docContent() {
+	location.href="docreadcj.do"
+	console.log('asdfasdfadf');
+	}
 	
-$(function(){
+$(function(){	
 		$('.pagination button').click(function(){
 			var page;
 			if($(this).text() == '이전'){
@@ -110,17 +116,20 @@ $(function(){
 			return false;
 		});
 		
-		$('.doc_list_content').click(function(){
+		/* $('.doc_list_content').click(function(){
 			var doc_num = $('.doc_list_content a').text();
 				location.href="mygjoklist.do?doc_num="+doc_num;
-		});
+		}); */
+		//문서번호도 보내야함
 		
 		$('.pagination a').each(function(index, element){
 		if($(element).text() == '${pb.currentPage}'){
 			$(element).addClass('active');
 		}
 		});    
-
+		
+		
+		
 	 var className = 'authorization';
 		$('div#menutab li.'+className).addClass('active');
 		console.log($('div#menutab li.'+className));

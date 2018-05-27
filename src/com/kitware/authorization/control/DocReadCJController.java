@@ -43,11 +43,11 @@ public class DocReadCJController {
 		System.out.println("문서번호" + doc_num);
 		
 		try {
-			DocVO docvo_list = service.selectAll("1805-0001");
+			DocVO docvo_list = service.selectAll(doc_num);
 			request.setAttribute("docvo_list", docvo_list);
 			System.out.println(docvo_list);
 			
-			List<DocDetailVO> doc_detail_list = service.selectConf("1805-0001");
+			List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
 			request.setAttribute("doc_detail_list", doc_detail_list);
 			System.out.println(doc_detail_list);
 
