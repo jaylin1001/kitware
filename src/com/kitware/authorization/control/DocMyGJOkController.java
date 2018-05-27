@@ -61,6 +61,7 @@ public class DocMyGJOkController {
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
+			request.setAttribute("totalCount", totalCount);
 			System.out.println(list.size());
 			System.out.println(pb.getList());
 			System.out.println("intpage:" + intPage);

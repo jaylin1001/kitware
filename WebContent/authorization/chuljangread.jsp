@@ -80,9 +80,12 @@
 				<tr>
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
-				<tr>
-					<td colspan="6" align="center"><input type="button" value="제출"
-						id="submit"> <input type="button" value="취소" id="cancle"></td>
+				<tr>	
+					<td colspan="6" align="center">
+						<input type="button" value="수정" id="submit"> 
+						<input type="button" value="뒤로가기" id="back">
+						<input type="button" value="삭제" id="cancle"><!-- 제약 줘야함 -->
+					</td>
 				</tr>
 			</table>
 		</div>

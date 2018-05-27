@@ -20,15 +20,16 @@
 	</thead>
 			<c:set var="list" value="${pb.list}"/>
 			<c:forEach var="b" items="${list}" >
+			<%-- <c:forEach begin="${1}" end="${totalCount}" var="j" > --%>
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
-		<tr>					
-								<td>${b.doc_num}</td>
+		<tr class = "doc_list_content">					
+					<td><a href ="#">${b.doc_num}</a></td>
 								<td>${b.doc_title}</td>
 								<td>${b.doc_state}</td>
 								<td>${b.start_date}</td>
 							    <td>${b.doc_kindvo.doc_name}</td>
 		</tr>
-			</c:forEach>
+			  </c:forEach>
 	</table>
 	
 		
@@ -91,27 +92,34 @@ thead{
 <c:set var="prePage" value="${requestScope.prePage}"/> 
 <c:set var="nextPage" value="${requestScope.nextPage}"/> 
 <script>
+	
 $(function(){
-	$('.pagination button').click(function(){
-		var page;
-		if($(this).text() == '이전'){
-			page=${prePage};
-			location.href="mygjoklist.do?page="+page;
-		}else if($(this).text() == '다음'){
-			page=${nextPage};
-			location.href="mygjoklist.do?page="+page;
-		}else{
-			page = $(this).text();
-			location.href="mygjoklist.do?page="+page;
-		}
+		$('.pagination button').click(function(){
+			var page;
+			if($(this).text() == '이전'){
+				page=${prePage};
+				location.href="mygjoklist.do?page="+page;
+			}else if($(this).text() == '다음'){
+				page=${nextPage};
+				location.href="mygjoklist.do?page="+page;
+			}else{
+				page = $(this).text();
+				location.href="mygjoklist.do?page="+page;
+			}
+			
+			return false;
+		});
 		
-		return false;
-	});
-	$('.pagination a').each(function(index, element){
+		$('.doc_list_content').click(function(){
+			var doc_num = $('.doc_list_content a').text();
+				location.href="mygjoklist.do?doc_num="+doc_num;
+		});
+		
+		$('.pagination a').each(function(index, element){
 		if($(element).text() == '${pb.currentPage}'){
 			$(element).addClass('active');
 		}
-	});    
+		});    
 
 	 var className = 'authorization';
 		$('div#menutab li.'+className).addClass('active');
