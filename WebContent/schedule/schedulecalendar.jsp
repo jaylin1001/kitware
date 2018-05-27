@@ -2,7 +2,8 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@include file="../container/header.jsp"%>
-<c:set var="session" value="${sessionScope.loginInfo}"></c:set>		
+<c:set var="session" value="${sessionScope.loginInfo}"></c:set>
+
 <style>
 body {
 	margin: 0;
@@ -83,14 +84,35 @@ select.sp {
 	$(function(){
 		<%String listText = (String) request.getParameter("list").trim();%>  <!-- 받아온 listText는 개인일정,부서일정 ~~이라는 TEXT -->
 		$('div.articleTop >i').text('<%=listText%>');
-		if('<%=listText%>' == '전체일정'){
+		if('<%=listText%>' == '전체일정'){ <%--전체일정 클릭하면 일정추가 버튼 hide--%>
 			$("#add").hide();
+		}
+		if('<%=listText%>' == '회사일정'){
+			if('${session.id}' != "admin"){
+				$("#add").hide();
+			}
 		}
 		
 		$("#print").click(function() {
 			window.print();
 		});
+		
+
+		//개인일정,부서일정,회사일정,전체일정을 숨겨진 input에 담는다.
+		codeStringObj = $('div.articleTop>i').text();
+		console.log(codeStringObj);
+		var codeIntObj;
+		if(codeStringObj =='개인일정'){
+			codeIntObj = '0';
+		}else if(codeStringObj =='부서일정'){
+			codeIntObj = '1';
+		}else if(codeStringObj =='회사일정'){
+			codeIntObj = '2';
+		}
+		$('#code').val(codeIntObj);
+		
 	});
+	
 	
 	//달력 부분 function
 	jQuery(document)
@@ -120,28 +142,29 @@ select.sp {
 																+ moment
 																		.format('YYYY-MM-DD'));
 													}
-
 												},
 												// 버튼 누르면 일정으로 추가 된다.
 												addEventButton: {
 											          text: 'add event...',
 											          click: function() {
-											            var dateStr = prompt('Enter a date in YYYY-MM-DD format');
+											        	var moment = $('#calendar').fullCalendar('getDate');
+											            var dateStr = moment.format('YYYY-MM-DD');
+											            var schetitle = prompt('일정제목을 입력하세요.');
 											            var date = moment(dateStr);
-
 											            if (date.isValid()) {
 											              $('#calendar').fullCalendar('renderEvent', {
-											                title: 'dynamic event',
+											                title: schetitle,
 											                start: date,
 											                allDay: true
 											              });
 											              alert('Great. Now, update your database...');
+											              
+											              
 											            } else {
 											              alert('Invalid date.');
 											            }
 											          }
 											    }
-											      
 											},
 											/* agenda 형식의 시간 단위 조정 default값 30분  15분으로 조정. */
 											slotDuration : '00:15:00',
@@ -159,7 +182,7 @@ select.sp {
 											},
 											/* 헤더 */
 											header : {
-												left : 'prevYear,prev,next,nextYear,today',
+												left : 'prev,next,today',
 												center : 'title',
 												right : 'month,agendaWeek,agendaDay,listMonth'
 											},
@@ -177,9 +200,43 @@ select.sp {
 											selectable : true,
 											/* Agenda view에서 선택이 되도록 한다. */
 											selectHelper : true,
+											<%--빠른 일정 추가 QuickAdd--%>
 											dayClick: function(date) {
-										          alert('clicked ' + date.format());
-										        },
+												if('<%=listText%>' == '회사일정'){
+													if('${session.id}' != "admin"){
+														alert("일정 등록 권한이 없습니다!!!");
+														return;
+													}
+												}else if('<%=listText%>' == '전체일정'){
+													alert("일정 등록을 할 수 없습니다.");
+													return;
+												}
+										        var dateStr = date.format();
+										        var schetitle = prompt('일정제목을 입력하세요.');
+										        console.log("일정코드:"+$('#code').val());
+										        $.ajax({
+										        	url: '${pageContext.request.contextPath}/schqadd.do',
+												    dataType: 'json',
+												    data: {title: schetitle , start : dateStr, end: dateStr , code : $('#code').val()},
+												    success: function(data) {
+												    	if(data == '1'){ //일정추가 성공
+														  	  //일정추가가 성공하면 개인일정 탭을 누른것과 같은 효과.
+														  	  if(codeStringObj == '개인일정'){
+															 	 var $triggerObj = $("li.schedule>a#schperson");
+														  	  }else if(codeStringObj == '부서일정'){
+														  		$triggerObj = $("li.schedule>a#schdept");
+														  	  }else if(codeStringObj == '회사일정'){
+														  		$triggerObj = $("li.schedule>a#schcompany");  
+														  	  }else if(codeStringObj == '전체일정'){
+														  		$triggerObj = $("li.schedule>a#schtotal");
+														  	  }
+													  		 $triggerObj.trigger('click');
+														  }else if(data == '-1'){ //일정추가 실패
+															  
+														  }													    	 
+												    }
+										        });  
+										    },
 											select: function(startDate, endDate) {
 										          alert('selected ' + startDate.format() + ' to ' + endDate.format());
 										    },
@@ -193,12 +250,9 @@ select.sp {
 												className : "koHolidays",
 												color : "#FF0000",
 												textColor : "#FFFFFF",
-												
 											} ],
-											  
-										
 											// event click 및  hover
-											eventRender: function(eventObj, element) {
+											eventRender: function(eventObj, element){
 												var test = element.attr("category",eventObj.category);
 												<%--Hover 이벤트--%>
 												element.popover({
@@ -208,7 +262,6 @@ select.sp {
 										          placement: 'bottom',
 										          container: 'body'
 										        });
-												
 												<%--Click 이벤트--%>
 												if($(test).attr("category")==${session.emp_num}){
 													element.click(function() {
@@ -234,17 +287,17 @@ select.sp {
 														var endhourObj = eventObj.endhour;
 														var endminObj = eventObj.endmin;
 														if(starthourObj == null || startminObj ==null || endhourObj == null){<%--종일일정--%>
-															$("div.modal-body select#starthour").val("00");
-															$("div.modal-body select#startmin").val("00");
-															$("div.modal-body select#endhour").val("00");
-															$("div.modal-body select#endmin").val("00");
+															$("div.modal-body select#starthour").val("");
+															$("div.modal-body select#startmin").val("");
+															$("div.modal-body select#endhour").val("");
+															$("div.modal-body select#endmin").val("");
 														}else{
 															$("div.modal-body select#starthour").val(starthourObj);
 															$("div.modal-body select#startmin").val(startminObj);
 															$("div.modal-body select#endhour").val(endhourObj);
 															$("div.modal-body select#endmin").val(endminObj);
 														}
-														
+														$("div.modal-body input#schno").val(eventObj.schno);
 														$("div.modal-body textarea").text(eventObj.contents);
 														$('#myModal').modal('toggle');
 														
@@ -276,7 +329,13 @@ select.sp {
 											        		if (contents == "" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
 											        			contents = "없음";
 											        		}
-												        	
+											        		startmin = sc.startmin;
+											        		endmin = sc.endmin;
+											        		if(startmin == "" || endmin == ""){
+											        			startmin = "00";
+											        			endmin = "00";
+											        		}
+											        		
 												        	if(sc.starthour == "00" && sc.endhour == "00"){ /* 종일 일정일 때는 시작시간과 종료시간이 "00" */
 																events.push({
 														            title: sc.title,
@@ -285,9 +344,10 @@ select.sp {
 														            description: "[일정상세] "+contents,
 														            category : sc.empno,
 														            type : sc.type,
-														            contents : sc.contents
+														            contents : sc.contents,
+														            schno : sc.schno
 													         	 });
-												        	}else if(sc.starthour == ""  && sc.endhour == ""){
+												        	}else if(sc.starthour == ""  && sc.endhour == "" ){
 												        		events.push({
 														            title: sc.title,
 														            start: sc.startdate,
@@ -296,22 +356,24 @@ select.sp {
 														            description: "[일정상세] "+contents,
 														            category : sc.empno,
 														            type : sc.type,
-														            contents : sc.contents
+														            contents : sc.contents,
+														            schno : sc.schno
 													         	 });												        		
 												        	}else{
 																events.push({
 														            title: sc.title,
-														            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-														            end:sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+														            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+														            end:sc.enddate+'T'+sc.endhour+':'+endmin,
 														            color : "#41a6f4",
 														            description: "[일정상세] "+contents,
 														            category : sc.empno,
 														            type : sc.type,
 														            starthour : sc.starthour,
-														            startmin : sc.startmin,
+														            startmin : startmin,
 														            endhour : sc.endhour,
-														            endmin : sc.endmin,
-														            contents : sc.contents
+														            endmin : endmin,
+														            contents : sc.contents,
+														            schno : sc.schno
 													         	 });
 												        	}
 																
@@ -337,6 +399,12 @@ select.sp {
 													        	if (contents == "null"){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
 												        			contents = "없음";
 												        		}
+													        	startmin = sc.startmin;
+												        		endmin = sc.endmin;
+												        		if(startmin == "" || endmin == ""){
+												        			startmin = "00";
+												        			endmin = "00";
+												        		}
 													        	if(sc.starthour == "00" && sc.endhour == "00"){ /* 종일 일정일 때는 시작시간과 종료시간이 "00" */
 																	events.push({
 															            title: sc.title,
@@ -345,23 +413,36 @@ select.sp {
 															            category : sc.empno,
 															            description: "[일정상세]  "+contents,
 															            type : sc.type,
-															            contents : sc.contents
+															            contents : sc.contents,
+															            schno : sc.schno
 														         	 });
+													        	}else if(sc.starthour == ""  && sc.endhour == ""){
+													        		events.push({
+															            title: sc.title,
+															            start: sc.startdate,
+															            end: sc.enddate,
+															            color : "#ff9000",
+															            description: "[일정상세] "+contents,
+															            category : sc.empno,
+															            type : sc.type,
+															            contents : sc.contents,
+															            schno : sc.schno
+														         	 });												        		
 													        	}else{
 																	events.push({
 															            title: sc.title,
-															            start:sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-															            end:sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+															            start:sc.startdate+'T'+sc.starthour+':'+startmin,
+															            end:sc.enddate+'T'+sc.endhour+':'+endmin,
 															            color : "#ff9000",
 															            description: "[일정상세]  "+contents,
 															            category : sc.empno,
 															            type : sc.type,
 															            starthour : sc.starthour,
-															            startmin : sc.startmin,
+															            startmin : startmin,
 															            endhour : sc.endhour,
-															            endmin : sc.endmin,
-															            contents : sc.contents
-												        			
+															            endmin : endmin,
+															            contents : sc.contents,
+															            schno : sc.schno
 														         	 });
 													        	}
 																	
@@ -387,6 +468,12 @@ select.sp {
 												        		if (contents == "null" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
 												        			contents = "없음";
 												        		}
+												        		startmin = sc.startmin;
+												        		endmin = sc.endmin;
+												        		if(startmin == "" || endmin == ""){
+												        			startmin = "00";
+												        			endmin = "00";
+												        		}
 													        	if(sc.starthour == "00" && sc.endhour == "00"){ /* 종일 일정일 때는 시작시간과 종료시간이 "00" */
 																	events.push({
 															            title: sc.title,
@@ -395,28 +482,40 @@ select.sp {
 															            description: "[일정상세]  "+contents,
 															            category : sc.empno,
 															            type : sc.type,
-															            contents : sc.contents
+															            contents : sc.contents,
+															            schno : sc.schno
 														         	 });
+													        	}else if(sc.starthour == ""  && sc.endhour == ""){
+													        		events.push({
+															            title: sc.title,
+															            start: sc.startdate,
+															            end: sc.enddate,
+															            color : "#56d61b",
+															            description: "[일정상세] "+contents,
+															            category : sc.empno,
+															            type : sc.type,
+															            contents : sc.contents,
+															            schno : sc.schno
+														         	 });												        		
 													        	}else{
 																	events.push({
 															            title: sc.title,
-															            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-															            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+															            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+															            end: sc.enddate+'T'+sc.endhour+':'+endmin,
 															            color : "#56d61b",
 															            description: "[일정상세]  "+contents,
 															            category : sc.empno,
 															            type : sc.type,
 															            starthour : sc.starthour,
-															            startmin : sc.startmin,
+															            startmin : startmin,
 															            endhour : sc.endhour,
-															            endmin : sc.endmin,
-															            contents : sc.contents
+															            endmin : endmin,
+															            contents : sc.contents,
+															            schno : sc.schno
 														         	 });
-													        	}
-																	
+													        	}																	
 															});
 													        	callback(events);
-													      	
 													      }
 													    });
 												}else if(schTypeObj == '전체일정'){
@@ -436,6 +535,12 @@ select.sp {
 												        		if (contents == "null" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
 												        			contents = "없음";
 												        		}
+												        		startmin = sc.startmin;
+												        		endmin = sc.endmin;
+												        		if(startmin == "" || endmin == ""){
+												        			startmin = "00";
+												        			endmin = "00";
+												        		}
 													        	/* switch 문은 일정마다 색을 달리하기 위함. */
 													        	switch(sc.code){
 													        	case '0':
@@ -447,22 +552,36 @@ select.sp {
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
-																            contents : sc.contents
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
+														        	}else if(sc.starthour == ""  && sc.endhour == ""){
+														        		events.push({
+																            title: sc.title,
+																            start: sc.startdate,
+																            end: sc.enddate,
+																            color : "#41a6f4",
+																            description: "[일정상세] "+contents,
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents,
+																            schno : sc.schno
+															         	 });												        		
 														        	}else{
 																		events.push({
 																            title: sc.title,
-																            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+																            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+																            end: sc.enddate+'T'+sc.endhour+':'+endmin,
 																            color : "#41a6f4",
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
 																            starthour : sc.starthour,
-																            startmin : sc.startmin,
+																            startmin : startmin,
 																            endhour : sc.endhour,
-																            endmin : sc.endmin,
-																            contents : sc.contents
+																            endmin : endmin,
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
 														        	}
 													        		break;
@@ -475,22 +594,36 @@ select.sp {
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
-																            contents : sc.contents
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
+														        	}else if(sc.starthour == ""  && sc.endhour == ""){
+														        		events.push({
+																            title: sc.title,
+																            start: sc.startdate,
+																            end: sc.enddate,
+																            color : "#ff9000",
+																            description: "[일정상세] "+contents,
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents,
+																            schno : sc.schno
+															         	 });												        		
 														        	}else{
 																		events.push({
 																            title: sc.title,
-																            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+																            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+																            end: sc.enddate+'T'+sc.endhour+':'+endmin,
 																            color : "#ff9000",
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
 																            starthour : sc.starthour,
-																            startmin : sc.startmin,
+																            startmin : startmin,
 																            endhour : sc.endhour,
-																            endmin : sc.endmin,
-																            contents : sc.contents
+																            endmin : endmin,
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
 														        	}
 													        		break;
@@ -503,22 +636,36 @@ select.sp {
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
-																            contents : sc.contents
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
+														        	}else if(sc.starthour == ""  && sc.endhour == ""){
+														        		events.push({
+																            title: sc.title,
+																            start: sc.startdate,
+																            end: sc.enddate,
+																            color : "#56d61b",
+																            description: "[일정상세] "+contents,
+																            category : sc.empno,
+																            type : sc.type,
+																            contents : sc.contents,
+																            schno : sc.schno
+															         	 });												        		
 														        	}else{
 																		events.push({
 																            title: sc.title,
-																            start: sc.startdate+'T'+sc.starthour+':'+sc.startmin,
-																            end: sc.enddate+'T'+sc.endhour+':'+sc.endmin,
+																            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+																            end: sc.enddate+'T'+sc.endhour+':'+endmin,
 																            color : "#56d61b",
 																            description: "[일정상세]  "+contents,
 																            category : sc.empno,
 																            type : sc.type,
 																            starthour : sc.starthour,
-																            startmin : sc.startmin,
+																            startmin : startmin,
 																            endhour : sc.endhour,
-																            endmin : sc.endmin,
-																            contents : sc.contents
+																            endmin : endmin,
+																            contents : sc.contents,
+																            schno : sc.schno
 															         	 });
 														        	}
 													        		break;
@@ -541,36 +688,20 @@ select.sp {
 	
 	//modal 이벤트
 	$(function() {
-		
 		$("button#add").click(function(){
 			$("div.modal-header>h4").html("일정추가");
 			$("div.modal-footer>input").hide();
 			$("div.modal-footer>input.addschedule").show();
 			$("div.modal-body input#schtitle").val("");
-			$("div.modal-body select#schtype option:eq(0)").attr("selected", "selected");
-			$("div.modal-body input#testDatepicker").val("시작일");
-			$("div.modal-body input#testDatepicker2").val("종료일");
+			$("div.modal-body select#schtype").val("업무");
+			$("div.modal-body input#testDatepicker").val(new Date().toISOString().split('T')[0]);
+			$("div.modal-body input#testDatepicker2").val(new Date().toISOString().split('T')[0]);
 			$("div.modal-body select#starthour").val("00");
 			$("div.modal-body select#startmin").val("00");
 			$("div.modal-body select#endhour").val("00");
 			$("div.modal-body select#endmin").val("00");
 			$("div.modal-body textarea").text("");
 		});
-		
-		//개인일정,부서일정,회사일정,전체일정을 숨겨진 input에 담는다.
-		var codeStringObj = $('div.articleTop>i').text();
-		console.log(codeStringObj);
-		var codeIntObj;
-		if(codeStringObj =='개인일정'){
-			codeIntObj = '0';
-		}else if(codeStringObj =='부서일정'){
-			codeIntObj = '1';
-		}else if(codeStringObj =='회사일정'){
-			codeIntObj = '2';
-		}
-		console.log(codeIntObj);
-		$('#code').val(codeIntObj);
-		
 		
 		
 		$("#testDatepicker").datepicker({
@@ -616,43 +747,94 @@ select.sp {
 				$('#weekcheck').hide();
 				
 			}
-			
 		});
-		
-			
-		
-		$('form#addsc').submit(function(){
-					  $.ajax({
-						  url:'${pageContext.request.contextPath}/schadd.do',
-						  method:'post',
-						  data:$('form').serialize(),
-						  success:function(data){
-							  if(data.trim() == '1'){ //일정추가 성공
-							  	  //일정추가가 성공하면 개인일정 탭을 누른것과 같은 효과.
-							  	  if(codeStringObj == '개인일정'){
-								 	 var $triggerObj = $("li.schedule>a#schperson");
-							  	  }else if(codeStringObj == '부서일정'){
-							  		$triggerObj = $("li.schedule>a#schdept");
-							  	  }else if(codeStringObj == '회사일정'){
-							  		$triggerObj = $("li.schedule>a#schcompany");  
-							  	  }else if(codeStringObj == '전체일정'){
-							  		$triggerObj = $("li.schedule>a#schtotal");
-							  	  }
-							     $('#myModal').modal('toggle');
-						  		 $triggerObj.trigger('click');
-							  
-							  }else if(data.trim() == '-1'){ //일정추가 실패
-								 alert('일정추가 실패'); 
-							  }
+		<%--일정 추가 submit--%>
+		$('div.modal-footer input.addschedule').click(function(){
+				$.ajax({
+					  url: '${pageContext.request.contextPath}/schadd.do',
+					  type:'post',
+					  data:$('form').serialize(),
+					  success:function(data){
+						  if(data.trim() == '1'){ //일정추가 성공
+						  	  //일정추가가 성공하면 개인일정 탭을 누른것과 같은 효과.
+						  	  if(codeStringObj == '개인일정'){
+							 	 var $triggerObj = $("li.schedule>a#schperson");
+						  	  }else if(codeStringObj == '부서일정'){
+						  		$triggerObj = $("li.schedule>a#schdept");
+						  	  }else if(codeStringObj == '회사일정'){
+						  		$triggerObj = $("li.schedule>a#schcompany");  
+						  	  }else if(codeStringObj == '전체일정'){
+						  		$triggerObj = $("li.schedule>a#schtotal");
+						  	  }
+						     $('#myModal').modal('toggle');
+					  		 $triggerObj.trigger('click');
+						  
+						  }else if(data.trim() == '-1'){ //일정추가 실패
+							 alert('일정추가 실패'); 
 						  }
-					  });
-					  
-					  return false;
-		 }); 
+					  }
+				  });
+				  return false;
+			 }); 
 			
-	
-
-
+		<%--일정 수정 submit--%>
+			$('div.modal-footer input.editschedule').click(function(){
+				$.ajax({
+					  url: '${pageContext.request.contextPath}/schmod.do',
+					  type:'post',
+					  data:$('form').serialize(),
+					  success:function(data){
+						  if(data.trim() == '1'){ //일정수정 성공
+						  	  //일정수정이 성공하면 개인일정 탭을 누른것과 같은 효과.
+						  	  if(codeStringObj == '개인일정'){
+							 	 var $triggerObj = $("li.schedule>a#schperson");
+						  	  }else if(codeStringObj == '부서일정'){
+						  		$triggerObj = $("li.schedule>a#schdept");
+						  	  }else if(codeStringObj == '회사일정'){
+						  		$triggerObj = $("li.schedule>a#schcompany");  
+						  	  }else if(codeStringObj == '전체일정'){
+						  		$triggerObj = $("li.schedule>a#schtotal");
+						  	  }
+						     $('#myModal').modal('toggle');
+					  		 $triggerObj.trigger('click');
+						  
+						  }else if(data.trim() == '-1'){ //일정추가 실패
+							 alert('일정수정 실패'); 
+						  }
+					  }
+				  });
+				  return false;
+			 });
+			
+			
+			<%--일정 삭제 submit--%>
+			$('div.modal-footer input.delschedule').click(function(){
+				$.ajax({
+					  url: '${pageContext.request.contextPath}/schdel.do',
+					  type:'post',
+					  data:$('form').serialize(),
+					  success:function(data){
+						  if(data.trim() == '1'){ //일정수정 성공
+						  	  //일정수정이 성공하면 개인일정 탭을 누른것과 같은 효과.
+						  	  if(codeStringObj == '개인일정'){
+							 	 var $triggerObj = $("li.schedule>a#schperson");
+						  	  }else if(codeStringObj == '부서일정'){
+						  		$triggerObj = $("li.schedule>a#schdept");
+						  	  }else if(codeStringObj == '회사일정'){
+						  		$triggerObj = $("li.schedule>a#schcompany");  
+						  	  }else if(codeStringObj == '전체일정'){
+						  		$triggerObj = $("li.schedule>a#schtotal");
+						  	  }
+						     $('#myModal').modal('toggle');
+					  		 $triggerObj.trigger('click');
+						  
+						  }else if(data.trim() == '-1'){ //일정추가 실패
+							 alert('일정삭제 실패'); 
+						  }
+					  }
+				  });
+				  return false;
+			 });	
 	});
 	var className = 'schedule';
 	$('div#menutab li.'+className).addClass('active');

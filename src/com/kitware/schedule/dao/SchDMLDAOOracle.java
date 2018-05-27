@@ -43,4 +43,76 @@ public class SchDMLDAOOracle implements SchDMLDAO {
 		}
 	}
 
+	@Override
+	public void updateSchedule(Schedule schedule) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String updateScheduleSQL = "update sch_schedule " + 
+				"set sch_name = ? , sch_type = ? , sch_startdate = to_date(?, 'yyyy-mm-dd') , " + 
+				"    sch_starthour = ?, sch_startmin = ?, sch_enddate = to_date(?, 'yyyy-mm-dd'), sch_endhour = ? , sch_endmin = ?, " + 
+				"    sch_contents = ? " + 
+				"where sch_no = ?";
+		
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(updateScheduleSQL);
+			pstmt.setString(1, schedule.getSch_name());
+			pstmt.setString(2, schedule.getSch_type());
+			pstmt.setString(3, schedule.getSch_startdate());
+			pstmt.setString(4, schedule.getSch_starthour());
+			pstmt.setString(5, schedule.getSch_startmin());
+			pstmt.setString(6, schedule.getSch_enddate());
+			pstmt.setString(7, schedule.getSch_endhour());
+			pstmt.setString(8, schedule.getSch_endmin());
+			pstmt.setString(9, schedule.getSch_contents());
+			pstmt.setString(10, schedule.getSch_no());
+			pstmt.executeUpdate();
+
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+	}
+
+	@Override
+	public void deleteSchedule(Schedule schedule) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		String deleteScheduleSQL = "update sch_schedule " + 
+				"set sch_useyn = 'Y' " + 
+				"where sch_no = ? ";
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(deleteScheduleSQL);
+			pstmt.setString(1, schedule.getSch_no());
+			pstmt.executeUpdate();
+		}finally {
+			MyConnection.close(pstmt,con);
+		}
+	}
+
+	@Override
+	public void insertQuickSchedule(Schedule schedule) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String qinsertScheduleSQL = "insert into sch_schedule(sch_no,emp_num,sch_name,sch_type,sch_startdate,sch_enddate,sch_code)\r\n" + 
+				"values(sch_no_seq.nextval, ?, ?, ?,to_date(?, 'yyyy-mm-dd'),\r\n" + 
+				" to_date(?, 'yyyy-mm-dd'),?)";
+		
+
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(qinsertScheduleSQL);
+			pstmt.setString(1, schedule.getEmp_num());
+			pstmt.setString(2, schedule.getSch_name());
+			pstmt.setString(3, "업무");
+			pstmt.setString(4, schedule.getSch_startdate());
+			pstmt.setString(5, schedule.getSch_enddate());
+			pstmt.setString(6, schedule.getSch_code());
+			pstmt.executeUpdate();
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+	}
 }

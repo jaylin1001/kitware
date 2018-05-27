@@ -95,7 +95,7 @@
                         <form role="form" method="post" id="form1" name="form1">
                             <fieldset>
                                 <div class="form-group">
-                                    <input class="form-control" placeholder="ID" name="userid" id="userid"  autofocus value="">
+                                    <input class="form-control" required="required" placeholder="ID" name="userid" id="userid"  autofocus value="">
                                 </div>
                                 <div class="form-group">
                                     <input class="form-control" required="required" placeholder="Password" name="userpw" id="userpw" type="password" value="" onkeydown="if(event.keyCode == 13) { fn_formSubmit();}">

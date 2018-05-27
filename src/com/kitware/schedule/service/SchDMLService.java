@@ -22,4 +22,17 @@ public class SchDMLService {
 	public void scheduleinput(Schedule schedule) throws Exception{
 		dao.insertSchedule(schedule);
 	}
+	
+	public void scheduleUpdate(Schedule schedule) throws Exception{
+		dao.updateSchedule(schedule);
+	}
+
+	public void scheduleDelete(Schedule schedule) throws Exception {
+		dao.deleteSchedule(schedule);
+	}
+
+	public void scheduleQuickAdd(Schedule schedule)throws Exception {
+		dao.insertQuickSchedule(schedule);
+		
+	}
 }

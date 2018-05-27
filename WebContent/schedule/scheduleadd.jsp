@@ -5,7 +5,7 @@
 		<table>
 			<tr>
 				<td><label>제목 </label></td>
-				<td><input style="width: 300px" name="title" autocomplete="off" id="schtitle"></td>
+				<td><input style="width: 300px" required="required" name="title" autocomplete="off" id="schtitle"></td>
 			</tr>
 			<tr>
 				<td><label>일정종류</label></td>
@@ -238,14 +238,16 @@
 				<td><label>내용</label></td>
 				<td><textarea autocomplete="off" name="contents" rows="6" cols="50" id="contents"></textarea></td>
 				<td><input id="code" type="hidden" name="schcode" ></td>
+				<td><input id="schno" type="hidden" name="schno" ></td>
 			</tr>
 		</table>
 		<div class="modal-footer">
 			
-			<input type="submit" value="추가" class="btn btn-default addschedule">
-			<input type="submit" value="수정"  class="btn btn-default editschedule">
-			<input type="submit" value="삭제"  class="btn btn-default delschedule">
-			<button type="button" class="btn btn-default" data-dismiss="modal">닫기</button>
+			<input type="button" name = "submitbutton" value="추가" class="btn btn-default addschedule" >
+			<input type="button" name = "submitbutton" value="수정"  class="btn btn-default editschedule">
+			<input type="button" name = "submitbutton" value="삭제"  class="btn btn-default delschedule">
+			<button type="button" class="btn btn-default closebutton" data-dismiss="modal">닫기</button>
 		</div>
 		</form>
 		</div>
+		

@@ -78,7 +78,7 @@ public class SchAddController implements Controller {
 			e.printStackTrace();
 			request.setAttribute("result", "-1"); //시스템상 에러
 		}
-		String forwardURL = "/schedule/scheduleaddresult.jsp";
+		String forwardURL = "/schedule/scheduleDMLresult.jsp";
 		return forwardURL;
 			
 	}
