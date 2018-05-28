@@ -14,9 +14,6 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
 
 
-
-
-
 public class DocDAOOracle implements DocDAO {
 	
 	public int selectCount() throws Exception{
@@ -115,6 +112,64 @@ public class DocDAOOracle implements DocDAO {
 	}
 		
 
+	@Override
+	public List<DocVO> selectGJWait(String emp_num, int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectGJWaitSQL = "select aa.*"
+				+" from("
+				+" select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
+				+" mydocnum.start_date, mydocnum.doc_state"
+				+" from(select doc.* from"
+				+" (select d.*, dd.conf_num"
+				+" from document d, doc_detail dd"
+				+" where d.doc_num = dd.doc_num) doc,"
+				+" (select doc_num"
+				+" from doc_detail"
+				+" where conf_num = ?) myconf"
+				+" where doc.doc_num = myconf.doc_num) mydocnum,"
+				+" (select a.doc_num from"
+				+" (select doc_num, sunbeon, acs_yn"
+				+" from doc_detail) a,"
+				+" (select doc_num, sunbeon, conf_num, acs_yn"
+				+" from doc_detail"
+				+" where conf_num = ?) b"
+				+" where a.doc_num = b.doc_num and a.sunbeon = b.sunbeon-1"
+				+" and a.acs_yn = 1 and b.acs_yn = 0"
+				+" or b.sunbeon=0 and b.conf_num = ?) preconf"
+				+" where mydocnum.doc_num = preconf.doc_num"
+				+" and mydocnum.conf_num = ?) aa"
+				+" where r between ? and ?";
+		List<DocVO> doclist = new ArrayList<>(); //사이즈 변경 가능하며 null허용하는 arraylist
+		DocVO docvo = null;	//doc 데이터 담음
+	try {
+		con= MyConnection.getConnection();
+		pstmt = con.prepareStatement(selectGJWaitSQL);
+		pstmt.setString(1, emp_num);
+		pstmt.setString(2, emp_num);
+		pstmt.setString(3, emp_num);
+		pstmt.setString(4, emp_num);
+		int cntPerPage=5;//1페이지별 5건씩 보여준다
+		int endRow=cntPerPage * page;
+		int startRow=endRow-cntPerPage+1; 			
+		pstmt.setInt(5, startRow);	
+		pstmt.setInt(6, endRow);
+		rs = pstmt.executeQuery();
+		while(rs.next()) {
+			docvo = new DocVO();
+			docvo.setDoc_num(rs.getString("doc_num"));
+			docvo.setDoc_kind(rs.getInt("doc_kind"));
+			docvo.setDoc_title(rs.getString("doc_title"));
+			docvo.setStart_date(rs.getString("start_date"));
+			docvo.setDoc_state(rs.getString("doc_state"));
+			doclist.add(docvo);	
+		}
+	}finally{
+		MyConnection.close(rs,pstmt,con);
+	}
+		return doclist;
+	}
 
 	@Override
 	public List<DocVO> selectIng(String emp_num) throws Exception { 
@@ -253,7 +308,7 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state"
+		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
 				+" from document d, doc_kind dk"
 				+" where d.doc_kind = dk.doc_kind"
 				+" and d.doc_state = 2"
@@ -279,6 +334,7 @@ public class DocDAOOracle implements DocDAO {
 				docvo2.setDoc_num(rs.getString("doc_num"));
 				docvo2.setDoc_state(rs.getString("doc_state"));
 				dock2 = new DocKindVO(docvo2.getDoc_kind(),rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
 				docvo2.setDoc_kindvo(dock2);
 				doclist2.add(docvo2);	
 			}
@@ -299,7 +355,7 @@ public class DocDAOOracle implements DocDAO {
 		
 		String selectExpectedSQL = "select b.*"
 				+" from("
-				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name"
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+" from document d, doc_detail dd, doc_kind dk"
 				+" where d.doc_num = dd.doc_num"
 				+" and d.doc_kind = dk.doc_kind"
@@ -326,6 +382,7 @@ public class DocDAOOracle implements DocDAO {
 				docvo2.setDoc_state(rs.getString("doc_state"));
 				docvo2.setStart_date(rs.getString("start_date"));
 				dock2 = new DocKindVO(docvo2.getDoc_kind(),rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
 				docvo2.setDoc_kindvo(dock2);
 				doclist2.add(docvo2);	
 			}
@@ -346,7 +403,7 @@ public class DocDAOOracle implements DocDAO {
 		
 		String selectGJOkSQL = "select b.*"
 				+" from("
-				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name"
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+" from document d, doc_detail dd, doc_kind dk"
 				+" where d.doc_num = dd.doc_num"
 				+" and d.doc_kind = dk.doc_kind"
@@ -373,6 +430,7 @@ public class DocDAOOracle implements DocDAO {
 				docvo2.setDoc_state(rs.getString("doc_state"));
 				docvo2.setStart_date(rs.getString("start_date"));
 				dock2 = new DocKindVO(docvo2.getDoc_kind(),rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
 				docvo2.setDoc_kindvo(dock2);
 				doclist2.add(docvo2);	
 			}
@@ -394,24 +452,23 @@ public class DocDAOOracle implements DocDAO {
 			List<DocVO> list3 = test.selectIng("1",1);
 			System.out.println("3333aa"+list3.size());
 			List<DocVO> list4 = test.selectOk("kim",1);
-			System.out.println("44aa"+list4.size());
+			System.out.println("44aaokokok"+list4.size());
 			List<DocVO> list5 = test.selectExpected("3", 1);
 			System.out.println(list5.size());
 			List<DocVO> list6 = test.selectGJOk("3", 1);
-			System.out.println("list6:"+list6.size());
+			System.out.println("list6ggggg:"+list6);
 			DocVO list7 = test.selectAll("1805-0001");
 			System.out.println(list7);
 			System.out.println("--------------");
 			List<DocDetailVO> list8 = test.selectConf("1805-0001");
 			System.out.println("list8="+list8);
-			
-			
-			
-
+			List<DocVO> list9 = test.selectGJWait("4", 1);
+			System.out.println(list9);
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+
 
 	
 	

@@ -22,7 +22,7 @@
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
 		<tr>
 								<td>${b.start_date}</td>
-								<td>${b.doc_title}</td>
+								<td><a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a></td>
 								<td>${b.doc_num}</td>
 							    <td>${b.doc_state}</td>
 		</tr>
@@ -90,6 +90,37 @@ thead{
 <c:set var="prePage" value="${requestScope.prePage}"/> 
 <c:set var="nextPage" value="${requestScope.nextPage}"/> 
 <script>
+function functionrt(data, data1) {
+	console.log(data);
+	console.log(data1);
+	switch (data) {
+	case 10:
+		//기안서
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 20:
+		//품의
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 30:
+		//발주서
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 40:
+		//출장
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 50:
+		//휴가
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 60:
+		//병가
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	}
+}
+
 $(function(){
 	$('.pagination button').click(function(){
 		var page;

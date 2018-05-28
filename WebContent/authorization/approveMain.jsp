@@ -2,21 +2,10 @@
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-
+<c:set var="list0" value="${requestScope.docvo_list0}" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script>
-	/* $(function(){
-	$.ajax({
-	url:"../doclist.do",
-	method:'post',
-	success:function(data){
-	console.log("mainview");
-	}
-	}); 
-	return false;
-	});  */
-</script>
+
 <div id="list"></div>
 <div class="container">
 	<p>
@@ -33,8 +22,13 @@
 			<td>문서 이름</td>
 		</tr>
 		<tr>
-			<!-- 내용 들어갈것 -->
-
+		<c:forEach var="doc0" items="${list0}">
+				<td>${doc0.start_date}</td>
+				<td>${doc0.doc_title}</td>
+				<td>${doc0.doc_num}</td>
+				<td>${doc0.doc_state}</td>
+				<td>${doc0.doc_kindvo.doc_name}</td>
+	</c:forEach>
 		</tr>
 	</table>
 

@@ -15,15 +15,15 @@ public class DocSelectService {
 	public int findCount() throws Exception{
 		return dao.selectCount();
 	}
-
+	public List<DocVO> selectGJWait(String emp_num, int page) throws Exception{
+		return dao.selectGJWait(emp_num, page);
+	}
 	public List<DocVO> findIng(String emp_num) throws Exception {
 		System.out.println(dao.selectIng(emp_num));
 		return dao.selectIng(emp_num, 1);
 	}
 	public List<DocVO> findIng(String emp_num, int page) throws Exception{
-		System.out.println("service"+dao.selectIng(emp_num, page));
 		return dao.selectIng(emp_num, page);
-
 	}
 
 	public List<DocVO> findOk(String emp_num) throws Exception {

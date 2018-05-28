@@ -250,7 +250,7 @@ div.navbar-header> a.logout{
 						<li class="authorization"><a href="#">결재문서함<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class = "gj_wait"><a href="#">결재대기</a></li>
+								<li class = "gj_wait"><a href="${pageContext.request.contextPath}/gjmywaitlist.do">결재대기</a></li>
 								<li class = "gj_exp"><a href="${pageContext.request.contextPath}/gjexpectlist.do">결재예정</a></li>
 								<li clsss = "gj_ok"><a href="${pageContext.request.contextPath}/gjoklist.do">결재완료</a></li>
 							</ul></li>

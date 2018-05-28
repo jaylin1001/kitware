@@ -12,6 +12,7 @@ import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocSelectService;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
+import com.sun.javafx.collections.SetAdapterChange;
 
 public class DocListController implements Controller {
 	private DocSelectService service;
@@ -38,8 +39,12 @@ public class DocListController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		System.out.println("로그인번호"+emp_num);
+		int page = 1;
 		
 		try {
+			List<DocVO> docvo_list0 = service.findIng(emp_num, page); 
+			request.setAttribute("docvo_list0", docvo_list0);
+			
 			List<DocVO> docvo_list = service.findIng(emp_num); 
 			System.out.println("docvo_list size:"+docvo_list.size());
 			request.setAttribute("docvo_list", docvo_list);
