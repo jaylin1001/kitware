@@ -42,7 +42,7 @@ public class DocListController implements Controller {
 		int page = 1;
 		
 		try {
-			List<DocVO> docvo_list0 = service.findIng(emp_num, page); 
+			List<DocVO> docvo_list0 = service.selectExpected(emp_num, page);
 			request.setAttribute("docvo_list0", docvo_list0);
 			
 			List<DocVO> docvo_list = service.findIng(emp_num); 

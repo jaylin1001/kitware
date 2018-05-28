@@ -21,15 +21,15 @@
 			<td>문서상태</td>
 			<td>문서 이름</td>
 		</tr>
-		<tr>
 		<c:forEach var="doc0" items="${list0}">
+		<tr>
 				<td>${doc0.start_date}</td>
 				<td>${doc0.doc_title}</td>
 				<td>${doc0.doc_num}</td>
 				<td>${doc0.doc_state}</td>
 				<td>${doc0.doc_kindvo.doc_name}</td>
-	</c:forEach>
 		</tr>
+	</c:forEach>
 	</table>
 
 
