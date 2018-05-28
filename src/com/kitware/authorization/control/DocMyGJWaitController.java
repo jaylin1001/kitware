@@ -13,11 +13,27 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.authorization.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-public class DocMyGJOkController {
-	DocSelectService service = new DocSelectService();
+public class DocMyGJWaitController {
+	private DocSelectService service = new DocSelectService();
 	
-	public String execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+	public DocMyGJWaitController() {
+		super();
+	}
+
+	public DocMyGJWaitController(DocSelectService service) {
+		super();
+		this.service = service;
+	}
+
+	public DocSelectService getService() {
+		return service;
+	}
+
+	public void setService(DocSelectService service) {
+		this.service = service;
+	}
+
+	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
@@ -50,7 +66,7 @@ public class DocMyGJOkController {
 			if(prePage <1) {
 				prePage = 1;
 			}
-			List<DocVO> list = service.selectGJOk(emp_num, intPage);
+			List<DocVO> list = service.selectGJWait(emp_num, intPage);
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
@@ -61,17 +77,15 @@ public class DocMyGJOkController {
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
-			request.setAttribute("totalCount", totalCount);
 			System.out.println(list.size());
 			System.out.println(pb.getList());
 			System.out.println("intpage:" + intPage);
-			System.out.println("totalPage:"+totalPage);
-
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		String forwardURL = "/authorization/gj_myok.jsp";
+		String forwardURL = "/authorization/gj_mywait.jsp";
 		return forwardURL;
 	}
 }

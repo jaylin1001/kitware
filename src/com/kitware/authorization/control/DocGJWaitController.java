@@ -13,7 +13,6 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.authorization.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-
 public class DocGJWaitController {
 	private DocSelectService service = new DocSelectService();	
 	

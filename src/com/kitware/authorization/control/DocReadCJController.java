@@ -8,58 +8,55 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocSelectService;
+import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
-import com.sun.javafx.collections.SetAdapterChange;
 
-public class DocListController implements Controller {
-	private DocSelectService service;
+public class DocReadCJController {
+	DocSelectService service = new DocSelectService();
 
-	public DocListController() {
+	public DocReadCJController() {
 		super();
 	}
-	public DocListController(DocSelectService service) {
+
+	public DocReadCJController(DocSelectService service) {
 		super();
 		this.service = service;
 	}
-	
+
 	public DocSelectService getService() {
 		return service;
 	}
+
 	public void setService(DocSelectService service) {
 		this.service = service;
-	} 
-	
-	@Override
+	}
+
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Members loginInfo = (Members)session.getAttribute("loginInfo");	
+		Members loginInfo = (Members) session.getAttribute("loginInfo");
 		String emp_num = loginInfo.getEmp_num();
-		System.out.println("로그인번호"+emp_num);
-		int page = 1;
+		String doc_num = request.getParameter("doc_num");
+		System.out.println("로그인번호" + emp_num);
+		System.out.println("문서번호" + doc_num);
 		
 		try {
-			List<DocVO> docvo_list0 = service.selectExpected(emp_num, page);
-			request.setAttribute("docvo_list0", docvo_list0);
-			
-			List<DocVO> docvo_list = service.findIng(emp_num); 
-			System.out.println("docvo_list size:"+docvo_list.size());
+			DocVO docvo_list = service.selectAll(doc_num);
 			request.setAttribute("docvo_list", docvo_list);
+			System.out.println(docvo_list);
 			
-			List<DocVO> docvo_list2 = service.findOk(emp_num); 
-			System.out.println("docvo_list size2:"+docvo_list2.size());
-			request.setAttribute("docvo_list2", docvo_list2);
-			
+			List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
+			request.setAttribute("doc_detail_list", doc_detail_list);
+			System.out.println(doc_detail_list);
+
 		} catch (Exception e) {
 			request.setAttribute("result", e.getMessage());
 			e.printStackTrace();
 		}
-		
-		String forwardURL = "/authorization/approveMain.jsp";
+
+		String forwardURL = "/authorization/chuljangread.jsp";
 		return forwardURL;
 	}
-
 }

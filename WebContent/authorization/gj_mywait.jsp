@@ -8,7 +8,7 @@
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
-	<h2>내가 한 결재 완료</h2>
+	<h2>내가 당장 해야하는 결재</h2>
 	<div>&nbsp;</div>
 	<table class="table table-striped table-hover">
 		<thead class="thead-light">
@@ -133,13 +133,13 @@ thead {
 			var page;
 			if ($(this).text() == '이전') {
 				page = ${prePage};
-				location.href = "mygjoklist.do?page=" + page;
+				location.href = "gjmywaitlist.do?page=" + page;
 			} else if ($(this).text() == '다음') {
 				page = ${nextPage};
-				location.href = "mygjoklist.do?page=" + page;
+				location.href = "gjmywaitlist.do?page=" + page;
 			} else {
 				page = $(this).text();
-				location.href = "mygjoklist.do?page=" + page;
+				location.href = "gjmywaitlist.do?page=" + page;
 			}
 
 			return false;
