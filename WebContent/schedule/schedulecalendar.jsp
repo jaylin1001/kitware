@@ -97,7 +97,7 @@ select.sp {
 			window.print();
 		});
 		
-
+	
 		//개인일정,부서일정,회사일정,전체일정을 숨겨진 input에 담는다.
 		codeStringObj = $('div.articleTop>i').text();
 		console.log(codeStringObj);
@@ -110,6 +110,7 @@ select.sp {
 			codeIntObj = '2';
 		}
 		$('#code').val(codeIntObj);
+		
 		
 	});
 	
@@ -254,6 +255,8 @@ select.sp {
 											// event click 및  hover
 											eventRender: function(eventObj, element){
 												var test = element.attr("category",eventObj.category);
+												element.removeAttr('href');
+												
 												<%--Hover 이벤트--%>
 												element.popover({
 										          title: eventObj.title,
@@ -674,20 +677,19 @@ select.sp {
 													        	
 																	
 															});
-													        	callback(events);
-													      	
-													      }
-													    });
-												}
-											 }
-												
-										});
+													        	callback(events);  	
+													     }
+												  });
+											}
+									 }		
+							});
 					});
 	
-	
-	
+
 	//modal 이벤트
 	$(function() {
+
+		
 		$("button#add").click(function(){
 			$("div.modal-header>h4").html("일정추가");
 			$("div.modal-footer>input").hide();
@@ -834,7 +836,8 @@ select.sp {
 					  }
 				  });
 				  return false;
-			 });	
+			 });
+			
 	});
 	var className = 'schedule';
 	$('div#menutab li.'+className).addClass('active');
