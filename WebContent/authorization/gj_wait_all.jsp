@@ -5,7 +5,7 @@
 <c:set var="pb" value="${requestScope.pagebean }" />
 <div id="div1"></div>
 <div class="container">
-	<h2>진행 기안 문서함</h2>
+	<h2>전체 기안 문서함</h2>
 	<div>&nbsp;</div>
 	<div class="selectbutton">
 		&nbsp;

@@ -14,10 +14,7 @@
 			focus : true, // 페이지가 열릴때 포커스를 지정함
 			lang : 'ko-KR' // 한국어 지정(기본값은 en-US)
 		});
-		
-	
 	});
-	
 
 </script>
 </body>

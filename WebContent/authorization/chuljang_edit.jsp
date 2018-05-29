@@ -1,11 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
-<form id="formwrite">
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
-<c:set var="session" value="${sessionScope.loginInfo}"></c:set>		
-
+<c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
+<c:set var="rs" value="${requestScope.result}" />	
+<form id="formwrite" action="doceditcj.do" method="post">
 	<div>
 		<div class="title" align="center">
 			<h2>출장신청서</h2>
@@ -52,11 +52,14 @@
 				</tr>
 				<tr>
 					<th>제목</th>
-					<td colspan="5">${doc.doc_title}</td>
+					<td colspan="5">
+					<input type="text" name = "title" value="${doc.doc_title}"></td>
 				</tr>
 				<tr>
 					<th>기간</th>
-					<td>${doc.doc_gigan.start_date} &nbsp;~&nbsp; ${doc.doc_gigan.end_date}</td>
+					<td><input type="text" id="testDatepicker" value="${doc.doc_gigan.start_date}" name= "start_date">
+						&nbsp;~&nbsp; <input type="text" id="testDatepicker2" value="${doc.doc_gigan.end_date}" name = "end_date">
+					</td>
 				</tr>
 
 				<tr>
@@ -66,7 +69,8 @@
 
 				<tr>
 					<th>출장목적</th>
-					<td colspan="5">${doc.doc_content}
+					<td colspan="5">
+					<textarea rows="10" cols="130" name = "chuljang_textarea">${doc.doc_content}</textarea> 
 				</td>
 				</tr>
 				<tr>
@@ -82,9 +86,8 @@
 				</tr>
 				<tr>	
 					<td colspan="6" align="center">
-						<input type="button" value="수정" id="edit"> 
-						<input type="button" value="뒤로가기" id="back">
-						<input type="button" value="삭제" id="cancle"><!-- 제약 줘야함 -->
+						<input type="submit" value="확인"> 
+						<input type="button" value="취소" id="back">
 					</td>
 				</tr>
 			</table>
@@ -108,10 +111,11 @@
 			dateFormat : "yy-mm-dd"
 		});
 		
-		$("#edit").click(function() {
-			location.href= "doceditcj.do?mode=read"
+		$("#submit").click(function() {
+			location.href= "doceditcj.do"
 		return false;
 		});
+		
 		$("#back").click(function() {
 			history.back();
 		return false;
@@ -121,27 +125,29 @@
 		console.log($('div#menutab li.' + className));
 		$('ul#side-menu').find('li.' + className).show();
 	});
-</script>
-<script>
-/* 	$(function() {
-		$('form#formwrite').submit(function() {
-			$.ajax({
-				url : 'docwritecj.do',
-				method : 'post',
-				data : $('form').serialize(),
-				success : function(data) {
-					data = data.trim();
-					if (data == '1') { //글쓰기 성공
-						alert('글쓰기 성공');
-						var $triggerObj = $("nav>ul li.board!!수정	해야함");
-						$triggerObj.trigger('click');
-					} else if (data == '-1') { //글쓰기 실패
-						alert('글쓰기 실패');
-					}
+	
+	/* $('form').submit(function() {
+	$.ajax({
+			url : 'doceditcj.do',
+			data : $('form').serialize(),
+			method:'POST',
+			/* success : function(data) {
+				data = data.trim();
+				if (data == '1') { //글쓰기 성공
+					alert('수정 성공');
+					location.href = "docreadcj.do?doc_num=1805-0008" //임시로 page 09번꺼 줌
+				} else if (data == '-1') { //글쓰기 실패
+					alert('수정 실패');
 				}
-			});
-			return false;
+			}  
 		});
+		return false;
 	}); */
+</script>
+
+<script>
+ 	$(function() {
+		
+	}); 
 </script>
 <%@ include file="../container/footer.jsp"%>

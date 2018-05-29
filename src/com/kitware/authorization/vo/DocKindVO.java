@@ -6,6 +6,10 @@ public class DocKindVO {
 		private String doc_name;
 		
 		
+		public DocKindVO(String doc_name) {
+			super();
+			this.doc_name = doc_name;
+		}
 		public DocKindVO() {
 			super();
 		}

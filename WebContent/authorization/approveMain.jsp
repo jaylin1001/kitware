@@ -13,20 +13,29 @@
 	<h4>결재대기문서</h4>
 	<!-- 	수정 필요함 -->
 
-	<table class="table table-border">
-		<tr>
+	<table class="table table-border table-hover">
+	<thead>
+		<tr class="table-primary">
 			<td>기안일</td>
 			<td>문서제목</td>
 			<td>문서번호</td>
 			<td>문서상태</td>
 			<td>문서 이름</td>
 		</tr>
+		</thead>
 		<c:forEach var="doc0" items="${list0}">
 		<tr>
 				<td>${doc0.start_date}</td>
-				<td>${doc0.doc_title}</td>
+				<td><a href="javascript:functionrt(${doc0.doc_kind},'${doc0.doc_num}');">${doc0.doc_title}</a></td>
 				<td>${doc0.doc_num}</td>
-				<td>${doc0.doc_state}</td>
+				<c:choose>
+      			 <c:when test="${doc0.doc_state eq '1'}">
+      			 <td>진행</td>
+      			 </c:when>
+      			 <c:when test="${doc0.doc_state eq '2'}">
+      			 <td>완료<td>
+      			 </c:when>
+      			 </c:choose>
 				<td>${doc0.doc_kindvo.doc_name}</td>
 		</tr>
 	</c:forEach>
@@ -38,49 +47,54 @@
 	<%-- ${requestScope.docvo_list}
 	 ${result} --%>
 	<h4>기안진행문서</h4>
-	<table class="table table-border">
-		<tr>
+	
+	<table class="table table-border table-hover">
+	<thead>
+		<tr class="table-primary">
 			<td>기안일</td>
 			<td>문서제목</td>
 			<td>문서번호</td>
 			<td>문서상태</td>
 			<td>문서 이름</td>
 		</tr>
-
+	</thead>
 		<c:forEach var="doc" items="${list}">
 			<tr>
 				<td>${doc.start_date}</td>
-				<td>${doc.doc_title}</td>
+				<td><a href="javascript:functionrt(${doc.doc_kind},'${doc.doc_num}');">${doc.doc_title}</a></td>
 				<td>${doc.doc_num}</td>
-				<td>${doc.doc_state}</td>
+				<c:choose>
+      			 <c:when test="${doc.doc_state eq '1'}">
+      			 <td>진행</td>
+      			 </c:when>
+      			 </c:choose>
 				<td>${doc.doc_kindvo.doc_name}</td>
+		</tr>
 		</c:forEach>
 	</table>
 
-	<!-- 	아래껀 예전꺼 -->
 
-	<h4>완료 문서</h4>
 	<c:set var="list2" value="${requestScope.docvo_list2}" />
-	<table class="table table-border">
-		<tr>
+	<h4>완료 문서</h4>
+	<table class="table table-border table-hover">
+	<thead>
+		<tr class="table-primary">
 			<td>기안일</td>
 			<td>문서제목</td>
 			<td>문서번호</td>
 			<td>문서상태</td>
 			<td>문서 이름</td>
 		</tr>
-
+	</thead>
 		<c:forEach var="doc2" items="${list2}">
-
 			<tr>
 				<td>${doc2.start_date}</td>
-				<td>${doc2.doc_title}</td>
+				<td><a href="javascript:functionrt(${doc2.doc_kind},'${doc2.doc_num}');">${doc2.doc_title}</a></td>
 				<td>${doc2.doc_num}</td>
-				<td>${doc2.doc_state}</td>
+      			<td>완료</td>
 				<td>${doc2.doc_kindvo.doc_name}</td>
 			</tr>
 		</c:forEach>
-
 	</table>
 
 
@@ -112,13 +126,49 @@ button {
 	margin: 4px 2px;
 	cursor: pointer;
 }
-
-h4 {
-	background-color: #337ab7; /* Green */
+thead {
+	background-color: #337ab7;
 	color: white;
+	font-weight: bold;
 }
-</style>
 
+/* h4 {
+	background-color: #337ab7; 
+	color: white;
+}*/
+</style>
+<script>
+function functionrt(data, data1) {
+	console.log(data);
+	console.log(data1);
+	switch (data) {
+	case 10:
+		//기안서
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 20:
+		//품의
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 30:
+		//발주서
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 40:
+		//출장
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 50:
+		//휴가
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	case 60:
+		//병가
+		location.href = "docreadcj.do?doc_num=" + data1;
+		break;
+	}
+}
+</script>
 <script>
 	var className = 'authorization';
 	$('div#menutab li.' + className).addClass('active');
