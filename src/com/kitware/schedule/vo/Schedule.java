@@ -139,9 +139,6 @@ public class Schedule {
 				+ sch_endmin + ", sch_repeat=" + sch_repeat + ", sch_repeatcycle=" + sch_repeatcycle + ", sch_contents="
 				+ sch_contents + ", sch_code=" + sch_code + ", sch_useyn=" + sch_useyn + "]";
 	}
-	
-	
-	
-	
+
 
 }

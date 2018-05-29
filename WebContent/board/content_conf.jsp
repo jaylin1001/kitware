@@ -1,11 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <style>
 th {
 	align: center;
 }
-
 button {
 	background-color: #337ab7; /* Green */
 	border: none;
@@ -29,10 +30,10 @@ button {
 		</div>
 		<div class="table">
 			<table class="table table-bordered">
-
+				
 				<tr>
 					<th>제목</th>
-					<td colspan="5">첫번째 글입니다</td>
+					<td colspan="5">${requestScope.title}</td>
 				</tr>
 
 				<tr>
@@ -71,6 +72,7 @@ button {
 		</div>
 	</div>
 	<script>
+		console.log("테스트:"+ ${requestScope.writer});
 		$(function() {
 			$('.btn_list').click(function() {
 				var $targetObj = $("div.container");

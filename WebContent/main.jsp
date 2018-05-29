@@ -20,7 +20,7 @@
 			location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
 		}
 		else if(className=='board'){
-			location.href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정";
+			location.href="${pageContext.request.contextPath}/boardlist.do";
 		}
 		else if(className=='home'){
 			location.href="${pageContext.request.contextPath}/home/home.jsp";

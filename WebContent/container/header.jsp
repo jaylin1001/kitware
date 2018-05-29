@@ -36,7 +36,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.7/metisMenu.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="../js/custom/sb-admin-2.js"></script>
+<script src="${pageContext.request.contextPath}/js/custom/sb-admin-2.js"></script>
 
 <!-- include summernote css/js 추가두줄-->
 <script src="${pageContext.request.contextPath}/summernote/summernote.js"></script>
@@ -81,7 +81,7 @@
 				location.href='${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정';
 				break;
 			case 'board': // 게시판 tab 눌렀을 때 
-				location.href="${pageContext.request.contextPath}/board/board.jsp";
+				location.href="${pageContext.request.contextPath}/boardlist.do";
 				break;
 			case 'attendance': // 근태 tab 눌렀을 때 
 					location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
