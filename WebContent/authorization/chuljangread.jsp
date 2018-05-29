@@ -82,9 +82,9 @@
 				</tr>
 				<tr>	
 					<td colspan="6" align="center">
-						<input type="button" value="수정" id="edit"> 
+						<input type="button" value="수정" id="edit" onclick = "editdocnum('${doc.doc_num}')"> 
 						<input type="button" value="뒤로가기" id="back">
-						<input type="button" value="삭제" id="cancle"><!-- 제약 줘야함 -->
+						<input type="button" value="삭제" id="del" onclick = "deldocnum('${doc.doc_num}')"><!-- 제약 줘야함 -->
 					</td>
 				</tr>
 			</table>
@@ -93,6 +93,15 @@
 </form>
 <script type="text/javascript">
 
+	function editdocnum(data) {
+		location.href= "doceditcj.do?doc_num="+data+"&mode=read"
+		console.log(data);
+	}
+	function deldocnum(data) {
+		location.href= "docdelcj.do?doc_num="+data;
+		console.log(data);
+	}
+	
 	$(function() {
 		$("#testDatepicker").datepicker({
 			showOn : "both",
@@ -108,14 +117,19 @@
 			dateFormat : "yy-mm-dd"
 		});
 		
-		$("#edit").click(function() {
+		/* $("#edit").click(function() {
 			location.href= "doceditcj.do?mode=read"
 		return false;
-		});
+		}); */
 		$("#back").click(function() {
 			history.back();
 		return false;
 		});
+		/* $("#del").click(function() {
+			console.log('aaaaaaa');
+			location.href= "docdelcj.do"
+		return false;
+		}); */
 		var className = 'authorization';
 		$('div#menutab li.' + className).addClass('active');
 		console.log($('div#menutab li.' + className));

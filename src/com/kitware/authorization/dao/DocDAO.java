@@ -22,7 +22,7 @@ public interface DocDAO {
 	
 	public void updateCJ(DocVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 document
 	public void updateCJ1(DocGiganVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 doc_gigan
-	
+	public void deleteDoc(String doc_num) throws Exception;//문서 삭제
 	//다 구현한거 아니고 추가해야됩니다
 	
 	

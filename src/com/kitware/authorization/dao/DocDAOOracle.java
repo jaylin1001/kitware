@@ -585,6 +585,23 @@ public class DocDAOOracle implements DocDAO {
 		}
 	}
 	
+	@Override
+	public void deleteDoc(String doc_num) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String deleteSQL = "delete from document where doc_num = ?"; 
+		try {
+			con= MyConnection.getConnection();
+			pstmt = con.prepareStatement(deleteSQL);
+			pstmt.setString(1, doc_num);
+			pstmt.executeUpdate();
+		}finally{
+			MyConnection.close(rs,pstmt,con);
+		}
+	}
+	
+	
 	public static void main(String[] args) {
 		DocDAOOracle test = new DocDAOOracle();
 		try {
@@ -612,7 +629,7 @@ public class DocDAOOracle implements DocDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	
 
 }

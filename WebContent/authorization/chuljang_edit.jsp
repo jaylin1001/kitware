@@ -5,7 +5,7 @@
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
 <c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
 <c:set var="rs" value="${requestScope.result}" />	
-<form id="formwrite" action="doceditcj.do" method="post">
+<form id="formwrite" onsubmit="return false;"><%--  action="doceditcj.do?docnum=${doc.doc_num}" method="post" onclick = "submitfn('${doc.doc_num}')"> --%>
 	<div>
 		<div class="title" align="center">
 			<h2>출장신청서</h2>
@@ -14,7 +14,7 @@
 			<table class="table table-bordered">
 				<tr>
 					<th>문서번호</th>
-					<td>${doc.doc_num}</td>
+					<td><input type ="text" name ="doc_num" value ="${doc.doc_num}" readonly></td>
 					<th rowspan="2">결재</th>
 					<td rowspan="2">
 						<div>${doc_conf[0].members.name}</div> 
@@ -61,7 +61,7 @@
 						&nbsp;~&nbsp; <input type="text" id="testDatepicker2" value="${doc.doc_gigan.end_date}" name = "end_date">
 					</td>
 				</tr>
-
+					
 				<tr>
 					<th>출장지</th>
 					<td colspan="5"> null<!--지도 api써도 좋을거같음 --></td>
@@ -86,8 +86,9 @@
 				</tr>
 				<tr>	
 					<td colspan="6" align="center">
-						<input type="submit" value="확인"> 
+						<input type="submit" value="확인" onclick = "submitfn('${doc.doc_num}')"> 
 						<input type="button" value="취소" id="back">
+						<input type="button" value="삭제" id="del">
 					</td>
 				</tr>
 			</table>
@@ -95,6 +96,12 @@
 	</div>
 </form>
 <script type="text/javascript">
+	function submitfn(data) {
+		location.href= "doceditcj.do"
+		document.getElementById("formwrite").submit();
+		//document.form.submit();//이부분 post로 데이터 못가져와서 null이 docvd에 set됨
+		console.log(data);
+	}
 
 	$(function() {
 		$("#testDatepicker").datepicker({
@@ -111,15 +118,17 @@
 			dateFormat : "yy-mm-dd"
 		});
 		
-		$("#submit").click(function() {
-			location.href= "doceditcj.do"
+		/* $("#submit").click(function() {
+			location.href= "doceditcj.do?doc_num="
 		return false;
-		});
+		}); */
 		
 		$("#back").click(function() {
 			history.back();
 		return false;
 		});
+		
+		
 		var className = 'authorization';
 		$('div#menutab li.' + className).addClass('active');
 		console.log($('div#menutab li.' + className));
@@ -145,9 +154,4 @@
 	}); */
 </script>
 
-<script>
- 	$(function() {
-		
-	}); 
-</script>
 <%@ include file="../container/footer.jsp"%>

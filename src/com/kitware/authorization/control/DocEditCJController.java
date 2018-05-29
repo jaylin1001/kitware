@@ -63,14 +63,16 @@ public class DocEditCJController {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members) session.getAttribute("loginInfo");
 		String emp_num = loginInfo.getEmp_num();
-		/*String doc_num = request.getParameter("doc_num");*/
-		String doc_num = "1805-0008";
+		String doc_num = request.getParameter("doc_num");
+		System.out.println("ddd"+doc_num);
 		String doc_content = request.getParameter("chuljang_textarea");
 		String start_date = request.getParameter("start_date");
 		String end_date = request.getParameter("end_date");
 		String doc_title = request.getParameter("title");
+		System.out.println("doctitle"+doc_title);
 		
 		DocVO docvo = new DocVO();
+		docvo.setDoc_num(doc_num);
 		docvo.setDoc_content(doc_content);
 		docvo.setDoc_title(doc_title);
 		DocGiganVO docggvo = new DocGiganVO();
@@ -80,12 +82,13 @@ public class DocEditCJController {
 		try {
 			if(mode == null){
 				System.out.println("in");
+				System.out.println(doc_num);
 				service2.updateCJ(docvo, doc_num);
 				service2.updateCJ1(docggvo, doc_num);
 				forwardURL = "/authorization/editresult.jsp";
 				request.setAttribute("result", "1");
 			}else if(mode.equals("read")){
-				List<DocDetailVO> doc_detail_list = service.selectConf("1805-0008");
+				List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
 				DocVO docvo_list = service.selectAll(doc_num);
 				request.setAttribute("doc_detail_list", doc_detail_list);
 				request.setAttribute("docvo_list", docvo_list);

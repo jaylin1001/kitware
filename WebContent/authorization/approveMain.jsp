@@ -97,7 +97,6 @@
 		</c:forEach>
 	</table>
 
-
 </div>
 <style>
 .container {

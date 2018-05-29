@@ -16,6 +16,9 @@ public class DocManipulService {
 	public void updateCJ1(DocGiganVO docggvo, String doc_num) throws Exception{
 		dao.updateCJ1(docggvo, doc_num);
 	}
+	public void deleteDoc(String doc_num) throws Exception{
+		dao.deleteDoc(doc_num);
+	}
 	
 	public DocManipulService() {
 
