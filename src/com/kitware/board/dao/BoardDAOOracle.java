@@ -1,5 +1,6 @@
 package com.kitware.board.dao;
 
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -7,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.kitware.board.vo.NoticeBoard;
+import com.kitware.sql.MyConnection;
 
 
 
@@ -72,6 +74,27 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 	}
 
+	@Override
+	public void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String insertNBSQL = "INSERT INTO notice_board (seq , emp_num, name, title, content, log_time)\r\n" + 
+				"VALUES (noticeboard_seq.nextval,?,?,?,?,sysdate)";
+		
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(insertNBSQL);
+			pstmt.setString(1, noticeBoard.getEmp_num());
+			pstmt.setString(2, noticeBoard.getName());
+			pstmt.setString(3, noticeBoard.getTitle());
+			pstmt.setString(4, noticeBoard.getContent());
+			pstmt.executeUpdate();
+
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+	}
 	
 	public static void main(String[] args) {
 		BoardDAOOracle test = new BoardDAOOracle();
@@ -84,4 +107,5 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 		
 	}
+
 }

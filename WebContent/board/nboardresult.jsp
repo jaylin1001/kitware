@@ -1,12 +1,14 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<!DOCTYPE html>
 <c:set var="pb" value="${requestScope.pagebean}"/>
 <%-- 페이징 설정을 위한 변수들 --%>
 <c:set var="totalCount" value="${pb.totalCount}"/>
 <c:set var="currentPage" value="${pb.currentPage}"/>
 <c:set var="cntPerPage" value="${pb.cntPerPage}"/>
 <c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
+<c:set var="list" value="${pb.list}"></c:set>
 <div class="panel panel-primary">
   	<div class="panel-heading">공지사항</div>
  	 <table class="table table-hover">
@@ -19,7 +21,6 @@
 				<th width="10%">조회수</th>
 			</tr>
 		</thead>
-		<c:set var="list" value="${pb.list}"></c:set>
 		<tbody>
 			<c:forEach items="${list}" var="b" varStatus="status">
 			  <c:if test="${status.index != 0}">
@@ -148,7 +149,7 @@
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "content");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(5).text());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(5).html());
 			$form.append(hiddenField);
 			
 			

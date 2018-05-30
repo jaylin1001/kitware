@@ -3,23 +3,15 @@
 
 <div id="div1"></div>
 <div class="container">
-	<h1 class="write">&nbsp;글쓰기</h1>
+	<h3 class="write">글쓰기</h3>
 	<div class="col-lg-12 write">
 		<div class="row">
 			<form>
 				<div class="col-sm-12">
 					<div class="row">
-						<div class="col-sm-2 form-group">
-							<label>작성자</label> <input type="text" class="form-control">
-						</div>
-						<div class="col-sm-2 form-group">
-							<label>비밀번호</label> <input type="text" class="form-control">
-						</div>
-						<div class="col-sm-3 form-group">
-							<label>수정일</label> <input type="text" class="form-control">
-						</div>
 						<div class="col-sm-9 form-group">
-							<label>글 제목</label> <input type="text" class="form-control">
+							<label>글 제목</label>
+							<input name="title" type="text" class="form-control">
 						</div>
 						<div class="col-sm-12 form-group">
 							<label>글 내용</label>
@@ -27,33 +19,28 @@
 					</div>
 
 					<div id="summernote">
-						<script>
-							$(document).ready(function() {
-								$('#summernote').summernote({
-									height : 450,
-									width : 850
-								});
-							});
-						</script>
+						<textarea hidden="hidden" name="content"></textarea>
+					</div>
+				</div>
+				<div class="col-sm-4 form-group">
+					<label>첨부파일</label>
+					<button type="button">...</button>&nbsp;
+					<input type="text" class="form-control">
+					<div>
+						<button type = "submit" class="btn_save">완료</button>
+						<button type = "button">취소</button>
 					</div>
 				</div>
 			</form>
-
-		</div>
-		<div class="col-sm-4 form-group">
-			<label>첨부파일</label>
-			<button type="button">...</button>
-			&nbsp; <input type="text" class="form-control">
-			<div>&nbsp;</div>
-			<div>
-				<button class="btn_save">완료</button>
-				&nbsp;
-				<button>취소</button>
-			</div>
 		</div>
 	</div>
 </div>
 <style>
+h3{
+	padding-left: 12px;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
 button {
 	background-color: #337ab7; /* Green */
 	border: none;
@@ -69,7 +56,44 @@ button {
 }
 </style>
 <script>
-	$(function() {
+
+$(function(){			
+	$(document).ready(function() {
+		$('#summernote').summernote({
+			height : 300,
+			width : 800,
+			lang : 'ko-KR',
+			placeholder: '이곳에 글을 작성해 주세요.'
+		});
+	});
+	
+	$('button[type=submit]').click(function(){
+		var markupStr = $('#summernote').summernote('code').trim();
+	    console.log(markupStr);
+	    $('textarea').text(markupStr);
+	    
+	    $.ajax({
+			  url: '${pageContext.request.contextPath}/boardwrite.do',
+			  type:'post',
+			  data:$('form').serialize(),
+			  success:function(data){
+				 $('div#page-wrapper').empty(); 
+				 var resultObj =data.trim();
+				 if(resultObj == "1"){
+					 location.href="${pageContext.request.contextPath}/boardlist.do";
+				 }else{
+					 
+				 }
+			  }
+		  });
+	    return false;
+	});
+		
+	
+	
+});
+
+$(function() {
 		$('.btn_save').click(function() {
 			var $targetObj = $("div.container");
 			$targetObj.empty();

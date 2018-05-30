@@ -11,4 +11,6 @@ public interface BoardDAO {
 	List<NoticeBoard> selectNoticeBoard (int page) throws Exception;
 	//총 게시물수를 구해온다.
 	int selectCount() throws Exception;
+	//게시물 글쓰기
+	void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception;
 }

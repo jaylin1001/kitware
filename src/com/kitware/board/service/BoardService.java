@@ -27,4 +27,7 @@ public class BoardService {
 	public List<NoticeBoard> findAll(int page) throws Exception{
 		return dao.selectNoticeBoard(page);
 	}
+	public void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception{
+		dao.insertNoticeBoard(noticeBoard);
+	}
 }

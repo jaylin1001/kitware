@@ -2,7 +2,7 @@
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-
+<!DOCTYPE html>
 <style>
 th {
 	align: center;
@@ -33,21 +33,22 @@ button {
 				
 				<tr>
 					<th>제목</th>
-					<td colspan="5">${param.title}</td>
+					<td colspan="5" class="title">${param.title}</td>
 				</tr>
 
 				<tr>
 					<th>작성일</th>
 					<td>${param.log_time}</td>
 					<th>작성자</th>
-					<td>${param.writer}</td>
+					<td class="writer">${param.writer}</td>
 					<th>조회수</th>
 					<td>${param.hit}</td>
 				</tr>
 			</table>
 			<table class="table table-bordered">
 				<tr>
-					<td width="500px" height="500px">${param.content}</td>
+					<td width="500px" height="500px" class="content">${param.content}</td>
+					<td hidden="hidden" class="seq">${param.seq}</td>
 				</tr>
 			</table>
 			<table class="table table-bordered">
@@ -75,16 +76,50 @@ button {
 		$(function() {
 			$('.btn_list').click(function() {
 				location.href="${pageContext.request.contextPath}/boardlist.do";
-
 			});
 			return false;
 		});
+		<%--글 수정버튼 눌렀을때 할 일--%>
 		$(function() {
-			$('.btn_edit').click(function() {
-				var $targetObj = $("div.container");
-				$targetObj.empty();
-				$("#div1").load("board/edit.jsp");
-				console.log('ddd');
+			$('.btn_edit').click(function(path,method) {
+				path = "${pageContext.request.contextPath}/board/edit.jsp";
+				var $form = $("<form></form>");
+				$form.attr("method", "get");
+				$form.attr("action", path);
+				
+				
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "title");
+				hiddenField.setAttribute("value", $('td.title').text());
+				$form.append(hiddenField);
+				
+				
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "writer");
+				hiddenField.setAttribute("value",$('td.writer').text());
+				$form.append(hiddenField);
+				
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "seq");
+				hiddenField.setAttribute("value",$('td.seq').text());
+				$form.append(hiddenField);
+				
+
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "content");
+				hiddenField.setAttribute("value",$('td.content').html());
+				$form.append(hiddenField);
+				
+				
+				$(document.body).append($form);  <%--동적으로 만든 form을 document.body에 append--%>
+
+				$form.submit();
+				
+				return false;
 			});
 		});
 		var className = 'board';

@@ -3,23 +3,15 @@
 <%@ include file="../container/header.jsp"%>
 <div id="div1"></div>
 <div class="container">
-	<h1 class="write">글 수정</h1>
+	<h3 class="write">글 수정</h3>
 	<div class="col-lg-12 write">
 		<div class="row">
 			<form>
 				<div class="col-sm-12">
 					<div class="row">
-						<div class="col-sm-2 form-group">
-							<label>작성자</label> <input type="text" class="form-control">
-						</div>
-						<div class="col-sm-2 form-group">
-							<label>비밀번호</label> <input type="text" class="form-control">
-						</div>
-						<div class="col-sm-3 form-group">
-							<label>수정일</label> <input type="text" class="form-control">
-						</div>
-						<div class="col-sm-9 form-group">
-							<label>글 제목</label> <input type="text" class="form-control">
+						<div class="col-sm-7 form-group">
+							<label>글 제목</label>
+							<input type="text" class="form-control" value="${param.title}">
 						</div>
 						<div class="col-sm-12 form-group">
 							<label>글 내용</label>
@@ -33,6 +25,7 @@
 									height : 450,
 									width : 850
 								});
+								$('#summernote').summernote('code', '${param.content}');
 							});
 						</script>
 					</div>
@@ -46,9 +39,9 @@
 			&nbsp; <input type="text" class="form-control">
 			<div>
 				<button class="submit">저장</button>
-				&nbsp;
-				<button>취소</button>
 				<Button id="myBtn">삭제</Button>
+				<button>취소</button>
+				
 			</div>
 
 		</div>
