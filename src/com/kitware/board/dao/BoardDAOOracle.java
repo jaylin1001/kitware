@@ -96,16 +96,39 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 	}
 	
+
+	@Override
+	public void updateNoticeBoard(NoticeBoard noticeBoard) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String updateNBSQL = "update notice_board\r\n" + 
+				"set title= ? , content =? , log_time = sysdate " + 
+				"where seq = ?";
+		
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(updateNBSQL);
+			pstmt.setString(1, noticeBoard.getTitle());
+			pstmt.setString(2, noticeBoard.getContent());
+			pstmt.setString(3, noticeBoard.getSeq());
+			pstmt.executeUpdate();
+
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+	}
+	
 	public static void main(String[] args) {
 		BoardDAOOracle test = new BoardDAOOracle();
 		try {
 			List<NoticeBoard> list = test.selectNoticeBoard(1);
 			System.out.println(list);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
 	}
+
 
 }

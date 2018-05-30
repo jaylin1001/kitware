@@ -62,14 +62,12 @@ $(function(){
 		$('#summernote').summernote({
 			height : 300,
 			width : 800,
-			lang : 'ko-KR',
-			placeholder: '이곳에 글을 작성해 주세요.'
+			lang : 'ko-KR'
 		});
 	});
 	
 	$('button[type=submit]').click(function(){
 		var markupStr = $('#summernote').summernote('code').trim();
-	    console.log(markupStr);
 	    $('textarea').text(markupStr);
 	    
 	    $.ajax({

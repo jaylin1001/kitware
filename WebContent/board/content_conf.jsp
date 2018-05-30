@@ -26,7 +26,6 @@ button {
 <body>
 	<div>
 		<div class="title" align="center">
-			<h2></h2>
 		</div>
 		<div class="table">
 			<table class="table table-bordered">
@@ -64,7 +63,7 @@ button {
 			</div>
 			<tr>
 				<td colspan="6" align="center">
-					<button class="btn_edit">수정</button>
+					<button class="btn_edit" >수정</button>
 					<button>이전글</button>
 					<button>다음글</button>
 					<button class="btn_list">글목록</button>
@@ -79,6 +78,8 @@ button {
 			});
 			return false;
 		});
+		
+		
 		<%--글 수정버튼 눌렀을때 할 일--%>
 		$(function() {
 			$('.btn_edit').click(function(path,method) {
@@ -94,19 +95,11 @@ button {
 				hiddenField.setAttribute("value", $('td.title').text());
 				$form.append(hiddenField);
 				
-				
-				var hiddenField = document.createElement("input");
-				hiddenField.setAttribute("type", "hidden");
-				hiddenField.setAttribute("name", "writer");
-				hiddenField.setAttribute("value",$('td.writer').text());
-				$form.append(hiddenField);
-				
 				var hiddenField = document.createElement("input");
 				hiddenField.setAttribute("type", "hidden");
 				hiddenField.setAttribute("name", "seq");
 				hiddenField.setAttribute("value",$('td.seq').text());
 				$form.append(hiddenField);
-				
 
 				var hiddenField = document.createElement("input");
 				hiddenField.setAttribute("type", "hidden");

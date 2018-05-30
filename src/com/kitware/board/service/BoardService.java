@@ -30,4 +30,7 @@ public class BoardService {
 	public void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception{
 		dao.insertNoticeBoard(noticeBoard);
 	}
+	public void updateNoticeBoard(NoticeBoard noticeBoard)throws Exception {
+		dao.updateNoticeBoard(noticeBoard);
+	}
 }

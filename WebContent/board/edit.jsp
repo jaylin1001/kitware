@@ -11,7 +11,7 @@
 					<div class="row">
 						<div class="col-sm-7 form-group">
 							<label>글 제목</label>
-							<input type="text" class="form-control" value="${param.title}">
+							<input name="title" type="text" class="form-control" value="${param.title}">
 						</div>
 						<div class="col-sm-12 form-group">
 							<label>글 내용</label>
@@ -19,32 +19,25 @@
 					</div>
 
 					<div id="summernote">
-						<script>
-							$(document).ready(function() {
-								$('#summernote').summernote({
-									height : 450,
-									width : 850
-								});
-								$('#summernote').summernote('code', '${param.content}');
-							});
-						</script>
+						<textarea hidden="hidden" name="content"></textarea>
+					</div>
+					<input type = "text" hidden="hidden" name="seq" value="${param.seq}">
+				</div>
+				
+				<div class="col-sm-4 form-group">
+					<label>첨부파일</label>
+					<button type="button">...</button>
+					&nbsp; <input type="text" class="form-control">
+					<div>
+						<input type="button" class="btn btn-primary update" value="저장">
+						<Button id="myBtn">삭제</Button>
+						<button>취소</button>
 					</div>
 				</div>
 			</form>
 
 		</div>
-		<div class="col-sm-4 form-group">
-			<label>첨부파일</label>
-			<button type="button">...</button>
-			&nbsp; <input type="text" class="form-control">
-			<div>
-				<button class="submit">저장</button>
-				<Button id="myBtn">삭제</Button>
-				<button>취소</button>
-				
-			</div>
-
-		</div>
+		
 	</div>
 </div>
 <!-- The Modal -->
@@ -61,48 +54,42 @@
 
 </div>
 <script>
-	// Get the modal
-	var modal = document.getElementById('myModal');
-
-	// Get the button that opens the modal
-	var btn = document.getElementById("myBtn");
-
-	// Get the <span> element that closes the modal
-	var span = document.getElementsByClassName("close")[0];
-
-	// When the user clicks the button, open the modal 
-	btn.onclick = function() {
-		modal.style.display = "block";
-	}
-
-	// When the user clicks on <span> (x), close the modal
-	span.onclick = function() {
-		modal.style.display = "none";
-	}
-
-	// When the user clicks anywhere outside of the modal, close it
-	window.onclick = function(event) {
-		if (event.target == modal) {
-			modal.style.display = "none";
-		}
-	}
-
 	//board 에서 클릭한 글번호 가져올것
 	//그 글번호로 DB에서 select 해 데이터 가져온 후 뿌려줘야함 
 	//수정시 본인이 쓴거 아니면 수정 안됨
 
 	$(function() {
-		$('.submit').click(function() {
-			var $targetObj = $("div.container");
-			$targetObj.empty();
-			$("#div1").load("board/board.jsp");
-			console.log('ddd');
-
+		$(document).ready(function() {
+			$('#summernote').summernote({
+				height : 300,
+				width : 800,
+				lang : 'ko-KR',
+				placeholder: '이곳에 글을 작성해 주세요.'
+			});
+			$('#summernote').summernote('code', '${param.content}');
 		});
-		function write_btn() {
-
-			alter("저장되었습니다");
-		}
+		
+		$('.update').click(function() {
+			var markupStr = $('#summernote').summernote('code').trim();
+		    $('textarea').text(markupStr);
+			
+			$.ajax({
+				  url: '${pageContext.request.contextPath}/boardedit.do',
+				  type:'post',
+				  data:$('form').serialize(),
+				  success:function(data){
+					  var result = data.trim();
+					  if(result == '1'){
+						  alert("수정성공!!");
+						  location.href = "${pageContext.request.contextPath}/boardlist.do";
+					  }else{
+						  alert("수정실패!!");
+					  }
+				  }
+			  });
+			  return false;
+		});
+		
 	});
 	var className = 'board';
 	$('div#menutab li.'+className).addClass('active');

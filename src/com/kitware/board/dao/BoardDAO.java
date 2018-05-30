@@ -13,4 +13,5 @@ public interface BoardDAO {
 	int selectCount() throws Exception;
 	//게시물 글쓰기
 	void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception;
+	void updateNoticeBoard(NoticeBoard noticeBoard) throws Exception;
 }
