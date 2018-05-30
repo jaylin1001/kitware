@@ -8,6 +8,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocManipulService;
 import com.kitware.authorization.service.DocSelectService;
 import com.kitware.authorization.vo.DocDetailVO;
@@ -15,9 +16,9 @@ import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
 
-public class DocEditCJController {
-	DocSelectService service = new DocSelectService();
-	DocManipulService service2 = new DocManipulService();
+public class DocEditCJController implements Controller {
+	DocSelectService service;
+	DocManipulService service2;
 	
 	public DocEditCJController() {
 		super();
@@ -54,7 +55,7 @@ public class DocEditCJController {
 	public void setService2(DocManipulService service2) {
 		this.service2 = service2;
 	}
-
+	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String forwardURL = null ;

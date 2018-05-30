@@ -8,12 +8,13 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocManipulService;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.authorization.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-public class DocDelCJController {
+public class DocDelCJController implements Controller {
 	DocManipulService service;
 	public DocDelCJController(DocManipulService service) {
 		super();
@@ -28,7 +29,7 @@ public class DocDelCJController {
 	public void setService(DocManipulService service) {
 		this.service = service;
 	}
-	
+	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	

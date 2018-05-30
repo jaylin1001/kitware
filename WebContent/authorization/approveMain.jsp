@@ -5,7 +5,7 @@
 <c:set var="list0" value="${requestScope.docvo_list0}" />
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-
+<body onload="document.refresh();">
 <div id="list"></div>
 <div class="container">
 	<p>
@@ -98,6 +98,7 @@
 	</table>
 
 </div>
+</body>
 <style>
 .container {
 	padding-right: 350px;
@@ -140,33 +141,9 @@ thead {
 function functionrt(data, data1) {
 	console.log(data);
 	console.log(data1);
-	switch (data) {
-	case 10:
-		//기안서
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
-	case 20:
-		//품의
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
-	case 30:
-		//발주서
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
-	case 40:
-		//출장
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
-	case 50:
-		//휴가
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
-	case 60:
-		//병가
-		location.href = "docreadcj.do?doc_num=" + data1;
-		break;
+		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
 	}
-}
+
 </script>
 <script>
 	var className = 'authorization';

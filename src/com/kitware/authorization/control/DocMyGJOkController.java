@@ -8,14 +8,33 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocSelectService;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.authorization.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-public class DocMyGJOkController {
-	DocSelectService service = new DocSelectService();
+public class DocMyGJOkController implements Controller {
+	DocSelectService service;
 	
+	public DocSelectService getService() {
+		return service;
+	}
+
+	public void setService(DocSelectService service) {
+		this.service = service;
+	}
+
+	public DocMyGJOkController() {
+		super();
+	}
+
+	public DocMyGJOkController(DocSelectService service) {
+		super();
+		this.service = service;
+	}
+
+	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
