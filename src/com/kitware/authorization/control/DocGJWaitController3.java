@@ -13,14 +13,14 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.authorization.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-public class DocGJWaitController {
+public class DocGJWaitController3 {
 	private DocSelectService service = new DocSelectService();	
 	
-	public DocGJWaitController() {
+	public DocGJWaitController3() {
 		super();
 	}
 	
-	public DocGJWaitController(DocSelectService service) {
+	public DocGJWaitController3(DocSelectService service) {
 		super();
 		this.service = service;
 	}
@@ -66,29 +66,29 @@ public class DocGJWaitController {
 			if(prePage <1) {
 				prePage = 1;
 			}
-			List<DocVO> list = service.selectAll(emp_num, intPage);
+			
+			
+			List<DocVO> listok = service.selectOK(emp_num, intPage);
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
-			pb.setList(list); // 목록
+			pb.setList(listok); // 목록
 			pb.setStartPage(startPage); // 시작페이지
 			pb.setEndPage(endPage); // 끝페이지
-			
 
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("nextPage", nextPage);
 			
-			System.out.println(list.size());
-			System.out.println(pb.getList());
+		
 			System.out.println("intpage:" + intPage);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		String forwardURL = "/authorization/gj_wait_all.jsp";
+		String forwardURL = "/authorization/gj_wait_ok.jsp";
 		return forwardURL;
 	}
 }

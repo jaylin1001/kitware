@@ -264,11 +264,10 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="gian"><a href="${pageContext.request.contextPath}/authorization/docwrite.jsp">기안서</a></li>
-								<li class="chuljang"><a
-									href="${pageContext.request.contextPath}/authorization/chuljang.jsp">외근신청</a></li>
+								<li class="balju"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
+								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
 								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
 								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
-								<li class="balju"><a href="${pageContext.request.contextPath}/authorization/balju.jsp">발주신청</a></li>
 							</ul></li>
 						
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>

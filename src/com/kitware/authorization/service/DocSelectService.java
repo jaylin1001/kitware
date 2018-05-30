@@ -19,8 +19,7 @@ public class DocSelectService {
 		return dao.selectGJWait(emp_num, page);
 	}
 	public List<DocVO> findIng(String emp_num) throws Exception {
-		System.out.println(dao.selectIng(emp_num));
-		return dao.selectIng(emp_num, 1);
+		return dao.selectIng(emp_num);
 	}
 	public List<DocVO> findIng(String emp_num, int page) throws Exception{
 		return dao.selectIng(emp_num, page);
@@ -34,11 +33,21 @@ public class DocSelectService {
 	public List<DocVO> findOk(String emp_num, int page) throws Exception {
 		return dao.selectOk(emp_num, page);
 	}
+	public List<DocVO> selectCancle(String emp_num, int page) throws Exception{
+		return dao.selectCancle(emp_num, page);
+	}
 	
 	public List<DocVO> selectExpected(String conf_num, int page) throws Exception{
 		return dao.selectExpected(conf_num, page);
 		
 	}
+	public List<DocVO> selectAll(String emp_num, int page) throws Exception{
+		return dao.selectAll(emp_num, page);
+	}
+	public List<DocVO> selectOK(String emp_num, int page) throws Exception{
+		return dao.selectOk(emp_num, page);
+	}
+	
 	public List<DocVO> selectGJOk(String conf_num, int page) throws Exception{
 		return dao.selectGJOk(conf_num, page);
 		

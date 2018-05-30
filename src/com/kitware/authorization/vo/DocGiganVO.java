@@ -8,6 +8,10 @@ public class DocGiganVO {
 	private String end_date;
 	private List<DocVO> document;
 	
+	
+	public DocGiganVO() {
+		super();
+	}
 	public DocGiganVO(String start_date, String end_date) {
 		super();
 		this.start_date = start_date;

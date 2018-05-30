@@ -93,11 +93,6 @@
 	</div>
 	</form>	
 	<script type="text/javascript">
-	/* $(function() {
-		//datepicker $
-	    $( "#testDatepicker" ).datepicker({
-	    }); 
-	}); */
 
 	$(function() {
 		$("#testDatepicker").datepicker({
