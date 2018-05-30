@@ -42,9 +42,9 @@
 				</tr>
 				<tr>
 					<th>기안자</th>
-					<td>${session.name}</td>
+					<td>${doc.members.name}(${doc.gradeinfo.position_name})</td>
 					<th>부서</th>
-					<td colspan="3">${session.gradeinfo.position_name}</td>
+					<td colspan="3">${doc.deptinfo.dept_name}</td>
 				</tr>
 				<tr>
 					<th>참조자</th>
@@ -66,25 +66,27 @@
 
 				<tr>
 					<th>출장목적</th>
-					<td colspan="5">${doc.doc_content}
-				</td>
+					<td colspan = "12" height ="200">${doc.doc_content}</td>		
 				</tr>
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="5"><input type="text">
-
 						<button>첨부파일</button></td>
 				</tr>
-
 
 				<tr>
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
 				<tr>	
 					<td colspan="6" align="center">
+					<c:set var="sname" value="${session.name}" />
+					<c:set var="dname" value="${doc.members.name}" />
+					<c:if test="${sname eq dname}">
 						<input type="button" value="수정" id="edit" onclick = "editdocnum('${doc.doc_num}')"> 
+					    <input type="button" value="삭제" id="del" onclick = "deldocnum('${doc.doc_num}')">
+						</c:if>
 						<input type="button" value="뒤로가기" id="back">
-						<input type="button" value="삭제" id="del" onclick = "deldocnum('${doc.doc_num}')"><!-- 제약 줘야함 -->
+
 					</td>
 				</tr>
 			</table>

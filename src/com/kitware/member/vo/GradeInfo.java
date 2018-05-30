@@ -10,7 +10,11 @@ public class GradeInfo {
 	}
 	public GradeInfo() {
 		super();
-		// TODO Auto-generated constructor stub
+	}
+	
+	public GradeInfo(String position_name) {
+		super();
+		this.position_name = position_name;
 	}
 	public String getPosition_num() {
 		return position_num;

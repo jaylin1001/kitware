@@ -42,9 +42,9 @@
 			</tr>
 			<tr>
 				<th>기안자</th>
-				<td>${session.name}</td>
+				<td>${doc.members.name}(${doc.gradeinfo.position_name})</td>
 				<th>부서</th>
-				<td colspan="3">${session.gradeinfo.position_name}</td>
+				<td colspan="3">${doc.deptinfo.dept_name}</td>
 			</tr>
 			<tr>
 				<th>참조자</th>
@@ -71,7 +71,9 @@
 			<tr>
 				<th>사유</th>
 				<td colspan="5"><textarea rows="10" cols="130" name = "chuljang_textarea">${doc.doc_content}</textarea> 
+				
 			</td>
+			
 			</tr>
 			<tr>
 				<th>첨부파일</th>
@@ -95,7 +97,7 @@
 </form>
 <script>
 function submitfn(data) {
-	location.href= "doceditjt.do"
+	location.href= "doceditbj.do"
 	document.getElementById("formwrite").submit();
 	//document.form.submit();//이부분 post로 데이터 못가져와서 null이 docvd에 set됨
 	console.log(data);

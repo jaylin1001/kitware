@@ -2,6 +2,10 @@ package com.kitware.authorization.vo;
 
 import java.util.List;
 
+import com.kitware.member.vo.DeptInfo;
+import com.kitware.member.vo.GradeInfo;
+import com.kitware.member.vo.Members;
+
 public class DocVO {
 	private String doc_num;
 	private int doc_kind;
@@ -14,8 +18,12 @@ public class DocVO {
 	private String coper_dept;
 	private String refer;
 	private List<DocDetailVO> doc_detail;
+	private List<DocKindVO> doc_kindlist;
 	private DocGiganVO doc_gigan;
 	private DocKindVO doc_kindvo;
+	private Members members;
+	private GradeInfo gradeinfo;
+	private DeptInfo deptinfo;
 
 	public DocVO() {
 		super();
@@ -30,10 +38,11 @@ public class DocVO {
 		this.doc_title = doc_title;
 		this.doc_content = doc_content;
 	}
-	
+
 	public DocVO(String doc_num, int doc_kind, String emp_num, String doc_state, String doc_title, String doc_content,
 			String start_date, String rcv_dept, String coper_dept, String refer, List<DocDetailVO> doc_detail,
-			DocGiganVO doc_gigan, DocKindVO doc_kindvo) {
+			List<DocKindVO> doc_kindlist, DocGiganVO doc_gigan, DocKindVO doc_kindvo, Members members,
+			GradeInfo gradeinfo, DeptInfo deptinfo) {
 		super();
 		this.doc_num = doc_num;
 		this.doc_kind = doc_kind;
@@ -46,11 +55,13 @@ public class DocVO {
 		this.coper_dept = coper_dept;
 		this.refer = refer;
 		this.doc_detail = doc_detail;
+		this.doc_kindlist = doc_kindlist;
 		this.doc_gigan = doc_gigan;
 		this.doc_kindvo = doc_kindvo;
+		this.members = members;
+		this.gradeinfo = gradeinfo;
+		this.deptinfo = deptinfo;
 	}
-
-
 
 	public String getDoc_num() {
 		return doc_num;
@@ -140,6 +151,14 @@ public class DocVO {
 		this.doc_detail = doc_detail;
 	}
 
+	public List<DocKindVO> getDoc_kindlist() {
+		return doc_kindlist;
+	}
+
+	public void setDoc_kindlist(List<DocKindVO> doc_kindlist) {
+		this.doc_kindlist = doc_kindlist;
+	}
+
 	public DocGiganVO getDoc_gigan() {
 		return doc_gigan;
 	}
@@ -156,18 +175,38 @@ public class DocVO {
 		this.doc_kindvo = doc_kindvo;
 	}
 
+	public Members getMembers() {
+		return members;
+	}
+
+	public void setMembers(Members members) {
+		this.members = members;
+	}
+
+	public GradeInfo getGradeinfo() {
+		return gradeinfo;
+	}
+
+	public void setGradeinfo(GradeInfo gradeinfo) {
+		this.gradeinfo = gradeinfo;
+	}
+	
+	
+	public DeptInfo getDeptinfo() {
+		return deptinfo;
+	}
+
+	public void setDeptinfo(DeptInfo deptinfo) {
+		this.deptinfo = deptinfo;
+	}
+
 	@Override
 	public String toString() {
 		return "DocVO [doc_num=" + doc_num + ", doc_kind=" + doc_kind + ", emp_num=" + emp_num + ", doc_state="
 				+ doc_state + ", doc_title=" + doc_title + ", doc_content=" + doc_content + ", start_date=" + start_date
 				+ ", rcv_dept=" + rcv_dept + ", coper_dept=" + coper_dept + ", refer=" + refer + ", doc_detail="
-				+ doc_detail + ", doc_gigan=" + doc_gigan + ", doc_kindvo=" + doc_kindvo + "]";
+				+ doc_detail + ", doc_kindlist=" + doc_kindlist + ", doc_gigan=" + doc_gigan + ", doc_kindvo="
+				+ doc_kindvo + ", members=" + members + ", gradeinfo=" + gradeinfo + ", deptinfo=" + deptinfo + "]";
 	}
 
-	public void setDoc_kindvo(List<DocKindVO> kindlist) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 }

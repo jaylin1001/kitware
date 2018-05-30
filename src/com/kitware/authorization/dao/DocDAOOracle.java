@@ -1,9 +1,9 @@
 package com.kitware.authorization.dao;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +11,8 @@ import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocKindVO;
 import com.kitware.authorization.vo.DocVO;
+import com.kitware.member.vo.DeptInfo;
+import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Members;
 
 
@@ -38,20 +40,20 @@ public class DocDAOOracle implements DocDAO {
 	@Override
 	public DocVO selectAll(String doc_num) throws Exception {
 		//문서 상세보기
-		//매개변수 id 보여주는 갯수 제한 필요
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectAllSQL = "select d.doc_num, dk.doc_name,d.start_date,d.rcv_dept,"
-							+" d.refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content"
-							+" from document d, doc_kind dk, doc_gigan dg"
+		String selectAllSQL = "select d.doc_num, d.emp_num, dk.doc_name,d.start_date,d.rcv_dept,"
+							+" d.refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content, m.name, gi.position_name, di.dept_name"
+							+" from document d, doc_kind dk, doc_gigan dg, members m, grade_info gi, dept_info di"
 							+" where dk.doc_kind = d.doc_kind"
+							+" and m.emp_num = d.emp_num"
+							+" and m.position_num = gi.position_num"
+							+" and m.dept_num = di.dept_num"
 							+" and d.doc_num = ?";
 		
-		//List<DocVO> doclist = new ArrayList<>(); 
 		DocVO docvo = null;	//doc 데이터 담음
-		
 	try {
 		con= MyConnection.getConnection();
 		pstmt = con.prepareStatement(selectAllSQL);
@@ -67,10 +69,15 @@ public class DocDAOOracle implements DocDAO {
 			docvo.setDoc_title(rs.getString("doc_title"));
 			DocGiganVO giganvo = new DocGiganVO(rs.getString("start_date"),
 						   rs.getString("end_date"));
+			Members mem = new Members(rs.getString("name"));
+			GradeInfo gradeinfo = new GradeInfo(rs.getString("position_name"));
+			DeptInfo deptinfo = new DeptInfo(rs.getString("dept_name"));
 			docvo.setDoc_content(rs.getString("doc_content"));
 			docvo.setDoc_kindvo(dock);
 			docvo.setDoc_gigan(giganvo);
-			/*doclist.add(docvo);*/
+			docvo.setMembers(mem);
+			docvo.setGradeinfo(gradeinfo);
+			docvo.setDeptinfo(deptinfo);
 		}
 		
 	}finally{
@@ -233,7 +240,6 @@ public class DocDAOOracle implements DocDAO {
 		
 		List<DocVO> doclist = new ArrayList<>(); //사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null;	//doc 데이터 담음
-		List<DocKindVO> kindlist = new ArrayList<>(); //doc_kind arraylist
 		
 	try {
 		con= MyConnection.getConnection();
@@ -252,9 +258,8 @@ public class DocDAOOracle implements DocDAO {
 			docvo.setDoc_title(rs.getString("doc_title"));
 			docvo.setDoc_num(rs.getString("doc_num"));
 			docvo.setDoc_state(rs.getString("doc_state"));
-			DocKindVO dock = new DocKindVO(docvo.getDoc_kind(),rs.getString("doc_name"));
-			kindlist.add(dock);
-			docvo.setDoc_kindvo(kindlist);
+			DocKindVO dock = new DocKindVO(rs.getString("doc_name"));
+			docvo.setDoc_kindvo(dock);
 			doclist.add(docvo);	
 		}
 		
@@ -284,7 +289,6 @@ public class DocDAOOracle implements DocDAO {
 		
 		List<DocVO> doclist = new ArrayList<>(); //사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null;	//doc 데이터 담음
-		List<DocKindVO> kindlist = new ArrayList<>(); //doc_kind arraylist
 		
 	try {
 		con= MyConnection.getConnection();
@@ -304,8 +308,7 @@ public class DocDAOOracle implements DocDAO {
 			docvo.setDoc_num(rs.getString("doc_num"));
 			docvo.setDoc_state(rs.getString("doc_state"));
 			DocKindVO dock = new DocKindVO(docvo.getDoc_kind(),rs.getString("doc_name"));
-			kindlist.add(dock);
-			docvo.setDoc_kindvo(kindlist);
+			docvo.setDoc_kindvo(dock);
 			doclist.add(docvo);	
 		}
 		
@@ -605,31 +608,158 @@ public class DocDAOOracle implements DocDAO {
 	public static void main(String[] args) {
 		DocDAOOracle test = new DocDAOOracle();
 		try {
-			List<DocVO> list = test.selectIng("1");	
-			System.out.println("리스트사이즈:"+list.size());
-			List<DocVO> list2 = test.selectOk("kim");
-			System.out.println("ㅁㅁㅁㅁ"+list2.size());
-			List<DocVO> list3 = test.selectIng("1");
-			System.out.println("selectIng"+list3);
-			List<DocVO> list4 = test.selectOk("1",1);
-			System.out.println("list4"+list4);
-			List<DocVO> list5 = test.selectExpected("3", 1);
-			System.out.println("list5:"+list5);
-			List<DocVO> list6 = test.selectGJOk("3", 1);
-			System.out.println("list6ggggg:"+list6);
-			DocVO list7 = test.selectAll("1805-0001");
-			System.out.println(list7);
-			System.out.println("--------------");
-			List<DocDetailVO> list8 = test.selectConf("1805-0001");
-			System.out.println("list8="+list8);
-			List<DocVO> list9 = test.selectGJWait("4", 1);
-			System.out.println(list9);
+			DocVO list = test.selectAll("1805-0001");
+			System.out.println(list);
+			
 			
 		}catch(Exception e) {
 			e.printStackTrace();
 		}
 	}
+	public String getMaxDocNum() {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String num = null;
+		String getnumSql = "select max(doc_num) from document";
 
-	
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(getnumSql);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				num = rs.getString(1);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return num;
+	}
+
+	public List<DeptInfo> getDeptList() throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectDeptInfoSQL = "SELECT *\r\n" + "FROM dept_info\r\n" + "ORDER BY dept_num";
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectDeptInfoSQL);
+			rs = pstmt.executeQuery();
+			List<DeptInfo> list = new ArrayList<>();
+			while (rs.next()) {
+				list.add(new DeptInfo(rs.getString("dept_num"), rs.getString("dept_name")));
+			}
+			return list;
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+		}
+	}
+
+	public void insertGianfull(DocVO giandoc) throws Exception {
+		Connection con = null;
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			con.setAutoCommit(false);
+			int insertgian = insertGian(giandoc, con);
+			List<DocDetailVO> list = giandoc.getDoc_detail();
+			int sunbeon = 0;
+			int cnt = 0;
+			if (list.size() > 0) {
+				for (DocDetailVO detail : list) {
+					int insertdetail = insertGianDetail(detail, con, ++sunbeon);
+					if (insertdetail > 0)
+						cnt++;
+				}
+				if (insertgian > 0 && cnt == list.size())
+					con.commit();
+			}
+		} catch (SQLException e) {
+			con.rollback();
+			e.printStackTrace(); // 톰캣콘솔
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(null, con);
+		}
+	}
+
+	public int insertGian(DocVO giandoc, Connection con) throws Exception {
+		PreparedStatement pstmt = null;
+		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
+				+ "values(?,10,?,0,?,?,?,?)";
+		int result = 0;
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(insertgianSQL);
+			int index = 0;
+			pstmt.setString(++index, giandoc.getDoc_num());
+			pstmt.setString(++index, giandoc.getEmp_num());
+			pstmt.setString(++index, giandoc.getDoc_title());
+			pstmt.setString(++index, giandoc.getDoc_content());
+			pstmt.setString(++index, giandoc.getStart_date());
+			pstmt.setString(++index, giandoc.getRcv_dept());
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace(); // 톰캣콘솔
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(pstmt);
+		}
+		return result;
+	}
+
+	public int insertGianDetail(DocDetailVO docdetail, Connection con, int sunbeon) throws Exception {
+		PreparedStatement pstmt = null;
+		String insertgianSQL = "insert into doc_detail (doc_num, conf_num, sunbeon, acs_yn, rcv_date)\r\n"
+				+ "values(?,?,?,0,sysdate)";
+		int result = 0;
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(insertgianSQL);
+			int index = 0;
+			pstmt.setString(++index, docdetail.getDoc_num());
+			pstmt.setString(++index, docdetail.getConf_num());
+			pstmt.setInt(++index, sunbeon);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace(); // 톰캣콘솔
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(pstmt);
+		}
+		return result;
+	}
+
+	public String getEmpNum(String g1, String g1_grade) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String emp_num = null;
+		String selectMemberByName = "SELECT m.emp_num\r\n" + "FROM members m, grade_info g\r\n"
+				+ "where g.position_num = m.position_num and g.position_name=? and m.name=?";
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectMemberByName);
+			pstmt.setString(1, g1_grade);
+			pstmt.setString(2, g1);
+			rs = pstmt.executeQuery();
+			if (rs.next()) {
+				emp_num = rs.getString("emp_num");
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+		}
+		return emp_num;
+	}
 
 }
+
+

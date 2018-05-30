@@ -42,9 +42,9 @@
 				</tr>
 				<tr>
 					<th>기안자</th>
-					<td>${session.name}</td>
+					<td>${doc.members.name}(${doc.gradeinfo.position_name})</td>
 					<th>부서</th>
-					<td colspan="3">${session.gradeinfo.position_name}</td>
+					<td colspan="3">${doc.deptinfo.dept_name}</td>
 				</tr>
 				<tr>
 					<th>참조자</th>
@@ -125,30 +125,29 @@
 		return false;
 		});
 		
-		
 		var className = 'authorization';
 		$('div#menutab li.' + className).addClass('active');
 		console.log($('div#menutab li.' + className));
 		$('ul#side-menu').find('li.' + className).show();
 	});
 	
-	/* $('form').submit(function() {
+/*  $('form').submit(function() {
 	$.ajax({
 			url : 'doceditcj.do',
 			data : $('form').serialize(),
 			method:'POST',
-			/* success : function(data) {
+			 success : function(data) {
 				data = data.trim();
-				if (data == '1') { //글쓰기 성공
+				if (data == '1') { 
 					alert('수정 성공');
-					location.href = "docreadcj.do?doc_num=1805-0008" //임시로 page 09번꺼 줌
-				} else if (data == '-1') { //글쓰기 실패
+					location.href = "docreadcj.do?doc_num=1805-0008"  */
+			/* 	} else if (data == '-1') {
 					alert('수정 실패');
 				}
 			}  
 		});
 		return false;
-	}); */
+	}); */ 
 </script>
 
 <%@ include file="../container/footer.jsp"%>

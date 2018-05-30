@@ -1,7 +1,11 @@
 package com.kitware.member.service;
 
+import java.util.List;
+
 import com.kitware.member.dao.MemberSelectDAO;
 import com.kitware.member.dao.MemberSelectDAOOracle;
+import com.kitware.member.vo.DeptInfo;
+import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Members;
 
 public class MemberService {
@@ -29,6 +33,22 @@ public class MemberService {
 			}
 		}
 		return null;
+	}
+	
+	public List<Members> getAllmembers() throws Exception {
+		return dao.selectAllmembers();
+	}
+
+	public List<Members> getGrantorInfo(String position_num, String dept_num) throws Exception{
+		return dao.getGradeMember(position_num, dept_num);
+	}
+
+	public List<DeptInfo> getDeptInfo() throws Exception {
+		return dao.getDepartments();
+	}
+
+	public List<GradeInfo> getGradeInfo() throws Exception {
+		return dao.getGradeInfo();
 	}
 	
 }

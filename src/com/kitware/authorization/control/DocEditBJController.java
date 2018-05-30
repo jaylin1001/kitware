@@ -16,25 +16,25 @@ import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
 
-public class DocEditCJController implements Controller {
+public class DocEditBJController implements Controller {
 	DocSelectService service;
 	DocManipulService service2;
 	
-	public DocEditCJController() {
+	public DocEditBJController() {
 		super();
 	}
 
-	public DocEditCJController(DocSelectService service) {
+	public DocEditBJController(DocSelectService service) {
 		super();
 		this.service = service;
 	}
 	
-	public DocEditCJController(DocManipulService service2) {
+	public DocEditBJController(DocManipulService service2) {
 		super();
 		this.service2 = service2;
 	}
 
-	public DocEditCJController(DocSelectService service, DocManipulService service2) {
+	public DocEditBJController(DocSelectService service, DocManipulService service2) {
 		super();
 		this.service = service;
 		this.service2 = service2;
@@ -61,6 +61,9 @@ public class DocEditCJController implements Controller {
 		String forwardURL = null ;
 		String mode = request.getParameter("mode");
 		System.out.println("mode = "+mode);
+		HttpSession session = request.getSession();
+		Members loginInfo = (Members) session.getAttribute("loginInfo");
+		String emp_num = loginInfo.getEmp_num();
 		String doc_num = request.getParameter("doc_num");
 		System.out.println("ddd"+doc_num);
 		String doc_content = request.getParameter("chuljang_textarea");
@@ -90,7 +93,7 @@ public class DocEditCJController implements Controller {
 				DocVO docvo_list = service.selectAll(doc_num);
 				request.setAttribute("doc_detail_list", doc_detail_list);
 				request.setAttribute("docvo_list", docvo_list);
-				forwardURL = "/authorization/chuljang_edit.jsp";
+				forwardURL = "/authorization/jotaeEdit.jsp";
 				System.out.println("1111"+forwardURL);
 			}
 		} catch (Exception e) {
