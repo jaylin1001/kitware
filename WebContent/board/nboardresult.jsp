@@ -61,17 +61,12 @@
 	  </ul>
 <script>
 	$(function() {
-		$('.btn_write').click(function() {
+		$('#writeform').click(function() {
 			var $targetObj = $("div.container");
 			$targetObj.empty();
 			$("#div1").load("board/write.jsp");
 		});
 		
-		$('div.container>table a').click(function() {
-			var $targetObj = $("div.container");
-			$targetObj.empty();
-			$("#div1").load("board/content_conf.jsp");
-		});
 		
 		$('.pagination a').click(function(){
 			var page;
@@ -113,7 +108,7 @@
 			console.log($(this).text());
 			path = "${pageContext.request.contextPath}/board/content_conf.jsp";
 			var $form = $("<form></form>");
-			$form.attr("method", "get");
+			$form.attr("method", "post");
 			$form.attr("action", path);
 			
 			

@@ -33,21 +33,21 @@ button {
 				
 				<tr>
 					<th>제목</th>
-					<td colspan="5">${requestScope.title}</td>
+					<td colspan="5">${param.title}</td>
 				</tr>
 
 				<tr>
 					<th>작성일</th>
-					<td>2018-05-08</td>
+					<td>${param.log_time}</td>
 					<th>작성자</th>
-					<td>김태태</td>
+					<td>${param.writer}</td>
 					<th>조회수</th>
-					<td>2</td>
+					<td>${param.hit}</td>
 				</tr>
 			</table>
 			<table class="table table-bordered">
 				<tr>
-					<td width="500px" height="500px">뭐뭐 어쩌고저쩌고</td>
+					<td width="500px" height="500px">${param.content}</td>
 				</tr>
 			</table>
 			<table class="table table-bordered">
@@ -72,15 +72,12 @@ button {
 		</div>
 	</div>
 	<script>
-		console.log("테스트:"+ ${requestScope.writer});
 		$(function() {
 			$('.btn_list').click(function() {
-				var $targetObj = $("div.container");
-				$targetObj.empty();
-				$("#div1").load("board/board.jsp");
-				console.log('ddd');
+				location.href="${pageContext.request.contextPath}/boardlist.do";
 
 			});
+			return false;
 		});
 		$(function() {
 			$('.btn_edit').click(function() {

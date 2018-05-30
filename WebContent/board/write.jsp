@@ -1,7 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 
-<%@include file="../container/header.jsp"%>
 <div id="div1"></div>
 <div class="container">
 	<h1 class="write">&nbsp;글쓰기</h1>
@@ -82,4 +81,3 @@ button {
 	console.log($('div#menutab li.'+className));
 	$('ul#side-menu').find('li.' + className).show();
 </script>
-<%@include file="../container/footer.jsp"%>
