@@ -5,24 +5,25 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
 public class MyConnection {
-	static {
-		/*1)JDBC드라이버 로드*/
+	/*static {
+		1)JDBC드라이버 로드
 		try {
 			Class.forName("oracle.jdbc.driver.OracleDriver");
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
-	}
-	public static Connection getConnection() throws SQLException {
-		String url="jdbc:oracle:thin:@localhost:1521:orcl";
-		String user="project2";
-		String password="1234";
-		return 
-				java.sql.DriverManager.getConnection(url, 
-						                             user, 
-						                             password); 
-
+	}*/
+	public static Connection getConnection() throws SQLException , NamingException , ClassNotFoundException{
+		Context initCtx = new InitialContext();
+		DataSource ds = (DataSource)initCtx.lookup("java:/comp/env/jdbc/myoracle");
+		Connection conn = ds.getConnection();
+		return conn;
 	}
 	public static void close(PreparedStatement pstmt, Connection con) {
 		close(null, pstmt, con);
