@@ -38,8 +38,12 @@ public class DocGJWaitController implements Controller {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
+		String forwardURL = null;
+		List<DocVO> list= null;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
+		String mode = request.getParameter("mode");
+		System.out.println("mode"+mode);
 		
 		int intPage = 1;
 		if (page != null) {
@@ -47,6 +51,20 @@ public class DocGJWaitController implements Controller {
 			System.out.println("페이지가져온거" + page);
 		}
 		try {
+			
+			if(mode.equals("ing")) {
+				list = service.findIng(emp_num, intPage);
+				forwardURL = "/authorization/gj_wait.jsp";
+			}else if(mode.equals("ok")) {
+				list = service.selectOK(emp_num, intPage);
+				forwardURL = "/authorization/gj_wait_ok.jsp";
+			}else if(mode.equals("cancel")) {
+				list = service.selectCancle(emp_num, intPage);
+				forwardURL = "/authorization/gj_wait_cancel.jsp";
+			}else {
+				list = service.selectAll(emp_num, intPage);
+				forwardURL = "/authorization/gj_wait_all.jsp";
+			}
 			// 게시물 총목록수
 			int totalCount = service.findCount();
 
@@ -67,7 +85,6 @@ public class DocGJWaitController implements Controller {
 			if(prePage <1) {
 				prePage = 1;
 			}
-			List<DocVO> list = service.selectAll(emp_num, intPage);
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
@@ -75,21 +92,16 @@ public class DocGJWaitController implements Controller {
 			pb.setStartPage(startPage); // 시작페이지
 			pb.setEndPage(endPage); // 끝페이지
 			
-
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("nextPage", nextPage);
 			
-			System.out.println(list.size());
-			System.out.println(pb.getList());
-			System.out.println("intpage:" + intPage);
-			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		String forwardURL = "/authorization/gj_wait_all.jsp";
+		
 		return forwardURL;
 	}
 }
