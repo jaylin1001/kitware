@@ -1,5 +1,15 @@
+<%@page import="com.kitware.member.vo.GradeInfo"%>
+<%@page import="com.kitware.member.vo.DeptInfo"%>
+<%@page import="com.kitware.member.vo.Members"%>
+<%@page import="java.util.List"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<% 
+	List<DeptInfo> deptlist = (List) request.getAttribute("deptlist");
+	List<GradeInfo> gradelist = (List) request.getAttribute("gradelist");
+	List<List<List<Members>>> memberlist = (List) request.getAttribute("memberlist");
+%>
+
 <div class="modal-header">
 	<button type="button" class="close" data-dismiss="modal"
 		aria-label="Close" aria-hidden="true">x</button>
@@ -7,120 +17,24 @@
 </div>
 <div class="modal-body">
 	<div class="easy-tree">
-		<ul>
-			<li>인사부
-				<ul>
-					<li>팀장
-						<ul>
-							<li>타노스</li>
-							<li>가모라</li>
-						</ul>
-					</li>
-					<li>과장
-						<ul>
-							<li>울트론</li>
-							<li>네뷸라</li>
-						</ul>
-					</li>
-					<li>대리
-						<ul>
-							<li>김성길</li>
-							<li>드랙스</li>
-						</ul>
-					</li>
-					<li>사원
-						<ul>
-							<li>너구리</li>
-							<li>그루트</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li>기획부
-				<ul>
-					<li>팀장
-						<ul>
-							<li>타노스</li>
-							<li>가모라</li>
-						</ul>
-					</li>
-					<li>과장
-						<ul>
-							<li>울트론</li>
-							<li>네뷸라</li>
-						</ul>
-					</li>
-					<li>대리
-						<ul>
-							<li>김성길</li>
-							<li>드랙스</li>
-						</ul>
-					</li>
-					<li>사원
-						<ul>
-							<li>너구리</li>
-							<li>그루트</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li>개발부
-				<ul>
-					<li>팀장
-						<ul>
-							<li>타노스</li>
-							<li>가모라</li>
-						</ul>
-					</li>
-					<li>과장
-						<ul>
-							<li>울트론</li>
-							<li>네뷸라</li>
-						</ul>
-					</li>
-					<li>대리
-						<ul>
-							<li>김성길</li>
-							<li>드랙스</li>
-						</ul>
-					</li>
-					<li>사원
-						<ul>
-							<li>너구리</li>
-							<li>그루트</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-			<li>경영부
-				<ul>
-					<li>팀장
-						<ul>
-							<li>타노스</li>
-							<li>가모라</li>
-						</ul>
-					</li>
-					<li>과장
-						<ul>
-							<li>울트론</li>
-							<li>네뷸라</li>
-						</ul>
-					</li>
-					<li>대리
-						<ul>
-							<li>김성길</li>
-							<li>드랙스</li>
-						</ul>
-					</li>
-					<li>사원
-						<ul>
-							<li>너구리</li>
-							<li>그루트</li>
-						</ul>
-					</li>
-				</ul>
-			</li>
-		</ul>
+	<ul>
+	<%for(int i=0;i<memberlist.size();i++){ %>
+		<li class="dept">
+			<label><%=deptlist.get(i).getDept_name()%><%=memberlist.size() %></label>
+			<ul>
+			<% for(int j=0;j<memberlist.get(i).size();j++){%>
+				<li class="grade"><label><%=gradelist.get(j).getPosition_name()%></label>
+					<ul>
+						<%for(int k=0;k<memberlist.get(i).get(j).size();i++){ %>
+						<li><%=memberlist.get(i).get(j).get(k).getName() %></li>
+						<%}%>
+					</ul>
+				</li>
+			<% }%>
+			</ul>
+		</li>
+	<%} %>
+	</ul>
 	</div>
 </div>
 <div class="modal-footer">
@@ -134,16 +48,27 @@
 
 
 
-<link rel="stylesheet" href="../css/easyTree/easyTree.css">
-<script src="../js/easyTree/easyTree.js"></script>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/easyTree/easyTree.css">
+<script src="${pageContext.request.contextPath}/js/easyTree/easyTree.js"></script>
 <script>
 	$(function() {
 		$('.easy-tree').EasyTree({
 		});
 		
 		$('#btnChoice').click(function(){
-			var selected = getSelectedItems();
+			$('#grantor<%=request.getParameter("id")%>_grade').html($('.easy-tree li.li_selected').closest('ul').siblings('span').find('a').html());
+			window.alert('<%=request.getParameter("id")%>')
+			<%-- console.log($('.easy-tree li.li_selected').closest('ul').siblings('span').find('a').html());
+			console.log($('.easy-tree li.li_selected').parents('li.grade').html());
+			console.log('<%=request.getParameter("id")%>');
+			console.log('<%=request.getRequestURL()%>'); --%>
+			$('#grantor<%=request.getParameter("id")%>').html($('.easy-tree li.li_selected > span > a').html());
+			/* console.log($('.easy-tree li.li_selected > span > a').html()); */ 
+			$('#myModal').on('hidden.bs.modal', function(){
+				$(this).removeData('bs.modal');
+			});
 		});
+		
 	});
 </script>
 <style>

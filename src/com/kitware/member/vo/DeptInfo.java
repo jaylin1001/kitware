@@ -7,6 +7,12 @@ public class DeptInfo {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+	
+	public DeptInfo(String dept_name) {
+		super();
+		this.dept_name = dept_name;
+	}
+
 	public DeptInfo(String dept_num, String dept_name) {
 		super();
 		this.dept_num = dept_num;

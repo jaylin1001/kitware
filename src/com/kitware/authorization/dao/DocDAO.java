@@ -1,10 +1,12 @@
 package com.kitware.authorization.dao;
 
+import java.sql.Connection;
 import java.util.List;
 
 import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocVO;
+import com.kitware.member.vo.DeptInfo;
 
 public interface DocDAO {
 	public int selectCount() throws Exception;//totalcnt값 가져옴
@@ -23,6 +25,12 @@ public interface DocDAO {
 	public void updateCJ(DocVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 document
 	public void updateCJ1(DocGiganVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 doc_gigan
 	public void deleteDoc(String doc_num) throws Exception;//문서 삭제
+	public String getEmpNum(String g1, String g1_grade) throws Exception;
+	public int insertGianDetail(DocDetailVO docdetail, Connection con, int sunbeon) throws Exception;
+	public int insertGian(DocVO giandoc, Connection con) throws Exception;
+	public void insertGianfull(DocVO giandoc) throws Exception;
+	public List<DeptInfo> getDeptList() throws Exception;
+	public String getMaxDocNum() throws Exception;
 	//다 구현한거 아니고 추가해야됩니다
 	
 	
