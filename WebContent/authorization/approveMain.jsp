@@ -11,7 +11,6 @@
 	<p>
 	<h2>전자결재</h2>
 	<h4>결재대기문서</h4>
-	<!-- 	수정 필요함 -->
 
 	<table class="table table-border table-hover">
 	<thead>
@@ -33,7 +32,10 @@
       			 <td>진행</td>
       			 </c:when>
       			 <c:when test="${doc0.doc_state eq '2'}">
-      			 <td>완료<td>
+      			 <td>완료</td>
+      			 </c:when>
+      			 <c:when test="${doc0.doc_state eq '3'}">
+      			 <td>취소</td>
       			 </c:when>
       			 </c:choose>
 				<td>${doc0.doc_kindvo.doc_name}</td>
