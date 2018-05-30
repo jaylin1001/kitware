@@ -33,4 +33,11 @@ public class BoardService {
 	public void updateNoticeBoard(NoticeBoard noticeBoard)throws Exception {
 		dao.updateNoticeBoard(noticeBoard);
 	}
+	public void deleteNoticeBoard(String seq) throws Exception{
+		dao.deleteNoticeBoard(seq);
+	}
+	//조회수를 1씩 증가시킨다.
+	public void updateHit(String hitseq) throws Exception{
+		dao.updateHit(hitseq);
+	}
 }

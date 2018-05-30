@@ -34,6 +34,7 @@ public class BoardEditController implements Controller {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		
+		String hitseq= request.getParameter("hitseq");
 		String seq= request.getParameter("seq");
 		String title= request.getParameter("title");
 		String content=request.getParameter("content");
@@ -44,7 +45,15 @@ public class BoardEditController implements Controller {
 		noticeBoard.setTitle(title);
 		noticeBoard.setContent(content);
 		try {
-			service.updateNoticeBoard(noticeBoard);
+			if(title == null && content == null) {
+				service.deleteNoticeBoard(seq);
+			}else {
+				service.updateNoticeBoard(noticeBoard);
+			}
+			
+			if(hitseq != null) {
+				service.updateHit(hitseq);
+			}
 			request.setAttribute("result", "1");
 		} catch (Exception e) {
 			e.printStackTrace();

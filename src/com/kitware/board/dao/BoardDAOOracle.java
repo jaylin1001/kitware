@@ -119,6 +119,45 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 	}
 	
+
+	@Override
+	public void deleteNoticeBoard(String seq) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String deleteNBSQL = "delete notice_board\r\n" + 
+				"where seq = ?";
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(deleteNBSQL);
+			pstmt.setString(1, seq);
+			pstmt.executeUpdate();
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+	}
+	
+	//조회수를 1씩 증가한다.
+	@Override
+	public void updateHit(String hitseq) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String deleteNBSQL = "update notice_board " + 
+				"set hit = hit + 1 " + 
+				"where seq = ?";
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(deleteNBSQL);
+			pstmt.setString(1, hitseq);
+			pstmt.executeUpdate();
+		}finally {
+			MyConnection.close( pstmt, con);
+		}
+		
+	}
+
+	//테스트용 main method
 	public static void main(String[] args) {
 		BoardDAOOracle test = new BoardDAOOracle();
 		try {
@@ -129,6 +168,5 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 		
 	}
-
 
 }

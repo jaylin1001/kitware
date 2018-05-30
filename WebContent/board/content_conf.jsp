@@ -63,7 +63,7 @@ button {
 			</div>
 			<tr>
 				<td colspan="6" align="center">
-					<button class="btn_edit" >수정</button>
+					<button class="btn_edit" style="display:none;" >수정</button>
 					<button>이전글</button>
 					<button>다음글</button>
 					<button class="btn_list">글목록</button>
@@ -71,8 +71,14 @@ button {
 			</tr>
 		</div>
 	</div>
+	<c:set var="loginInfo" value="${sessionScope.loginInfo}"/>
 	<script>
 		$(function() {
+			<%-- 본인이 쓴 글에만 수정 버튼을 보이게 한다.--%>
+			if($('td.writer').text() == "${loginInfo.name}"){
+				$('button.btn_edit').css("display","inline-block");  <%--처음에 display:non >> display:inline-block으로 바꾼다.--%>
+			}
+			
 			$('.btn_list').click(function() {
 				location.href="${pageContext.request.contextPath}/boardlist.do";
 			});
@@ -85,7 +91,7 @@ button {
 			$('.btn_edit').click(function(path,method) {
 				path = "${pageContext.request.contextPath}/board/edit.jsp";
 				var $form = $("<form></form>");
-				$form.attr("method", "get");
+				$form.attr("method", "post");
 				$form.attr("action", path);
 				
 				

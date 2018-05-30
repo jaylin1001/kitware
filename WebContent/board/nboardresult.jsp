@@ -32,7 +32,7 @@
 				<td class="name">${b.name}</td>
 				<td class="log_time">${b.log_time}</td>
 				<td class="hit">${b.hit}</td>
-				<td hidden="hidden" class="seq">${b.seq}</td>
+				<td hidden="hidden" class="seq" id="seq">${b.seq}</td>
 				<td hidden="hidden" class="content">${b.content}</td>
 			  </tr>
 		   </c:forEach>
@@ -105,8 +105,18 @@
 			}
 		});
 		
+		<%-- 글 상세보기 및 조회수 증가--%>
 		$('tbody>tr a.title').click(function(path,method){
-			console.log($(this).text());
+			<%-- 조회수 증가 시키는 부분--%>
+			$.ajax({
+				url:'${pageContext.request.contextPath}/boardedit.do',
+				data:{"hitseq":$(this).parent().siblings().eq(4).text()},
+				type: 'post',
+				success:function(data){
+				}
+			});
+			
+			<%--글 상세보기--%>
 			path = "${pageContext.request.contextPath}/board/content_conf.jsp";
 			var $form = $("<form></form>");
 			$form.attr("method", "post");
