@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.kitware.A.control.Controller;
 import com.kitware.member.vo.Members;
 
-public class DocWriteCJController {
+public class DocWriteCJController implements Controller {
+	
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 	HttpSession session = request.getSession();

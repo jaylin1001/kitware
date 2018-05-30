@@ -76,11 +76,8 @@
 				<tr>
 					<th>첨부파일</th>
 					<td colspan="5"><input type="text">
-
 						<button>첨부파일</button></td>
 				</tr>
-
-
 				<tr>
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
