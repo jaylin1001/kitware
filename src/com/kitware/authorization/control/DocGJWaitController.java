@@ -38,7 +38,6 @@ public class DocGJWaitController implements Controller {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
-		String forwardURL = null;
 		List<DocVO> list= null;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
@@ -54,16 +53,12 @@ public class DocGJWaitController implements Controller {
 			
 			if(mode.equals("ing")) {
 				list = service.findIng(emp_num, intPage);
-				forwardURL = "/authorization/gj_wait.jsp";
 			}else if(mode.equals("ok")) {
 				list = service.selectOK(emp_num, intPage);
-				forwardURL = "/authorization/gj_wait_ok.jsp";
 			}else if(mode.equals("cancel")) {
 				list = service.selectCancle(emp_num, intPage);
-				forwardURL = "/authorization/gj_wait_cancel.jsp";
 			}else {
 				list = service.selectAll(emp_num, intPage);
-				forwardURL = "/authorization/gj_wait_all.jsp";
 			}
 			// 게시물 총목록수
 			int totalCount = service.findCount();
@@ -101,7 +96,7 @@ public class DocGJWaitController implements Controller {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		
+		String forwardURL = "/authorization/gj_wait_all.jsp";
 		return forwardURL;
 	}
 }

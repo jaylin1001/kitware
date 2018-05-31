@@ -44,7 +44,7 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectAllSQL = "select d.doc_num, d.emp_num, dk.doc_name,d.start_date,d.rcv_dept,"
+		String selectAllSQL = "select d.doc_num,d.doc_state, d.emp_num, dk.doc_name,d.start_date,d.rcv_dept,"
 							+" d.refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content, m.name, gi.position_name, di.dept_name"
 							+" from document d, doc_kind dk, doc_gigan dg, members m, grade_info gi, dept_info di"
 							+" where dk.doc_kind = d.doc_kind"
@@ -62,6 +62,7 @@ public class DocDAOOracle implements DocDAO {
 		while(rs.next()) {
 			docvo = new DocVO();
 			docvo.setDoc_num(rs.getString("doc_num"));
+			docvo.setDoc_state(rs.getString("doc_state"));
 			DocKindVO dock = new DocKindVO(docvo.getDoc_kind(),rs.getString("doc_name"));
 			docvo.setStart_date(rs.getString("start_date"));
 			docvo.setRcv_dept(rs.getString("rcv_dept"));
@@ -280,7 +281,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectIngSQL = "select b.*" 
 						+" from ("
-						+" select rownum r, d.start_date, d.doc_kind, d.doc_title, d.doc_num, d.doc_state, dk.doc_name"
+						+" select rownum r, d.start_date, d.doc_kind,d.doc_title, d.doc_num, d.doc_state, dk.doc_name"
 						+" from document d, doc_kind dk"
 						+" where d.doc_kind = dk.doc_kind"
 						+" and d.emp_num = ?"
@@ -760,6 +761,51 @@ public class DocDAOOracle implements DocDAO {
 		return emp_num;
 	}
 
+	@Override
+	public void updateConf(String doc_num, String conf_num, String acs_yn) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String updateConfSQL = "update doc_detail"
+								+" set acs_yn = ?"
+								+" where doc_num = ?"
+								+" and conf_num = ?";
+		
+		try {
+			con= MyConnection.getConnection();
+			pstmt = con.prepareStatement(updateConfSQL);
+			pstmt.setString(1, acs_yn);
+			pstmt.setString(2, doc_num);
+			pstmt.setString(3, conf_num);
+			pstmt.executeUpdate();
+			
+		}finally{
+			MyConnection.close(rs,pstmt,con);
+		}
+		
+	}
+
+	@Override
+	public void updateState(String doc_num, String state) throws Exception {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String updateConfSQL = "update document"
+								+" set doc_state = ?"
+								+" where doc_num = ?";
+		
+		try {
+			con= MyConnection.getConnection();
+			pstmt = con.prepareStatement(updateConfSQL);
+			pstmt.setString(1, state);
+			pstmt.setString(2, doc_num);
+			pstmt.executeUpdate();
+			
+		}finally{
+			MyConnection.close(rs,pstmt,con);
+		}
+}
 }
 
 
