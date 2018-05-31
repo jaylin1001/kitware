@@ -50,14 +50,13 @@ public class DocGJWaitController implements Controller {
 			System.out.println("페이지가져온거" + page);
 		}
 		try {
-			
 			if(mode.equals("ing")) {
 				list = service.findIng(emp_num, intPage);
 			}else if(mode.equals("ok")) {
 				list = service.selectOK(emp_num, intPage);
 			}else if(mode.equals("cancel")) {
 				list = service.selectCancle(emp_num, intPage);
-			}else {
+			}else if(mode.equals("all")){
 				list = service.selectAll(emp_num, intPage);
 			}
 			// 게시물 총목록수
@@ -91,6 +90,7 @@ public class DocGJWaitController implements Controller {
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("nextPage", nextPage);
+			request.setAttribute("mode", mode);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

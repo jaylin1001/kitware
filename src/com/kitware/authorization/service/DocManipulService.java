@@ -4,7 +4,6 @@ import java.util.List;
 
 import com.kitware.authorization.dao.DocDAO;
 import com.kitware.authorization.dao.DocDAOOracle;
-import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.DeptInfo;

@@ -3,7 +3,7 @@
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="session" value="${sessionScope.loginInfo}"></c:set>		
-<c:set var="pb" value="${requestScope.pagebean }"/> 
+<c:set var="pb" value="${requestScope.pagebean}"/> 
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
