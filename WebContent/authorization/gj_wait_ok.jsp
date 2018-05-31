@@ -21,6 +21,7 @@
 				<td>문서제목</td>
 				<td>문서번호</td>
 				<td>문서상태</td>
+				<td>문서이름</td>
 			</tr>
 		</thead>
 		<c:set var="list" value="${pb.list}" />
@@ -31,6 +32,7 @@
 				<td><a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a></td>
 				<td>${b.doc_num}</td>
 				<td>${b.doc_state}</td>
+				<td>${b.doc_kindvo.doc_name}</td>
 			</tr>
 		</c:forEach>
 	</table>
@@ -101,21 +103,21 @@ function functionrt(data, data1) {
 	location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;	
 	}
 
-	$(function() {
-		$('.selectbutton button').click(function() {
-			var page;
-			if ($(this).text() == '진행') {
-				location.href = "gjwaitlisting.do"
-			} else if ($(this).text() == '완료') {
-				location.href = "gjwaitlistok.do"
-			} else if ($(this).text() == '취소') {
-				location.href = "gjwaitlistcancle.do";
-			} else {
-				location.href = "gjwaitlist.do"
-			}
+$(function() {
+	$('.selectbutton button').click(function() {
+		var page;
+		if ($(this).text() == '진행') {
+			location.href = "gjwaitlist.do?mode=ing"
+		} else if ($(this).text() == '완료') {
+			location.href = "gjwaitlist.do?mode=ok"
+		} else if ($(this).text() == '취소') {
+			location.href = "gjwaitlist.do?mode=cancel";
+		} else {
+			location.href = "gjwaitlist.do?mode=all"
+		}
 
-			return false;
-		});
+		return false;
+	});
 
 		$('.pagination button').click(function() {
 			var page;
