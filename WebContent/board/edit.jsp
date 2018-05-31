@@ -31,7 +31,7 @@
 					<div>
 						<input type="button" class="btn btn-primary update" value="저장">
 						<input type="button" class="btn btn-primary delete" value="삭제">
-						<button>취소</button>
+						<button type="button" class="btn btn-primary">취소</button>
 					</div>
 				</div>
 			</form>
