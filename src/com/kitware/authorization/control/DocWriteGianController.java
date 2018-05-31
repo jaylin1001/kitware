@@ -16,96 +16,83 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.Members;
 
 public class DocWriteGianController implements Controller {
-	DocManipulService service = DocManipulService.getInstance();
+   DocManipulService service = DocManipulService.getInstance();
 
-	public DocWriteGianController() {
-		// TODO Auto-generated constructor stub
-	}
+   public DocWriteGianController() {
+   }
 
-	public DocWriteGianController(DocManipulService service) {
-		super();
-		this.service = service;
-	}
+   public DocWriteGianController(DocManipulService service) {
+      super();
+      this.service = service;
+   }
 
-	public DocManipulService getService() {
-		return service;
-	}
+   public DocManipulService getService() {
+      return service;
+   }
 
-	public void setService(DocManipulService service) {
-		this.service = service;
-	}
+   public void setService(DocManipulService service) {
+      this.service = service;
+   }
 
-	@Override
-	public String execute(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		List<DocDetailVO> list = new ArrayList<>();
-		DocDetailVO docdetail = new DocDetailVO();
-		HttpSession session = request.getSession();
-		Members member = (Members) session.getAttribute("loginInfo");
-		String doc_num = request.getParameter("doc_num");
-		System.out.println(doc_num);
-		String emp_num = member.getEmp_num();
-		String date = request.getParameter("date");
-		System.out.println(date);
-		String dept = request.getParameter("dept");
-		System.out.println(dept);
-		String title = request.getParameter("title");
-		System.out.println(title);
-		String content = request.getParameter("content");
-		System.out.println(content+"kkk");
-		String g1_grade = request.getParameter("g1_grade");
-		String g1 = request.getParameter("g1");
-		System.out.println(g1_grade);
-		System.out.println(g1);
-		String g2_grade = request.getParameter("g2_grade");
-		String g2 = request.getParameter("g2");
-		String g3_grade = request.getParameter("g3_grade");
-		String g3 = request.getParameter("g3");
+   @Override
+   public String execute(HttpServletRequest request, HttpServletResponse response)
+         throws ServletException, IOException {
+      List<DocDetailVO> list = new ArrayList<>();
+      
+      HttpSession session = request.getSession();
+      Members member = (Members) session.getAttribute("loginInfo");
+      String doc_num = request.getParameter("doc_num").trim();
+      String emp_num = member.getEmp_num();
+      String date = request.getParameter("date").trim();
+      String dept = request.getParameter("dept").trim();
+      String title = request.getParameter("title").trim();
+      String content = request.getParameter("content");
+      String g1_grade = request.getParameter("g1_grade").trim();
+      String g1 = request.getParameter("g1").trim();
+      String g2_grade = request.getParameter("g2_grade").trim();
+      String g2 = request.getParameter("g2").trim();
+      String g3_grade = request.getParameter("g3_grade").trim();
+      String g3 = request.getParameter("g3");
+      System.out.println(g1+g2);
+      try {
+         if (g1_grade.length() > 0) {
+            DocDetailVO docdetail = new DocDetailVO();
+            docdetail.setDoc_num(doc_num);
+            docdetail.setConf_num(service.getEmpNum(g1, g1_grade));
+            list.add(docdetail);
+            if (g2_grade.length() > 0) {
+               docdetail = new DocDetailVO();
+               docdetail.setDoc_num(doc_num);
+               docdetail.setConf_num(service.getEmpNum(g2, g2_grade));
+               list.add(docdetail);
+               if (g3_grade.length() > 0) {
+                  docdetail = new DocDetailVO();
+                  docdetail.setDoc_num(doc_num);
+                  docdetail.setConf_num(service.getEmpNum(g3, g3_grade));
+                  list.add(docdetail);
+               }
+            }
+         }
+         System.out.println("list_" + list.size());
 
-		try {
-			if (g1_grade != null) {
-				docdetail.setDoc_num(doc_num);
-				docdetail.setConf_num(service.getEmpNum(g1, g1_grade));
-				list.add(docdetail);
-			}
-			if (g2_grade != null)
-				docdetail.setDoc_num(doc_num);
-			docdetail.setConf_num(service.getEmpNum(g1, g1_grade));
-			list.add(docdetail);
-			{
+         DocVO giandoc = new DocVO();
+         giandoc.setDoc_num(doc_num);
+         giandoc.setEmp_num(emp_num);
+         giandoc.setStart_date(date);
+         giandoc.setRcv_dept(dept);
+         giandoc.setDoc_title(title);
+         giandoc.setDoc_content(content);
+         giandoc.setDoc_detail(list);
 
-			}
-			if (g3_grade != null) {
-				docdetail.setDoc_num(doc_num);
-				docdetail.setConf_num(service.getEmpNum(g1, g1_grade));
-				list.add(docdetail);
-			}
+         service.insertgian(giandoc);
+         request.setAttribute("result", 1);
+      } catch (Exception e) {
+         e.printStackTrace();
+         request.setAttribute("result", -1);
+      }
 
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		DocVO giandoc = new DocVO();
-		giandoc.setDoc_num(doc_num);
-		giandoc.setEmp_num(emp_num);
-		giandoc.setStart_date(date);
-		giandoc.setRcv_dept(dept);
-		giandoc.setDoc_title(title);
-		giandoc.setDoc_content(content);
-		giandoc.setDoc_detail(list);
-		
-		
-		try {
-			service.insertgian(giandoc);
-			request.setAttribute("result", 1);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			request.setAttribute("result", -1);
-		}
-		String forwardURL = "/docresult.jsp";
-		return forwardURL;
-	}
+      String forwardURL = "/docresult.jsp";
+      return forwardURL;
+   }
 
 }

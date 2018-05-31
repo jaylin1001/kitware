@@ -52,8 +52,7 @@ public class DocGJUpdateController implements Controller {
 				//결재 승인
 				acs_yn ="1";
 				state = "2";
-				if(mode.equals("110")) {
-				//error 나면 int로
+				if(mode.equals("110") || mode.equals("10")|| mode.equals("0")) {
 				service.updateConf(doc_num, conf_num, acs_yn);
 				service.updateState(doc_num, state);
 				forwardURL = "/authorization/updateresult.jsp";
@@ -66,7 +65,7 @@ public class DocGJUpdateController implements Controller {
 				//반려하기
 				acs_yn ="0";
 				state = "3";
-				if(mode.equals("110")) {
+				if(mode.equals("110") || mode.equals("10")|| mode.equals("0")) {
 					//error 나면 int로
 					service.updateConf(doc_num, conf_num, acs_yn);
 					service.updateState(doc_num, state);

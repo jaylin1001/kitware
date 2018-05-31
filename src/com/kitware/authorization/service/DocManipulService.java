@@ -23,12 +23,13 @@ public class DocManipulService {
 	public void deleteDoc(String doc_num) throws Exception{
 		dao.deleteDoc(doc_num);
 	}
-	/*public String getDocNum(){
-		return dao.getMaxDocNum();
-	}*/
 
 	public List<DeptInfo> getDeptList() throws Exception {
 		return dao.getDeptList();
+	}
+	
+	public String getDocNum() throws Exception {
+		return dao.getMaxDocNum();
 	}
 
 	public String getEmpNum(String g1, String g1_grade) throws Exception {
