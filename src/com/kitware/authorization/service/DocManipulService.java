@@ -22,12 +22,13 @@ public class DocManipulService {
 	public void deleteDoc(String doc_num) throws Exception{
 		dao.deleteDoc(doc_num);
 	}
-	public String getDocNum(){
-		return dao.getMaxDocNum();
-	}
 
 	public List<DeptInfo> getDeptList() throws Exception {
 		return dao.getDeptList();
+	}
+	
+	public String getDocNum() throws Exception {
+		return dao.getMaxDocNum();
 	}
 
 	public String getEmpNum(String g1, String g1_grade) throws Exception {
@@ -36,6 +37,12 @@ public class DocManipulService {
 
 	public void insertgian(DocVO giandoc) throws Exception {
 		dao.insertGianfull(giandoc);
+	}
+	public void updateConf(String doc_num, String conf_num, String acs_yn) throws Exception{
+		dao.updateConf(doc_num, conf_num, acs_yn);
+	}
+	public void updateState(String doc_num, String state) throws Exception{
+		dao.updateState(doc_num, state);
 	}
 	
 	public DocManipulService() {

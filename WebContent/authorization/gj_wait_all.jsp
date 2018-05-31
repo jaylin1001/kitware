@@ -121,15 +121,16 @@ function functionrt(data, data1) {
 
 		$('.pagination button').click(function() {
 			var page;
+			var mode = '${requestScope.mode}';
 			if ($(this).text() == '이전') {
 				page = ${prePage};
-				location.href = "gjwaitlist.do?page=" + page;
+				location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
 			} else if ($(this).text() == '다음') {
 				page = ${nextPage};
-				location.href = "gjwaitlist.do?page=" + page;
+				location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
 			} else {
 				page = $(this).text();
-				location.href = "gjwaitlist.do?page=" + page;
+				location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
 			}
 			return false;
 		});

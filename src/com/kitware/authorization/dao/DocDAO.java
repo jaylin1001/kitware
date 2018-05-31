@@ -31,6 +31,8 @@ public interface DocDAO {
 	public void insertGianfull(DocVO giandoc) throws Exception;
 	public List<DeptInfo> getDeptList() throws Exception;
 	public String getMaxDocNum() throws Exception;
+	public void updateConf(String doc_num, String conf_num, String acs_yn) throws Exception; //결재버튼시 발생
+	public void updateState(String doc_num, String state) throws Exception; //문서 상태 2(완료)변경
 	//다 구현한거 아니고 추가해야됩니다
 	
 	
