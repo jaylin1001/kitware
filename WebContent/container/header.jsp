@@ -107,7 +107,7 @@
 			//var form = $('#write>li').attr('class');
 			$.ajax({
 				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/docwrite.jsp',
+				url : '${pageContext.request.contextPath}/docgianinfo.do',
 				success : function(data) {
 					$('div#page-wrapper').empty();
 					$('div#page-wrapper').html(data);
@@ -263,7 +263,7 @@ div.navbar-header> a.logout{
 						<li class="authorization"><a href="#" id="write">결재문서작성<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="gian"><a href="${pageContext.request.contextPath}/authorization/docwrite.jsp">기안서</a></li>
+								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do">기안서</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
 								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
 								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
