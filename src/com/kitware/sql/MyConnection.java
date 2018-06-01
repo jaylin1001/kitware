@@ -16,8 +16,8 @@ public class MyConnection {
 	}
 	public static Connection getConnection() throws SQLException {
 		String url="jdbc:oracle:thin:@localhost:1521:orcl";
-		String user="project2";
-		String password="1234";
+		String user="zero";
+		String password="zero";
 		return 
 				java.sql.DriverManager.getConnection(url, 
 						                             user, 

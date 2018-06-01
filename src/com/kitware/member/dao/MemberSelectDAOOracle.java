@@ -12,6 +12,7 @@ import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Members;
 import com.kitware.member.vo.MembersDetailInfo;
+import com.kitware.member.vo.StatusBoard;
 
 public class MemberSelectDAOOracle implements MemberSelectDAO {
 
@@ -64,18 +65,6 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			com.kitware.sql.MyConnection.close(rs, pstmt, con);
 		}
 	}
-
-	// DB TEST
-	public static void main(String[] args) {
-		MemberSelectDAOOracle test = new MemberSelectDAOOracle();
-		try {
-			Members mbtest = test.selectMemberInfo("kim");
-			System.out.println(mbtest);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 
 	@Override
 	public void insertMembers(Members members) throws Exception {
@@ -132,6 +121,85 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		} finally {
 			MyConnection.close(pstmt, con);
 		}
+		
+	}
+
+	@Override
+	public int selectCount() throws Exception{
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectCountSQL = 
+				"SELECT COUNT(*) totalcnt FROM notice_board";
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectCountSQL);
+			rs = pstmt.executeQuery();
+			rs.next();
+			int totalCount = rs.getInt("totalcnt");
+			return totalCount;
+		}finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+		}
+	}
+		
+	@Override
+	public List<StatusBoard> selectStatusBoard(int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectSBSQL="select r, emp_num, dept_name, position_name, id, name, gender, email1, tel1,tel2,tel3\r\n" + 
+				"from(select rownum r, a.*\r\n" + 
+				"    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n" + 
+				"        from members m, dept_info di, grade_info gi\r\n" + 
+				"        where m.dept_num = di.dept_num\r\n" + 
+				"        and   m.position_num = gi.position_num\r\n" + 
+				"        order by gi.POSITION_NUM) a)b\r\n" + 
+				"where r between ? and ?";
+		List<StatusBoard> list = new ArrayList<StatusBoard>();
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectSBSQL);
+			int cntPerPage=7;//1페이지별 3건씩 보여준다
+			int endRow=cntPerPage * page;
+			int startRow=endRow-cntPerPage+1;
+			System.out.println("startRow:"+startRow);
+			System.out.println("endRow:"+endRow);
+			pstmt.setInt(1, startRow);	pstmt.setInt(2, endRow);
+			rs = pstmt.executeQuery();		
+			while(rs.next()) {
+				list.add(new StatusBoard(
+						rs.getString("r"),
+						rs.getString("emp_num"),
+						rs.getString("dept_name"),
+						rs.getString("position_name"),
+						rs.getString("id"),
+						rs.getString("name"),
+						rs.getString("gender"),
+						rs.getString("email1"),
+						rs.getString("tel1"),
+						rs.getString("tel2"),
+						rs.getString("tel3")							
+						));
+			}
+			return list;
+		}finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);			
+		}
+	}
+	
+	public static void main(String[] args) {
+		MemberSelectDAOOracle test = new MemberSelectDAOOracle();
+		List<StatusBoard> list;
+		try {
+			list = test.selectStatusBoard(1);
+			System.out.println(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	
 		
 	}
 }

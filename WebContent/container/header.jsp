@@ -93,7 +93,7 @@
 				location.href='${pageContext.request.contextPath}/home/home.jsp';
 				break;
 			case 'modmember' :
-				location.href='${pageContext.request.contextPath}/modmember/memberstatus.jsp';
+				location.href='${pageContext.request.contextPath}/memberstatus.do';
 				break;			
 			} 
 			
@@ -306,7 +306,7 @@ div.navbar-header> a.logout{
 							</ul></li>
 						<li class="modmember"><a href="#5">사원관리<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="memberstatus"><a href="${pageContext.request.contextPath}/modmember/memberstatus.jsp">사원관리</a></li>
+								<li class="memberstatus"><a href="${pageContext.request.contextPath}/memberstatus.do">사원관리</a></li>
 								<li class="addmember"><a href="${pageContext.request.contextPath}/modmember/addmember.jsp">사원추가</a></li>							
 							</ul></li>
 					</ul>

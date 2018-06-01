@@ -1,17 +1,17 @@
 package com.kitware.member.service;
 
+import java.util.List;
+
 import com.kitware.member.dao.MemberSelectDAO;
 import com.kitware.member.dao.MemberSelectDAOOracle;
 import com.kitware.member.vo.Members;
 import com.kitware.member.vo.MembersDetailInfo;
+import com.kitware.member.vo.StatusBoard;
 
-public class MemberService {
-	private MemberSelectDAO dao = new MemberSelectDAOOracle();
-	
+public class MemberService {	
+	private MemberSelectDAO dao = new MemberSelectDAOOracle();	
 	static private MemberService service;
-
 	public MemberService() {
-
 	}
 
 	public static MemberService getInstance() {
@@ -41,4 +41,10 @@ public class MemberService {
 	public void modmemberDetail(MembersDetailInfo mdetail) throws Exception{
 		dao.insertMembers(mdetail);		
 	}	
+	public List<StatusBoard> findAll(int page) throws Exception{
+		return dao.selectStatusBoard(page);
+	}
+	public int findCount() throws Exception{
+		return dao.selectCount();
+	}
 }

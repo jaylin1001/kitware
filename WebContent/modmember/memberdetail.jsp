@@ -9,7 +9,7 @@
 		
 $(function(){
 
-}
+});
 </script>   
 <h2>사원상세정보</h2>
 <form action="modmember.jsp">

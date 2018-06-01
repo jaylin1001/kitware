@@ -9,23 +9,14 @@
 </script>    
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>   
-<body>
-<form action="addmember.jsp">
-<button class="addmember">사원추가</button>
-</form>
-<form action="modmember.jsp">
-<button class="modmember">사원정보수정</button>
-</form>
+  
     
-   
-    
-    
-</body>
+
     
  <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <div id="div1"></div>
 <div class="container">
-	<%@include file="../modmember/memberstatusresult.jsp"%>
+	<%@include file="/modmember/memberstatusresult.jsp"%>
 </div>
 <style>
 .pagination a.active {
