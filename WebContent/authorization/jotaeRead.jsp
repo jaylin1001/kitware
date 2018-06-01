@@ -9,7 +9,7 @@
 <c:set var="exp" value="${param.exp}"/>
 <div>
 	<div class="title" align="center">
-		<h2>조퇴계/병가</h2><!--doc_kind값에 따라 if문으로 보여주고 말고 결정할거임 둘중하나 보여주는거 -->
+		<h2>${doc.doc_kindvo.doc_name}</h2>
 	</div>
 	<div class="table">
 		<table class="table table-bordered">
@@ -27,6 +27,8 @@
 					 	<c:when test="${cn.acs_yn eq '1'}">
 						<span style="font-weight:bold;color:red">${cn.acs_yn}결재</span>
 						</c:when>
+						<c:when test="${cn.acs_yn eq '3'}">
+						<div>${cn.acs_yn} 반려</div></c:when>
 						</c:choose>
 					</td>
 						</c:forEach>

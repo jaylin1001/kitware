@@ -8,8 +8,15 @@
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
-	<h2>내가 한 결재 완료</h2>
+	<h2>내가 결재한 문서함</h2>
 	<div>&nbsp;</div>
+	<div class="selectbutton">
+		&nbsp;
+		<button class='all'>전체</button>
+		<button class='prog'>진행</button>
+		<button class='comp'>완료</button>
+		<button class='cancle'>취소</button>
+	</div>
 	<table class="table table-striped table-hover">
 		<thead class="thead-light">
 			<tr class="table-primary">
@@ -102,29 +109,38 @@ function functionrt(data, data1) {
 	console.log(data1);
 		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
 	}
-
+	
 	$(function() {
-		$('.pagination button').click(function() {
+		$('.selectbutton button').click(function() {
 			var page;
-			if ($(this).text() == '이전') {
-				page = ${prePage};
-				location.href = "mygjoklist.do?page=" + page;
-			} else if ($(this).text() == '다음') {
-				page = ${nextPage};
-				location.href = "mygjoklist.do?page=" + page;
+			if ($(this).text() == '진행') {
+				location.href = "mygjoklist.do?mode=ing"
+			} else if ($(this).text() == '완료') {
+				location.href = "mygjoklist.do?mode=ok"
+			} else if ($(this).text() == '취소') {
+				location.href = "mygjoklist.do?mode=cancel";
 			} else {
-				page = $(this).text();
-				location.href = "mygjoklist.do?page=" + page;
+				location.href = "mygjoklist.do?mode=all"
 			}
-
 			return false;
 		});
-
-		/* $('.doc_list_content').click(function(){
-			var doc_num = $('.doc_list_content a').text();
-				location.href="mygjoklist.do?doc_num="+doc_num;
-		}); */
-		//문서번호도 보내야함
+	
+		$('.pagination button').click(function() {
+			var page;
+			var mode = '${requestScope.mode}';
+			if ($(this).text() == '이전') {
+				page = ${prePage};
+				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+			} else if ($(this).text() == '다음') {
+				page = ${nextPage};
+				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+			} else {
+				page = $(this).text();
+				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+			}
+			return false;
+		});
+		
 		$('.pagination a').each(function(index, element) {
 			if ($(element).text() == '${pb.currentPage}') {
 				$(element).addClass('active');

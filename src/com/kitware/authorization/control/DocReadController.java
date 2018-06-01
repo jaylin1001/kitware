@@ -58,7 +58,10 @@ public class DocReadController implements Controller {
 			if (doc_kind.equals("10")) {
 				// 기안서
 				forwardURL = "/authorization/docread.jsp";
-			} else if (doc_kind.equals("40")) {
+			} else if (doc_kind.equals("30")) {
+				// 발주
+				forwardURL = "/authorization/docread.jsp";
+			}else if (doc_kind.equals("40")) {
 				// 출장
 				forwardURL = "/authorization/chuljangread.jsp";
 			} else if (doc_kind.equals("60")||doc_kind.equals("80")) {

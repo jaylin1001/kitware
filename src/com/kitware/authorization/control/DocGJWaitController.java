@@ -89,7 +89,7 @@ public class DocGJWaitController implements Controller {
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
-			request.setAttribute("nextPage", nextPage);
+			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("mode", mode);
 			
 		} catch (Exception e) {

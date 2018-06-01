@@ -34,6 +34,9 @@ public interface DocDAO {
 	public void updateConf(String doc_num, String conf_num, String acs_yn) throws Exception; //결재버튼시 발생
 	public void updateState(String doc_num, String state) throws Exception; //문서 상태 2(완료)변경
 	//다 구현한거 아니고 추가해야됩니다
+	public List<DocVO> selectGJOk3(String conf_num, int page) throws Exception;
+	public List<DocVO> selectGJOk2(String conf_num, int page) throws Exception;
+	public List<DocVO> selectGJOk1(String conf_num, int page) throws Exception;
 	
 	
 }

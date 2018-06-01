@@ -256,8 +256,11 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class = "gian_list"><a href="${pageContext.request.contextPath}/gjwaitlist.do?mode=all">기안문서함</a></li>
-								<li class = "gj_list"><a href="${pageContext.request.contextPath}/mygjoklist.do">결재문서함</a></li>
+								<li class = "gj_list"><a href="${pageContext.request.contextPath}/mygjoklist.do?mode=all">결재문서함</a></li>
 							</ul></li>
+						<li class="authorization"><a href="${pageContext.request.contextPath}/deptlist.do?mode=all">부서문서함<span
+								class="fa arrow"></span></a>
+							</li>
 						<li class="authorization"><a href="#" id="write">결재문서작성<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">

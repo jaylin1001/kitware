@@ -40,15 +40,27 @@ public class DocMyGJOkController implements Controller {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
+		List<DocVO> list= null;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
-		
+		String mode = request.getParameter("mode");
+		System.out.println(mode	);
 		int intPage = 1;
+		
 		if (page != null) {
 			intPage = Integer.parseInt(page);
 			System.out.println("페이지가져온거" + page);
-		}
+		}	
 		try {
+				if(mode.equals("ing")) {
+					list = service.selectGJOk1(emp_num, intPage);
+				}else if(mode.equals("ok")) {
+					list = service.selectGJOk2(emp_num, intPage);
+				}else if(mode.equals("cancel")) {
+					list = service.selectGJOk3(emp_num, intPage);
+				}else if(mode.equals("all")){
+					list = service.selectGJOk(emp_num, intPage);
+				}
 			// 게시물 총목록수
 			int totalCount = service.findCount();
 
@@ -69,7 +81,6 @@ public class DocMyGJOkController implements Controller {
 			if(prePage <1) {
 				prePage = 1;
 			}
-			List<DocVO> list = service.selectGJOk(emp_num, intPage);
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
@@ -81,10 +92,7 @@ public class DocMyGJOkController implements Controller {
 			request.setAttribute("prePage", prePage);
 			request.setAttribute("nextPage", nextPage);
 			request.setAttribute("totalCount", totalCount);
-			System.out.println(list.size());
-			System.out.println(pb.getList());
-			System.out.println("intpage:" + intPage);
-			System.out.println("totalPage:"+totalPage);
+			request.setAttribute("mode", mode);
 
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -28,6 +28,8 @@
 					 	<c:when test="${cn.acs_yn eq '1'}">
 						<span style="font-weight:bold;color:red">${cn.acs_yn}결재</span>
 						</c:when>
+						<c:when test="${cn.acs_yn eq '3'}">
+						<div>${cn.acs_yn} 반려</div></c:when>
 						</c:choose>
 					</td>
 						</c:forEach>

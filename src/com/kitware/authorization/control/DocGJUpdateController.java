@@ -83,9 +83,9 @@ public class DocGJUpdateController implements Controller {
 
 			} else if (kind.equals("down")) {
 				// 반려하기
-				acs_yn = "0";
+				acs_yn = "3";
 				state = "3";
-				if (mode.equals("110") || mode.equals("10") || mode.equals("0") && smode.equals("0")) {
+				if (mode.equals("110") || mode.equals("10") || mode.equals("0")) {
 					// error 나면 int로
 					service.updateConf(doc_num, conf_num, acs_yn);
 					service.updateState(doc_num, state);
