@@ -503,11 +503,12 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		
-		String selectGJOkSQL = "select b.*" + " from("
-				+ " select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
-				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn in(1,3) and d.doc_state =3) b"
-				+ " where r between ? and ?";
+		String selectGJOkSQL = "select b.* from("
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ?"
+				+" and acs_yn in(1,3) and doc_state = 3) b"
+				+" where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
