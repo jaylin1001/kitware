@@ -37,6 +37,8 @@ public class DocGianInfoController implements Controller {
    @Override
    public String execute(HttpServletRequest request, HttpServletResponse response)
          throws ServletException, IOException {
+      String kind = request.getParameter("kind");
+      String forwardURL = null;
       
       try {
          String doc_num = service.getDocNum();
@@ -54,10 +56,17 @@ public class DocGianInfoController implements Controller {
          request.setAttribute("doc_num", doc_num);
          request.setAttribute("list", list);
       } catch (Exception e1) {
-         // TODO Auto-generated catch block
          e1.printStackTrace();
       }
-      String forwardURL = "authorization/docwrite.jsp";
+      if(kind.equals("gian")) {
+    	  forwardURL = "authorization/docwrite.jsp"; 
+      }else if(kind.equals("balju")){
+    	  forwardURL = "authorization/baljuwrite.jsp"; 
+      }else if(kind.equals("chuljang")){//구현안됨
+    	  forwardURL = "authorization/chuljangwrite.jsp"; 
+      }else if(kind.equals("jotae")){//구현안됨
+    	  forwardURL = "authorization/jotaewrite.jsp"; 
+      }else {}
       return forwardURL;
    }
 }

@@ -42,6 +42,7 @@ public class DocGJUpdateController implements Controller {
 		String mode = request.getParameter("mode");
 		String smode = request.getParameter("smode");
 		String kind = request.getParameter("kind");
+		String conf_count = request.getParameter("count");
 		String acs_yn;
 		String state;
 		System.out.println(doc_num);
@@ -61,16 +62,24 @@ public class DocGJUpdateController implements Controller {
 				forwardURL = "/authorization/updateresult.jsp";
 				request.setAttribute("result", "1");
 				}else if(mode.equals("00") || mode.equals("000") && smode.equals("0")) {
-				//상신>>진행
+				//상신>>진행,
 				acs_yn ="1";
-				state = "1";
+					if(conf_count.equals("1")) {
+						state = "1";
+					}else{
+						state = "2";
+					}
 				service.updateConf(doc_num, conf_num, acs_yn);
 				service.updateState(doc_num, state);
 				forwardURL = "/authorization/updateresult.jsp";
 				request.setAttribute("result", "1");
 				}else{
 				acs_yn ="1";
-				state = "1";
+				if(conf_count.equals("2")) {
+					state = "1";
+				}else{
+					state = "2";
+				}
 				service.updateConf(doc_num, conf_num, acs_yn);
 				service.updateState(doc_num, state);
 				forwardURL = "/authorization/updateresult.jsp";

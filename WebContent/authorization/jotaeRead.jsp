@@ -5,6 +5,7 @@
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
 <c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
+<c:set var="exp" value="${param.exp}"/>
 <div>
 	<div class="title" align="center">
 		<h2>조퇴계/병가</h2><!--doc_kind값에 따라 if문으로 보여주고 말고 결정할거임 둘중하나 보여주는거 -->
@@ -92,6 +93,7 @@
 						</c:when>
 					</c:choose>
 						<c:set var="snum" value="${session.emp_num}" />
+						<c:if test="${exp eq null}">
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
@@ -100,6 +102,7 @@
 					 </c:if>
 					  </c:if>
 					  </c:forEach>
+					  </c:if>
 						<input type="button" value="뒤로가기" id="back">
 					</td>
 				</tr>

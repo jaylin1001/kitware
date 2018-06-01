@@ -4,7 +4,8 @@
 <form id="formwrite">
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
-<c:set var="session" value="${sessionScope.loginInfo}"></c:set>		
+<c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
+<c:set var="exp" value="${param.exp}"/>	
 
 	<div>
 		<div class="title" align="center">
@@ -90,6 +91,7 @@
 						</c:when>
 					</c:choose>
 						<c:set var="snum" value="${session.emp_num}" />
+						<c:if test="${exp eq null}">
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
@@ -98,6 +100,7 @@
 					 </c:if>
 					  </c:if>
 					  </c:forEach>
+					  </c:if>
 						<input type="button" value="뒤로가기" id="back">
 					</td>
 				</tr>

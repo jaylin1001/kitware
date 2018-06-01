@@ -116,18 +116,23 @@ public class DocDAOOracle implements DocDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectGJWaitSQL = "select aa.*" + " from("
-				+ " select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
-				+ " mydocnum.start_date, mydocnum.doc_state, dk.doc_name" + " from(select doc.* from"
-				+ " (select d.*, dd.conf_num" + " from document d, doc_detail dd"
-				+ " where d.doc_num = dd.doc_num) doc," + " (select doc_num" + " from doc_detail"
-				+ " where conf_num = ?) myconf" + " where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
-				+ " (select a.doc_num from" + " (select doc_num, sunbeon, acs_yn" + " from doc_detail) a,"
-				+ " (select doc_num, sunbeon, conf_num, acs_yn" + " from doc_detail" + " where conf_num = ?) b"
-				+ " where a.doc_num = b.doc_num and a.sunbeon = b.sunbeon-1" + " and a.acs_yn = 1 and b.acs_yn = 0"
-				+ " or b.sunbeon=0 and b.conf_num = ?) preconf" + " where mydocnum.doc_num = preconf.doc_num"
-				+ " and mydocnum.conf_num = ?" + " and mydocnum.doc_kind = dk.doc_kind" + " and mydocnum.doc_state !=3) aa"
-				+ " where r between ? and ?";
+		String selectGJWaitSQL = "select aa.* from("
+								+" select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
+								+" mydocnum.start_date, mydocnum.doc_state, dk.doc_name"
+								+" from(select doc.* from"
+								+" (select d.*, dd.conf_num from document d, doc_detail dd"
+								+" where d.doc_num = dd.doc_num) doc,"
+								+" (select doc_num from doc_detail"
+								+" where conf_num = ?) myconf" 
+								+" where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
+								+" (select distinct a.doc_num from (select doc_num, sunbeon, acs_yn from doc_detail) a,"
+								+" (select doc_num, sunbeon, conf_num, acs_yn from doc_detail where conf_num = ?) b"
+								+" where a.doc_num = b.doc_num and b.conf_num = ? and"
+								+" ((a.sunbeon = b.sunbeon-1 and a.acs_yn = 1 and b.acs_yn = 0) or (b.sunbeon=1 and b.acs_yn=0)))"
+								+" preconf where mydocnum.doc_num = preconf.doc_num"
+								+" and mydocnum.conf_num = ?"
+								+" and mydocnum.doc_kind = dk.doc_kind and mydocnum.doc_state !='3') aa"
+								+" where r between ? and ?";
 		List<DocVO> doclist = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null; // doc 데이터 담음
 		DocKindVO dock = new DocKindVO();// dockind 데이터 담음

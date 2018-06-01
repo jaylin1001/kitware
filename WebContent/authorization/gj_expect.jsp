@@ -3,6 +3,7 @@
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pb" value="${requestScope.pagebean }"/> 
+<c:set var="exp" value="${param.exp}"/>
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
@@ -95,7 +96,7 @@ thead{
 function functionrt(data, data1) {
 	console.log(data);
 	console.log(data1);
-		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
+		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data + "&exp=" + '${exp}';
 	}
 
 $(function(){

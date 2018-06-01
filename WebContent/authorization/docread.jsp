@@ -7,6 +7,7 @@
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
 <c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
+<c:set var="exp" value="${param.exp}"/>
 	<div class="center-block">
 		<div class="title" align="center">
 			<h2>기안서</h2>
@@ -83,14 +84,16 @@
 						</c:when>
 					</c:choose>
 					<c:set var="snum" value="${session.emp_num}" />
+					<c:if test="${exp eq null}">
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
-						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}')">
+						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${status.count}')">
 						<input type="button" value="반려" id="down" onclick = "downdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
 					 </c:if>
 					  </c:if>
 					  </c:forEach>
+					  </c:if>
 						<input type="button" value="뒤로가기" id="back">
 					</td>
 				</tr>
@@ -110,10 +113,10 @@
 		location.href= "docdelcj.do?doc_num="+data;
 		console.log(data);
 	}
-	function gjdocnum(data, data2, data3) {
+	function gjdocnum(data, data2, data3, data4) {
 		console.log(data);
 		console.log(data2);
-		location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up"+"&smode="+data3;
+		location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up"+"&smode="+data3+"&count="+data4;
 		console.log(data);
 	}
 	function downdocnum(data, data2) {
