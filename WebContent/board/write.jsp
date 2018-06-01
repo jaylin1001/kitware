@@ -6,7 +6,7 @@
 	<h3 class="write">글쓰기</h3>
 	<div class="col-lg-12 write">
 		<div class="row">
-			<form>
+			<form enctype="multipart/form-data">
 				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-sm-9 form-group">
@@ -23,9 +23,8 @@
 					</div>
 				</div>
 				<div class="col-sm-4 form-group">
-					<label>첨부파일</label>
-					<button type="button">...</button>&nbsp;
-					<input type="text" class="form-control">
+					 <label>첨부파일</label>
+					 <input type="file" class="form-control-file" name="file1"><br>
 					<div>
 						<button type = "submit" class="btn_save">완료</button>
 						<button type = "button">취소</button>

@@ -29,7 +29,7 @@ tbody tr>td:nth-child(2){
 .container {
 	padding-top : 35px;
 	margin:0;
-	width:70%;
+	width:100%;
 }
 body {
 	width: 100%;

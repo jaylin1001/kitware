@@ -1,5 +1,6 @@
 package com.kitware.board.control;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -14,9 +15,13 @@ import com.kitware.board.vo.NoticeBoard;
 import com.kitware.board.vo.PageBean;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.vo.Schedule;
+import com.oreilly.servlet.MultipartRequest;
+
 
 public class BoardWriteController implements Controller {
 	private BoardService service;
+	//파일이 업로드될 실제 경로
+	private String saveDirectory="D:\\apache-tomcat-8.5.30-windows-x64\\apache-tomcat-8.5.30\\wtpwebapps\\board\\files";
 	
 	public BoardWriteController() {
 	}
@@ -42,16 +47,29 @@ public class BoardWriteController implements Controller {
 		String emp_num = loginInfo.getEmp_num();
 		String name = loginInfo.getName();
 		
-
+		//파일첨부
+		MultipartRequest mr;
+		int maxPostSize = 1024*500000;
+		String encoding = "UTF-8";
+		
+		mr = new MultipartRequest(request, saveDirectory, 
+				maxPostSize, encoding, 
+				new MyRenamePolicy());
+		File file1 = mr.getFile("file1"); //저장된 파일
+		String saveFileName = file1.getName();
+		int index_ = name.indexOf("_");
+		
 		String title= request.getParameter("title");
 		String content= request.getParameter("content");
-		
 		NoticeBoard noticeBoard = new NoticeBoard();
 		
 		noticeBoard.setEmp_num(emp_num);
 		noticeBoard.setName(name);
 		noticeBoard.setTitle(title);
 		noticeBoard.setContent(content);
+		noticeBoard.setOriginFileName(originFileName);
+		noticeBoard.setSaveFileName(saveFileName);
+		noticeBoard.setPath(saveDirectory+"\\");
 		
 		
 		try {

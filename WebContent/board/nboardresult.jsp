@@ -2,6 +2,7 @@
     pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
+<c:set var="loginInfo" value="${sessionScope.loginInfo}"/>
 <c:set var="pb" value="${requestScope.pagebean}"/>
 <%-- 페이징 설정을 위한 변수들 --%>
 <c:set var="totalCount" value="${pb.totalCount}"/>
@@ -60,8 +61,17 @@
 	      </a>
 	    </li>
 	  </ul>
+<style>
+#writeform{
+	display:none;
+}
+</style>
 <script>
 	$(function() {
+		if("${loginInfo.id}" == "admin"){
+			$('#writeform').show();
+		};
+		
 		$('#writeform').click(function() {
 			var $targetObj = $("div.container");
 			$targetObj.empty();
