@@ -13,7 +13,14 @@
 	value="${totalCount - (cntPerPage * (currentPage-1))}" />
 
 <div class="panel panel-primary">
-	<div class="panel-heading">사원정보</div>
+	<div class="panel-heading">사원정보
+	<select>
+	<option>
+	<option>
+	
+	</select>
+	<button class="btn btn-primary btn-sm" id="search">검색</button> 
+	</div>
 	<table class="table table-hover">
 		<thead>
 			<tr>
@@ -70,7 +77,7 @@
 			location.href="addmember.jsp";			
 		});		
 		
-		/*= $('.pagination a').click(function(){		
+		 $('.pagination a').click(function(){		
 			var page;
 			var selectPage = $(this).text().trim();		
 			var startPage =  ${pb.startPage};
@@ -102,7 +109,7 @@
 				}
 			});
 			return false; 
-		});  */
+		});  
 		
 		$('.pagination a').each(function(index, element){
 			if($(element).text() == '${pb.currentPage}'){

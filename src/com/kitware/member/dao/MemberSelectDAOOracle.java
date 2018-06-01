@@ -178,9 +178,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 						rs.getString("name"),
 						rs.getString("gender"),
 						rs.getString("email1"),
-						rs.getString("tel1"),
-						rs.getString("tel2"),
-						rs.getString("tel3")							
+						rs.getString("tel1")+"-"+rs.getString("tel2")+"-"+rs.getString("tel3"),
+						null,
+						null							
 						));
 			}
 			return list;
