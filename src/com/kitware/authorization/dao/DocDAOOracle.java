@@ -116,18 +116,23 @@ public class DocDAOOracle implements DocDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectGJWaitSQL = "select aa.*" + " from("
-				+ " select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
-				+ " mydocnum.start_date, mydocnum.doc_state, dk.doc_name" + " from(select doc.* from"
-				+ " (select d.*, dd.conf_num" + " from document d, doc_detail dd"
-				+ " where d.doc_num = dd.doc_num) doc," + " (select doc_num" + " from doc_detail"
-				+ " where conf_num = ?) myconf" + " where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
-				+ " (select a.doc_num from" + " (select doc_num, sunbeon, acs_yn" + " from doc_detail) a,"
-				+ " (select doc_num, sunbeon, conf_num, acs_yn" + " from doc_detail" + " where conf_num = ?) b"
-				+ " where a.doc_num = b.doc_num and a.sunbeon = b.sunbeon-1" + " and a.acs_yn = 1 and b.acs_yn = 0"
-				+ " or b.sunbeon=0 and b.conf_num = ?) preconf" + " where mydocnum.doc_num = preconf.doc_num"
-				+ " and mydocnum.conf_num = ?" + " and mydocnum.doc_kind = dk.doc_kind) aa"
-				+ " where r between ? and ?";
+		String selectGJWaitSQL = "select aa.* from("
+								+" select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
+								+" mydocnum.start_date, mydocnum.doc_state, dk.doc_name"
+								+" from(select doc.* from"
+								+" (select d.*, dd.conf_num from document d, doc_detail dd"
+								+" where d.doc_num = dd.doc_num) doc,"
+								+" (select doc_num from doc_detail"
+								+" where conf_num = ?) myconf" 
+								+" where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
+								+" (select distinct a.doc_num from (select doc_num, sunbeon, acs_yn from doc_detail) a,"
+								+" (select doc_num, sunbeon, conf_num, acs_yn from doc_detail where conf_num = ?) b"
+								+" where a.doc_num = b.doc_num and b.conf_num = ? and"
+								+" ((a.sunbeon = b.sunbeon-1 and a.acs_yn = 1 and b.acs_yn = 0) or (b.sunbeon=1 and b.acs_yn=0)))"
+								+" preconf where mydocnum.doc_num = preconf.doc_num"
+								+" and mydocnum.conf_num = ?"
+								+" and mydocnum.doc_kind = dk.doc_kind and mydocnum.doc_state !='3') aa"
+								+" where r between ? and ?";
 		List<DocVO> doclist = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null; // doc 데이터 담음
 		DocKindVO dock = new DocKindVO();// dockind 데이터 담음
@@ -292,9 +297,10 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -327,9 +333,12 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select b.* from("
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2) b"
+				+" where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -337,11 +346,12 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectOkSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -378,11 +388,11 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -753,5 +763,15 @@ public class DocDAOOracle implements DocDAO {
 		} finally {
 			MyConnection.close(rs, pstmt, con);
 		}
+	}
+	public static void main(String[] args) {
+		DocDAOOracle test = new DocDAOOracle();
+		try {
+			DocVO list = test.selectAll("1806-0001");
+			System.out.println(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 }

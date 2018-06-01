@@ -17,8 +17,6 @@
 
 <title>KITWare</title>
 
-
-
 <script
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 
@@ -84,10 +82,10 @@
 				location.href="${pageContext.request.contextPath}/boardlist.do";
 				break;
 			case 'attendance': // 근태 tab 눌렀을 때 
-					location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
+				location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
 					break;
 			case 'authorization': // 전자결재 tab 눌렀을 때 
-					location.href="${pageContext.request.contextPath}/doclist.do";
+				location.href="${pageContext.request.contextPath}/doclist.do";
 					break;
 			case 'home' :
 				location.href='${pageContext.request.contextPath}/home/home.jsp';
@@ -251,8 +249,8 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class = "gj_wait"><a href="${pageContext.request.contextPath}/gjmywaitlist.do">결재대기</a></li>
-								<li class = "gj_exp"><a href="${pageContext.request.contextPath}/gjexpectlist.do">결재예정</a></li>
-								<li class = "gj_ok"><a href="${pageContext.request.contextPath}/gjoklist.do">결재완료</a></li>
+								<li class = "gj_exp"><a href="${pageContext.request.contextPath}/gjexpectlist.do?exp=ex">결재예정</a></li>
+								<li class = "gj_ok"><a href="${pageContext.request.contextPath}/gjoklist.do?exp=ok">결재완료</a></li>
 							</ul></li>
 						<li class="authorization"><a href="#">개인문서함<span
 								class="fa arrow"></span></a>
@@ -263,11 +261,12 @@ div.navbar-header> a.logout{
 						<li class="authorization"><a href="#" id="write">결재문서작성<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do">기안서</a></li>
-								<li class="balju"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
+								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">기안서</a></li>
+								<li class="pumyee"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
 								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
 								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
 								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
+								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
 							</ul></li>
 						
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>

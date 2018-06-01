@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
+%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%-- <jsp:include page="../container/header.jsp" flush="true"></jsp:include>
  --%>
@@ -68,87 +68,16 @@
 						<button>수신부서 선택</button></td>
 				</tr>
 
-				<div class="container">
-					<table class="table table-bordered">
-						<thead>
-							<tr>
-								<th>품명</th>
-								<th>발주수량</th>
-								<th>규격</th>
-								<th>단가</th>
-								<th>금액</th>
-								<th>비고</th>
-							</tr>
-						</thead>
-						<tbody>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-
-							</tr>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-							</tr>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-							</tr>
-							<tr>
-
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-
-							</tr>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-							</tr>
-							<tr>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-								<td><input type="text"></td>
-
-							</tr>
-
-							<tr>
-								<th>소계</th>
-								<td></td>
-								<th>세액</th>
-								<td></td>
-								<th>합계</th>
-								<td></td>
-
-							</tr>
-
-
+				<tr>
+	               <td colspan="6"><textarea name="content" id="content"
+	                     class="summernote" style="width: 100%">
+	                     <p style="text-align: center; "><br></p><table class="table table-bordered" style="text-align: center;"><tbody><tr><td>no</td><td>&nbsp; &nbsp; &nbsp; &nbsp; 품명&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td><td>&nbsp;규격&nbsp; &nbsp;&nbsp;</td><td>단위</td><td>수량</td><td>단가&nbsp; &nbsp;</td><td>금액&nbsp; &nbsp;&nbsp;</td><td>비고&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table><p style="text-align: center;"><br></p><table class="table table-bordered"><tbody><tr><td><p style="text-align: center;">계</p></td><td style="text-align: center;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td><td style="text-align: center;">&nbsp; 금액</td><td style="text-align: right;">원</td></tr></tbody></table><p style="text-align: center;"><br></p>
+	                     </textarea></td>
+	            </tr>
 							<tr>
 								<th>특이사항</th>
 								<td colspan="5"><textarea rows="4" cols="100">
-				</textarea></td>
+								</textarea></td>
 							</tr>
 							<tr>
 								<th>첨부파일</th>
@@ -169,7 +98,16 @@
 	</div>
 </form>
 <script type="text/javascript">
+	  
+
 	$(function() {
+		  $('.summernote').summernote({
+		       height : 300, // 기본 높이값
+		       minHeight : null, // 최소 높이값(null은 제한 없음)
+		       maxHeight : null, // 최대 높이값(null은 제한 없음)
+		       focus : true, // 페이지가 열릴때 포커스를 지정함
+		       lang : 'ko-KR' // 한국어 지정(기본값은 en-US)
+		    });
 		$("#testDatepicker").datepicker({
 			showOn : "both",
 			/* buttonImage: "button.png", 

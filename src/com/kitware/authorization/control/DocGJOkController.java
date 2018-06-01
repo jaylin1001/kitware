@@ -53,7 +53,7 @@ public class DocGJOkController implements Controller {
 
 			// 총페이지수계산
 			int totalPage = 0;
-			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int cntPerPage = 1;// 1페이지별 5건씩 보여준다
 			totalPage = (int) Math.ceil((double) totalCount / cntPerPage);
 
 			// 페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
