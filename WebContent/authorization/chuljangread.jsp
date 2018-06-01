@@ -89,10 +89,16 @@
 						</c:if>
 						</c:when>
 					</c:choose>
+						<c:set var="snum" value="${session.emp_num}" />
+					<c:forEach items="${doc_conf}" var="item" varStatus="status">
+					  <c:if test="${item.conf_num eq snum}">
+					  <c:if test="${item.acs_yn eq '0'}">
 						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
 						<input type="button" value="반려" id="down" onclick = "downdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
+					 </c:if>
+					  </c:if>
+					  </c:forEach>
 						<input type="button" value="뒤로가기" id="back">
-
 					</td>
 				</tr>
 			</table>

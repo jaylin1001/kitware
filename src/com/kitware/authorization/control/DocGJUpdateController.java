@@ -40,32 +40,48 @@ public class DocGJUpdateController implements Controller {
 		String forwardURL = null ;
 		String doc_num = request.getParameter("doc_num");
 		String mode = request.getParameter("mode");
+		String smode = request.getParameter("smode");
 		String kind = request.getParameter("kind");
 		String acs_yn;
 		String state;
 		System.out.println(doc_num);
 		System.out.println(mode);
 		System.out.println(kind);
+		System.out.println("smode"+smode);
 		
 		try {
 			if(kind.equals("up")) {
 				//결재 승인
+				if(mode.equals("110") || mode.equals("10")|| mode.equals("0") && smode.equals("1")) {
+				//진행>>완료
 				acs_yn ="1";
 				state = "2";
-				if(mode.equals("110") || mode.equals("10")|| mode.equals("0")) {
+				service.updateConf(doc_num, conf_num, acs_yn);
+				service.updateState(doc_num, state);
+				forwardURL = "/authorization/updateresult.jsp";
+				request.setAttribute("result", "1");
+				}else if(mode.equals("00") || mode.equals("000") && smode.equals("0")) {
+				//상신>>진행
+				acs_yn ="1";
+				state = "1";
 				service.updateConf(doc_num, conf_num, acs_yn);
 				service.updateState(doc_num, state);
 				forwardURL = "/authorization/updateresult.jsp";
 				request.setAttribute("result", "1");
 				}else{
+				acs_yn ="1";
+				state = "1";
 				service.updateConf(doc_num, conf_num, acs_yn);
+				service.updateState(doc_num, state);
 				forwardURL = "/authorization/updateresult.jsp";
 				}
+				
+				
 			}else if(kind.equals("down")) {
 				//반려하기
 				acs_yn ="0";
 				state = "3";
-				if(mode.equals("110") || mode.equals("10")|| mode.equals("0")) {
+				if(mode.equals("110") || mode.equals("10")|| mode.equals("0") && smode.equals("0")) {
 					//error 나면 int로
 					service.updateConf(doc_num, conf_num, acs_yn);
 					service.updateState(doc_num, state);
@@ -76,16 +92,6 @@ public class DocGJUpdateController implements Controller {
 					forwardURL = "/authorization/updateresult.jsp";
 					}
 			}else{
-				/*if(mode.equals("110")) {
-					//error 나면 int로
-					service.updateConf(doc_num, conf_num);
-					service.updateState(doc_num);
-					forwardURL = "/authorization/updateresult.jsp";
-					request.setAttribute("result", "1");
-					}else{
-					service.updateConf(doc_num, conf_num);
-					forwardURL = "/authorization/updateresult.jsp";
-					}*/
 			}
 				
 		} catch (Exception e) {
