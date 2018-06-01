@@ -80,7 +80,7 @@
 
 
 	<c:set var="list2" value="${requestScope.docvo_list2}" />
-	<h4>내가올린 완료 문서</h4>
+	<h4>완료 문서</h4>
 	<table class="table table-border table-hover">
 	<thead>
 		<tr class="table-primary">

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <form id="formwrite">
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
@@ -97,7 +98,7 @@
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
-						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
+						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${fn:length(doc_conf)} ')">
 						<input type="button" value="반려" id="down" onclick = "downdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
 					 </c:if>
 					  </c:if>
@@ -119,10 +120,10 @@ function deldocnum(data) {
 	location.href= "docdelcj.do?doc_num="+data;
 	console.log(data);
 }
-function gjdocnum(data, data2) {
+function gjdocnum(data, data2, data3, data4) {
 	console.log(data);
 	console.log(data2);
-	location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up";
+	location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up"+"&smode="+data3+"&count="+data4;
 	console.log(data);
 }
 function downdocnum(data, data2) {

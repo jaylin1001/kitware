@@ -1,8 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-
 <%-- <jsp:include page="../container/header.jsp" flush="true"></jsp:include> --%>
 <%@ include file="../container/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
 <form id="formwrite">
 <c:set var="doc" value="${requestScope.docvo_list}" />
 <c:set var="doc_conf" value="${requestScope.doc_detail_list}"/>
@@ -10,7 +10,7 @@
 <c:set var="exp" value="${param.exp}"/>
 	<div class="center-block">
 		<div class="title" align="center">
-			<h2>기안서</h2>
+			<h2>${doc.doc_kindvo.doc_name}</h2>
 		</div>
 		<div class="table">
 			<table class="table table-bordered">
@@ -47,8 +47,11 @@
 					<c:when test="${doc.doc_state eq '2'}">
 					<td>완료</td>
 					</c:when>
-					<c:otherwise>
+					<c:when test="${doc.doc_state eq '3'}">
 					<td>취소</td>
+					</c:when>
+					<c:otherwise>
+					<td>상신</td>
 					</c:otherwise>
 					</c:choose>
 					
@@ -61,8 +64,6 @@
 					<th>부서</th>
 					<td>${doc.deptinfo.dept_name}</td>
 				</tr>
-				
-				
 				
 				<tr>
 					<th>제목</th>
@@ -88,7 +89,7 @@
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
-						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${status.count}')">
+						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${fn:length(doc_conf)} ')">
 						<input type="button" value="반려" id="down" onclick = "downdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
 					 </c:if>
 					  </c:if>

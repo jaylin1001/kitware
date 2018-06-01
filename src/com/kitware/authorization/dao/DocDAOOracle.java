@@ -297,9 +297,10 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -332,9 +333,12 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select b.* from("
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2) b"
+				+" where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -342,11 +346,12 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectOkSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -383,11 +388,11 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -758,5 +763,15 @@ public class DocDAOOracle implements DocDAO {
 		} finally {
 			MyConnection.close(rs, pstmt, con);
 		}
+	}
+	public static void main(String[] args) {
+		DocDAOOracle test = new DocDAOOracle();
+		try {
+			DocVO list = test.selectAll("1806-0001");
+			System.out.println(list);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
 	}
 }
