@@ -21,7 +21,7 @@ public interface DocDAO {
 	public List<DocVO> selectCancle(String emp_num, int page) throws Exception;//내가 올린 기안 취소
 	public List<DocVO> selectExpected(String conf_num, int page) throws Exception; //언젠가 결재예정 select 
 	public List<DocVO> selectGJOk(String conf_num, int page) throws Exception; //내가 결재완료한거(결재완료 사이드메뉴 해당)
-	
+	public List<DocVO> selectDeptlist(String dept_num, String state, int page) throws Exception;//부서문서함 리스트
 	public void updateCJ(DocVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 document
 	public void updateCJ1(DocGiganVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 doc_gigan
 	public void deleteDoc(String doc_num) throws Exception;//문서 삭제

@@ -3,12 +3,17 @@
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pb" value="${requestScope.pagebean }" />
+<c:set var="totalCount" value="${pb.totalCount}"/>
+<c:set var="currentPage" value="${pb.currentPage}"/>
+<c:set var="cntPerPage" value="${pb.cntPerPage}"/>
+<c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
 <c:set var="list" value="${pb.list}" />
 
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
 	<h2>내가 결재한 문서함</h2>
+	${totalCount}
 	<div>&nbsp;</div>
 	<div class="selectbutton">
 		&nbsp;
@@ -43,21 +48,26 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<c:set var="startPage" value="${pb.startPage}"/>
+ 	<c:set var="endPage" value="${pb.endPage}"/>
+	  <ul class="pagination">
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	    <c:forEach begin="${startPage}" end="${endPage}" var="i" >  
+		  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
+		</c:forEach> 
+			    
+	    
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	  </ul>
 
-
-	<div class="pagination">
-		<c:set var="startPage" value="${pb.startPage}" />
-		<c:set var="endPage" value="${pb.endPage}" />
-		<c:if test="${startPage > 1}">
-			<Button>이전</Button>
-		</c:if>
-		<c:forEach begin="${startPage}" end="${endPage}" var="i">
-			<button type="button">${i}</button>
-		</c:forEach>
-		<c:if test="${endPage < pb.totalPage}">
-			<Button>다음</Button>
-		</c:if>
-	</div>
 </div>
 <style>
 .container {
@@ -101,8 +111,8 @@ thead {
 	font-weight: bold;
 }
 </style>
-<c:set var="prePage" value="${requestScope.prePage}" />
-<c:set var="nextPage" value="${requestScope.nextPage}" />
+<%-- <c:set var="prePage" value="${requestScope.prePage}" />
+<c:set var="nextPage" value="${requestScope.nextPage}" /> --%>
 <script>
 function functionrt(data, data1) {
 	console.log(data);
@@ -114,31 +124,41 @@ function functionrt(data, data1) {
 		$('.selectbutton button').click(function() {
 			var page;
 			if ($(this).text() == '진행') {
-				location.href = "mygjoklist.do?mode=ing"
+				location.href = "mygjoklist.do?mode=ing&page=1"
 			} else if ($(this).text() == '완료') {
-				location.href = "mygjoklist.do?mode=ok"
+				location.href = "mygjoklist.do?mode=ok&page=1"
 			} else if ($(this).text() == '취소') {
-				location.href = "mygjoklist.do?mode=cancel";
+				location.href = "mygjoklist.do?mode=cancel&page=1";
 			} else {
-				location.href = "mygjoklist.do?mode=all"
+				location.href = "mygjoklist.do?mode=all&page=1"
 			}
 			return false;
 		});
 	
-		$('.pagination button').click(function() {
+		
+		$('.pagination a').click(function(){
 			var page;
 			var mode = '${requestScope.mode}';
-			if ($(this).text() == '이전') {
-				page = ${prePage};
-				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
-			} else if ($(this).text() == '다음') {
-				page = ${nextPage};
-				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
-			} else {
-				page = $(this).text();
+			var selectPage = $(this).text().trim();
+			if(selectPage == '«'){   <%-- 시작페이지가 1인 경우 return--%>
+				if(${pb.startPage} != '1'){
+					page=${pb.startPage}-1;
+					location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+				}else{
+					return;	
+				}
+			}else if(selectPage == '»'){
+				if(${pb.endPage} != ${pb.totalPage}){  <%--총페이지와 끝페이지가 다르면 return--%>
+					return;
+				}else{
+					page=${pb.endPage}+1;
+					location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+				}
+			}else{
+				page = selectPage;
 				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
 			}
-			return false;
+			
 		});
 		
 		$('.pagination a').each(function(index, element) {

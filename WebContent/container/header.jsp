@@ -244,7 +244,13 @@ div.navbar-header> a.logout{
 
 			<div class="sidebar">
 				<div class="sidebar-nav navbar-collapse">
+				
 					<ul class="nav" id="side-menu">
+					<li class="home"><a href="#">홈<span class="fa arrow"></span></a>
+							<ul class="nav nav-second-level">
+								<li><a href="#">문서작성</a></li>
+								<li><a href="#">일정추가</a></li>
+							</ul></li>
 						<li class="authorization"><a href="#">결재문서함<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
@@ -255,10 +261,10 @@ div.navbar-header> a.logout{
 						<li class="authorization"><a href="#">개인문서함<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class = "gian_list"><a href="${pageContext.request.contextPath}/gjwaitlist.do?mode=all">기안문서함</a></li>
-								<li class = "gj_list"><a href="${pageContext.request.contextPath}/mygjoklist.do?mode=all">결재문서함</a></li>
+								<li class = "gian_list"><a href="${pageContext.request.contextPath}/gjwaitlist.do?mode=all&page=1">기안문서함</a></li>
+								<li class = "gj_list"><a href="${pageContext.request.contextPath}/mygjoklist.do?mode=all&page=1">결재문서함</a></li>
 							</ul></li>
-						<li class="authorization"><a href="${pageContext.request.contextPath}/deptlist.do?mode=all">부서문서함<span
+						<li class="authorization"><a href="${pageContext.request.contextPath}/docdeptlist.do?mode=all&page=1">부서문서함<span
 								class="fa arrow"></span></a>
 							</li>
 						<li class="authorization"><a href="#" id="write">결재문서작성<span

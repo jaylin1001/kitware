@@ -72,6 +72,9 @@
       			 <c:when test="${doc.doc_state eq '1'}">
       			 <td>진행</td>
       			 </c:when>
+      			 <c:when test="${doc.doc_state eq '0'}">
+      			 <td>상신</td>
+      			 </c:when>
       			 </c:choose>
 				<td>${doc.doc_kindvo.doc_name}</td>
 		</tr>
