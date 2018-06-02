@@ -9,7 +9,7 @@
 <c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
 <div id="div1"></div>
 <div class="container">
-	<h2>전체 기안 문서함</h2>
+	<h2>부서 문서함</h2>
 	<div>&nbsp;</div>
 	<div class="selectbutton">
 		&nbsp;
@@ -117,13 +117,13 @@ function functionrt(data, data1) {
 		$('.selectbutton button').click(function() {
 			var page;
 			if ($(this).text() == '진행') {
-				location.href = "gjwaitlist.do?mode=ing"
+				location.href = "docdeptlist.do?mode=ing"
 			} else if ($(this).text() == '완료') {
-				location.href = "gjwaitlist.do?mode=ok"
+				location.href = "docdeptlist.do?mode=ok"
 			} else if ($(this).text() == '취소') {
-				location.href = "gjwaitlist.do?mode=cancel";
+				location.href = "docdeptlist.do?mode=cancel";
 			} else {
-				location.href = "gjwaitlist.do?mode=all"
+				location.href = "docdeptlist.do?mode=all"
 			}
 	
 			return false;
@@ -136,7 +136,7 @@ function functionrt(data, data1) {
 			if(selectPage == '«'){   <%-- 시작페이지가 1인 경우 return--%>
 				if(${pb.startPage} != '1'){
 					page=${pb.startPage}-1;
-					location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
+					location.href = "docdeptlist.do?page=" + page + "&mode=" + mode;
 				}else{
 					return;	
 				}
@@ -145,11 +145,11 @@ function functionrt(data, data1) {
 					return;
 				}else{
 					page=${pb.endPage}+1;
-					location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
+					location.href = "docdeptlist.do?page=" + page + "&mode=" + mode;
 				}
 			}else{
 				page = selectPage;
-				location.href = "gjwaitlist.do?page=" + page + "&mode=" + mode;
+				location.href = "docdeptlist.do?page=" + page + "&mode=" + mode;
 			}
 			
 		});

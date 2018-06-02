@@ -3,13 +3,25 @@
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <c:set var="pb" value="${requestScope.pagebean }" />
+<c:set var="totalCount" value="${pb.totalCount}"/>
+<c:set var="currentPage" value="${pb.currentPage}"/>
+<c:set var="cntPerPage" value="${pb.cntPerPage}"/>
+<c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
 <c:set var="list" value="${pb.list}" />
 
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
-	<h2>내가 한 결재 완료</h2>
+	<h2>내가 결재한 문서함</h2>
+	${totalCount}
 	<div>&nbsp;</div>
+	<div class="selectbutton">
+		&nbsp;
+		<button class='all'>전체</button>
+		<button class='prog'>진행</button>
+		<button class='comp'>완료</button>
+		<button class='cancle'>취소</button>
+	</div>
 	<table class="table table-striped table-hover">
 		<thead class="thead-light">
 			<tr class="table-primary">
@@ -36,21 +48,26 @@
 			</tr>
 		</c:forEach>
 	</table>
+	<c:set var="startPage" value="${pb.startPage}"/>
+ 	<c:set var="endPage" value="${pb.endPage}"/>
+	  <ul class="pagination">
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	    <c:forEach begin="${startPage}" end="${endPage}" var="i" >  
+		  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
+		</c:forEach> 
+			    
+	    
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	  </ul>
 
-
-	<div class="pagination">
-		<c:set var="startPage" value="${pb.startPage}" />
-		<c:set var="endPage" value="${pb.endPage}" />
-		<c:if test="${startPage > 1}">
-			<Button>이전</Button>
-		</c:if>
-		<c:forEach begin="${startPage}" end="${endPage}" var="i">
-			<button type="button">${i}</button>
-		</c:forEach>
-		<c:if test="${endPage < pb.totalPage}">
-			<Button>다음</Button>
-		</c:if>
-	</div>
 </div>
 <style>
 .container {
@@ -94,37 +111,56 @@ thead {
 	font-weight: bold;
 }
 </style>
-<c:set var="prePage" value="${requestScope.prePage}" />
-<c:set var="nextPage" value="${requestScope.nextPage}" />
+<%-- <c:set var="prePage" value="${requestScope.prePage}" />
+<c:set var="nextPage" value="${requestScope.nextPage}" /> --%>
 <script>
 function functionrt(data, data1) {
 	console.log(data);
 	console.log(data1);
 		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
 	}
-
+	
 	$(function() {
-		$('.pagination button').click(function() {
+		$('.selectbutton button').click(function() {
 			var page;
-			if ($(this).text() == '이전') {
-				page = ${prePage};
-				location.href = "mygjoklist.do?page=" + page;
-			} else if ($(this).text() == '다음') {
-				page = ${nextPage};
-				location.href = "mygjoklist.do?page=" + page;
+			if ($(this).text() == '진행') {
+				location.href = "mygjoklist.do?mode=ing&page=1"
+			} else if ($(this).text() == '완료') {
+				location.href = "mygjoklist.do?mode=ok&page=1"
+			} else if ($(this).text() == '취소') {
+				location.href = "mygjoklist.do?mode=cancel&page=1";
 			} else {
-				page = $(this).text();
-				location.href = "mygjoklist.do?page=" + page;
+				location.href = "mygjoklist.do?mode=all&page=1"
 			}
-
 			return false;
 		});
-
-		/* $('.doc_list_content').click(function(){
-			var doc_num = $('.doc_list_content a').text();
-				location.href="mygjoklist.do?doc_num="+doc_num;
-		}); */
-		//문서번호도 보내야함
+	
+		
+		$('.pagination a').click(function(){
+			var page;
+			var mode = '${requestScope.mode}';
+			var selectPage = $(this).text().trim();
+			if(selectPage == '«'){   <%-- 시작페이지가 1인 경우 return--%>
+				if(${pb.startPage} != '1'){
+					page=${pb.startPage}-1;
+					location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+				}else{
+					return;	
+				}
+			}else if(selectPage == '»'){
+				if(${pb.endPage} != ${pb.totalPage}){  <%--총페이지와 끝페이지가 다르면 return--%>
+					return;
+				}else{
+					page=${pb.endPage}+1;
+					location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+				}
+			}else{
+				page = selectPage;
+				location.href = "mygjoklist.do?page=" + page + "&mode=" + mode;
+			}
+			
+		});
+		
 		$('.pagination a').each(function(index, element) {
 			if ($(element).text() == '${pb.currentPage}') {
 				$(element).addClass('active');

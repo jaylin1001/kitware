@@ -1,7 +1,6 @@
 package com.kitware.authorization.control;
 
 import java.io.IOException;
-
 import java.util.List;
 
 import javax.servlet.ServletException;
@@ -15,18 +14,9 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.board.vo.PageBean;
 import com.kitware.member.vo.Members;
 
-public class DocGJWaitController implements Controller {
+public class DocDeptListController implements Controller {
 	private DocSelectService service;
 	
-	public DocGJWaitController() {
-		super();
-	}
-	
-	public DocGJWaitController(DocSelectService service) {
-		super();
-		this.service = service;
-	}
-
 	public DocSelectService getService() {
 		return service;
 	}
@@ -34,6 +24,16 @@ public class DocGJWaitController implements Controller {
 	public void setService(DocSelectService service) {
 		this.service = service;
 	}
+
+	public DocDeptListController() {
+		super();
+	}
+
+	public DocDeptListController(DocSelectService service) {
+		super();
+		this.service = service;
+	}
+
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		HttpSession session = request.getSession();
@@ -41,10 +41,13 @@ public class DocGJWaitController implements Controller {
 		String emp_num = loginInfo.getEmp_num();
 		List<DocVO> list= null;
 		int totalCount;
+		String state;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
 		String mode = request.getParameter("mode");
+		String dept_num = loginInfo.getDept_num();
 		System.out.println("mode"+mode);
+		
 		
 		int intPage = 1;
 		if(page != null) {
@@ -63,13 +66,17 @@ public class DocGJWaitController implements Controller {
 				endPage = totalPage;
 			
 			if(mode.equals("ing")) {
-				list = service.findIng(emp_num, intPage);
+				state = "1";
+				list = service.selectDeptlist(dept_num, state, intPage);
 			}else if(mode.equals("ok")) {
-				list = service.selectOK(emp_num, intPage);
+				state = "2";
+				list = service.selectDeptlist(dept_num, state, intPage);
 			}else if(mode.equals("cancel")) {
-				list = service.selectCancle(emp_num, intPage);
+				state = "3";
+				list = service.selectDeptlist(dept_num, state, intPage);
 			}else if(mode.equals("all")){
-				list = service.selectAll(emp_num, intPage);
+				state = "1";
+				list = service.selectDeptlist(dept_num, state, intPage);
 			}
 			
 			PageBean<DocVO> pb = new PageBean<>();
@@ -80,10 +87,6 @@ public class DocGJWaitController implements Controller {
 			pb.setEndPage(endPage); //끝페이지
 			pb.setTotalCount(totalCount); //총 게시글 갯수
 			pb.setCntPerPage(cntPerPage);
-			/*System.out.println("현재페이지:"+intPage);
-			System.out.println("총페이지:"+totalPage);
-			System.out.println("시작페이지:"+startPage);
-			System.out.println("끝페이지:"+endPage);*/
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("mode", mode);
 			
@@ -95,7 +98,7 @@ public class DocGJWaitController implements Controller {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		String forwardURL = "/authorization/gj_wait_all.jsp";
+		String forwardURL = "/authorization/deptList.jsp";
 		return forwardURL;
 	}
 }

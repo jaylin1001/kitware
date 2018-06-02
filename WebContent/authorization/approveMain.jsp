@@ -37,6 +37,9 @@
       			 <c:when test="${doc0.doc_state eq '3'}">
       			 <td>취소</td>
       			 </c:when>
+      			 <c:otherwise>
+      			 <td>상신</td>
+      			 </c:otherwise>
       			 </c:choose>
 				<td>${doc0.doc_kindvo.doc_name}</td>
 		</tr>
@@ -68,6 +71,9 @@
 				<c:choose>
       			 <c:when test="${doc.doc_state eq '1'}">
       			 <td>진행</td>
+      			 </c:when>
+      			 <c:when test="${doc.doc_state eq '0'}">
+      			 <td>상신</td>
       			 </c:when>
       			 </c:choose>
 				<td>${doc.doc_kindvo.doc_name}</td>

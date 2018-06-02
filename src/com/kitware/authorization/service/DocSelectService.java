@@ -52,6 +52,22 @@ public class DocSelectService {
 		return dao.selectGJOk(conf_num, page);
 		
 	}
+	public List<DocVO> selectGJOk1(String conf_num, int page) throws Exception{
+		return dao.selectGJOk1(conf_num, page);
+		
+	}
+	public List<DocVO> selectGJOk2(String conf_num, int page) throws Exception{
+		return dao.selectGJOk2(conf_num, page);
+		
+	}
+	public List<DocVO> selectGJOk3(String conf_num, int page) throws Exception{
+		return dao.selectGJOk3(conf_num, page);
+		
+	}
+	
+	public List<DocVO> selectDeptlist(String dept_num, String state, int page) throws Exception{
+		return dao.selectDeptlist(dept_num, state, page);
+	}
 	public DocVO selectAll(String doc_num) throws Exception{
 		System.out.println(dao.selectAll(doc_num));
 		return dao.selectAll(doc_num);

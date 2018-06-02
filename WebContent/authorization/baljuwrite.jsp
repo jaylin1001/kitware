@@ -5,7 +5,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<%-- <jsp:include page="../container/header.jsp" flush="true"></jsp:include> --%>
 <%@ include file="../container/header.jsp"%>
 <%
    Members mb = (Members) session.getAttribute("loginInfo");
@@ -16,7 +15,7 @@ ${requstScope.loginInfo}
 <div class="center-block">
    <form class="form-group">
       <div class="title" align="center">
-         <h2>기안서 작성</h2>
+         <h2>발주서 작성</h2>
       </div>
       <div>
          <table class="table table-bordered">
@@ -49,7 +48,7 @@ ${requstScope.loginInfo}
             </tr>
             <tr>
                <th>문서종류</th>
-               <td>기안서</td>
+               <td>발주서</td>
             </tr>
             <tr>
                <th>기안일</th>
@@ -83,8 +82,11 @@ ${requstScope.loginInfo}
                   placeholder="제목입력" name="title"></td>
             </tr>
             <tr>
-               <td colspan="6"><textarea name="content" id="content"
-                     class="summernote" style="width: 100%"></textarea></td>
+               <td colspan="6">
+               <textarea name="content" id="content"
+                 class="summernote" style="width: 100%">
+                  <p style="text-align: center; "><br></p><table class="table table-bordered" style="text-align: center;"><tbody><tr><td>no</td><td>&nbsp; &nbsp; &nbsp; &nbsp;품명&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td><td>&nbsp;규격&nbsp; &nbsp;&nbsp;</td><td>단위</td><td>수량</td><td>단가&nbsp; &nbsp;</td><td>금액&nbsp; &nbsp;&nbsp;</td><td>비고&nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr><tr><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td><td><br></td></tr></tbody></table><p style="text-align: center;"><br></p><table class="table table-bordered"><tbody><tr><td><p style="text-align: center;">계</p></td><td style="text-align: center;">&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;</td><td style="text-align: center;">&nbsp; 금액</td><td style="text-align: right;">원</td></tr></tbody></table><p style="text-align: center;"><br></p>
+                 </textarea></td>
             </tr>
             <tr>
                <td colspan="6" align="center">
@@ -122,7 +124,7 @@ ${requstScope.loginInfo}
 
       $('#go').click(function() {
          $.ajax({
-            url :'docwritegian.do?kind=10',
+            url :'docwritegian.do?kind=30',
             method:'POST',
             data : {
                doc_num:$('input[name=doc_num]').val(),
@@ -139,7 +141,7 @@ ${requstScope.loginInfo}
             },
             success : function(data) {
                if(data==1){
-                  alert("기안서 제출 성공");
+                  alert("제출 성공");
                   location.href="/kitware_v1/doclist.do";
                }else if(data==-1){
                   alert("실-패");

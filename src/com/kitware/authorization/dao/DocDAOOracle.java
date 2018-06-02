@@ -7,6 +7,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.print.Doc;
+
 import com.kitware.authorization.vo.DocDetailVO;
 import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.authorization.vo.DocKindVO;
@@ -87,7 +89,7 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		String selectConfSQL = "select dd.conf_num ,dd.acs_yn, m.name" + " from doc_detail dd, members m"
-				+ " where m.emp_num =dd.conf_num" + " and dd.doc_num =?";
+				+ " where m.emp_num =dd.conf_num" + " and dd.doc_num =? order by dd.sunbeon";
 		List<DocDetailVO> doc_detaillist = new ArrayList<>();
 		DocDetailVO doc_detailvo = null; // doc_detail 데이터 담음
 
@@ -116,18 +118,23 @@ public class DocDAOOracle implements DocDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectGJWaitSQL = "select aa.*" + " from("
-				+ " select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
-				+ " mydocnum.start_date, mydocnum.doc_state, dk.doc_name" + " from(select doc.* from"
-				+ " (select d.*, dd.conf_num" + " from document d, doc_detail dd"
-				+ " where d.doc_num = dd.doc_num) doc," + " (select doc_num" + " from doc_detail"
-				+ " where conf_num = ?) myconf" + " where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
-				+ " (select a.doc_num from" + " (select doc_num, sunbeon, acs_yn" + " from doc_detail) a,"
-				+ " (select doc_num, sunbeon, conf_num, acs_yn" + " from doc_detail" + " where conf_num = ?) b"
-				+ " where a.doc_num = b.doc_num and a.sunbeon = b.sunbeon-1" + " and a.acs_yn = 1 and b.acs_yn = 0"
-				+ " or b.sunbeon=0 and b.conf_num = ?) preconf" + " where mydocnum.doc_num = preconf.doc_num"
-				+ " and mydocnum.conf_num = ?" + " and mydocnum.doc_kind = dk.doc_kind) aa"
-				+ " where r between ? and ?";
+		String selectGJWaitSQL = "select aa.* from("
+								+" select rownum r, mydocnum.doc_num, mydocnum.doc_kind, mydocnum.doc_title,"
+								+" mydocnum.start_date, mydocnum.doc_state, dk.doc_name"
+								+" from(select doc.* from"
+								+" (select d.*, dd.conf_num from document d, doc_detail dd"
+								+" where d.doc_num = dd.doc_num) doc,"
+								+" (select doc_num from doc_detail"
+								+" where conf_num = ?) myconf" 
+								+" where doc.doc_num = myconf.doc_num) mydocnum, doc_kind dk,"
+								+" (select distinct a.doc_num from (select doc_num, sunbeon, acs_yn from doc_detail) a,"
+								+" (select doc_num, sunbeon, conf_num, acs_yn from doc_detail where conf_num = ?) b"
+								+" where a.doc_num = b.doc_num and b.conf_num = ? and"
+								+" ((a.sunbeon = b.sunbeon-1 and a.acs_yn = 1 and b.acs_yn = 0) or (b.sunbeon=1 and b.acs_yn=0)))"
+								+" preconf where mydocnum.doc_num = preconf.doc_num"
+								+" and mydocnum.conf_num = ?"
+								+" and mydocnum.doc_kind = dk.doc_kind and mydocnum.doc_state !='3') aa"
+								+" where r between ? and ?";
 		List<DocVO> doclist = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null; // doc 데이터 담음
 		DocKindVO dock = new DocKindVO();// dockind 데이터 담음
@@ -171,7 +178,7 @@ public class DocDAOOracle implements DocDAO {
 		ResultSet rs = null;
 
 		String selectOkSQL = "select d.start_date, d.doc_kind, d.doc_title, d.doc_num, d.doc_state, dk.doc_name"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 1"
+				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state in('0','1')"
 				+ " and d.emp_num = ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
@@ -208,7 +215,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectIngSQL = "select b.*" + " from ("
 				+ " select rownum r, d.start_date, d.doc_kind, d.doc_title, d.doc_num, d.doc_state, dk.doc_name"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state =1"
+				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state in('0','1')"
 				+ " and d.emp_num = ?" + " order by doc_num desc) b" + " where r between ? and ?";
 
 		List<DocVO> doclist = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
@@ -284,7 +291,9 @@ public class DocDAOOracle implements DocDAO {
 		}
 		return doclist;
 	}
-
+	
+	
+	
 	@Override
 	public List<DocVO> selectOk(String emp_num) throws Exception { // 내가올린거 상태 완료인 문서 list로 뿌려주는 select
 
@@ -292,9 +301,10 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -327,9 +337,12 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 2"
-				+ " and d.emp_num = ?";
+		String selectOkSQL = "select b.* from("
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ? and acs_yn = 1"
+				+" and d.doc_state = 2) b"
+				+" where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -337,11 +350,12 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectOkSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -368,9 +382,11 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectSQL = "select d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
-				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 3"
-				+ " and d.emp_num = ?";
+		String selectSQL = "select b.* from("
+				+" select rownum r, d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
+				+" from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 3"
+				+" and d.emp_num = ?) b" 
+				+" where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -378,11 +394,11 @@ public class DocDAOOracle implements DocDAO {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectSQL);
 			pstmt.setString(1, emp_num);
-			/*
-			 * int cntPerPage=5;//1페이지별 5건씩 보여준다 int endRow=cntPerPage * page; int
-			 * startRow=endRow-cntPerPage+1; pstmt.setInt(1, startRow); pstmt.setInt(2,
-			 * endRow); 위에 쿼리 수정해야 먹음
-			 */
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				docvo2 = new DocVO();
@@ -412,7 +428,7 @@ public class DocDAOOracle implements DocDAO {
 		String selectExpectedSQL = "select b.*" + " from("
 				+ " select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn = 0) b"
+				+ " and d.doc_kind = dk.doc_kind" + " and dd.conf_num = ?" + " and dd.acs_yn = 0 and d.doc_state !=3) b"
 				+ " where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
@@ -455,7 +471,7 @@ public class DocDAOOracle implements DocDAO {
 		String selectGJOkSQL = "select b.*" + " from("
 				+ " select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn = 1) b"
+				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn in(1,3)) b"
 				+ " where r between ? and ?";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
@@ -487,6 +503,180 @@ public class DocDAOOracle implements DocDAO {
 		}
 		return doclist2;
 	}
+	@Override
+	public List<DocVO> selectGJOk3(String conf_num, int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectGJOkSQL = "select b.* from("
+				+" select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
+				+" and d.doc_kind = dk.doc_kind and conf_num = ?"
+				+" and acs_yn in(1,3) and doc_state = 3) b"
+				+" where r between ? and ?";
+		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
+		DocVO docvo2 = null; // doc 데이터 담음
+		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectGJOkSQL);
+			pstmt.setString(1, conf_num);
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo2 = new DocVO();
+				docvo2.setDoc_num(rs.getString("doc_num"));
+				docvo2.setDoc_title(rs.getString("doc_title"));
+				docvo2.setDoc_state(rs.getString("doc_state"));
+				docvo2.setStart_date(rs.getString("start_date"));
+				dock2 = new DocKindVO(docvo2.getDoc_kind(), rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				docvo2.setDoc_kindvo(dock2);
+				doclist2.add(docvo2);
+			}
+			
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return doclist2;
+	}
+	@Override
+	public List<DocVO> selectGJOk2(String conf_num, int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectGJOkSQL = "select b.*" + " from("
+				+ " select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
+				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn = 1 and d.doc_state =2) b"
+				+ " where r between ? and ?";
+		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
+		DocVO docvo2 = null; // doc 데이터 담음
+		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectGJOkSQL);
+			pstmt.setString(1, conf_num);
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo2 = new DocVO();
+				docvo2.setDoc_num(rs.getString("doc_num"));
+				docvo2.setDoc_title(rs.getString("doc_title"));
+				docvo2.setDoc_state(rs.getString("doc_state"));
+				docvo2.setStart_date(rs.getString("start_date"));
+				dock2 = new DocKindVO(docvo2.getDoc_kind(), rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				docvo2.setDoc_kindvo(dock2);
+				doclist2.add(docvo2);
+			}
+			
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return doclist2;
+	}
+	@Override
+	public List<DocVO> selectGJOk1(String conf_num, int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectGJOkSQL = "select b.*" + " from("
+				+ " select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
+				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn = 1 and d.doc_state =1) b"
+				+ " where r between ? and ?";
+		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
+		DocVO docvo2 = null; // doc 데이터 담음
+		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectGJOkSQL);
+			pstmt.setString(1, conf_num);
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(2, startRow);
+			pstmt.setInt(3, endRow);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo2 = new DocVO();
+				docvo2.setDoc_num(rs.getString("doc_num"));
+				docvo2.setDoc_title(rs.getString("doc_title"));
+				docvo2.setDoc_state(rs.getString("doc_state"));
+				docvo2.setStart_date(rs.getString("start_date"));
+				dock2 = new DocKindVO(docvo2.getDoc_kind(), rs.getString("doc_name"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				docvo2.setDoc_kindvo(dock2);
+				doclist2.add(docvo2);
+			}
+			
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return doclist2;
+	}
+	@Override
+	public List<DocVO> selectDeptlist(String dept_num ,String state, int page) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectDeptlistSQL = "select a.* from("
+						+" select rownum r, d.doc_num, d.doc_kind , dk.doc_name, d.doc_title, d.doc_state, d.start_date"
+						+" from document d, members m, doc_kind dk"
+						+" where d.emp_num = m.emp_num"
+						+" and d.doc_kind = dk.doc_kind"
+						+" and m.dept_num = ?"
+						+" and d.doc_state in(?)) a"
+						+" where r between ? and ?";
+		List<DocVO> doclist2 = new ArrayList<>();
+		DocVO docvo2 = null; // doc 데이터 담음
+		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectDeptlistSQL);
+			pstmt.setString(1, dept_num);
+			pstmt.setString(2, state);
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * page;
+			int startRow = endRow - cntPerPage + 1;
+			pstmt.setInt(3, startRow);
+			pstmt.setInt(4, endRow);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo2 = new DocVO();
+				docvo2.setDoc_num(rs.getString("doc_num"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				docvo2.setDoc_title(rs.getString("doc_title"));
+				docvo2.setDoc_state(rs.getString("doc_state"));
+				docvo2.setStart_date(rs.getString("start_date"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				dock2 = new DocKindVO(docvo2.getDoc_kind(), rs.getString("doc_name"));
+				docvo2.setDoc_kindvo(dock2);
+				doclist2.add(docvo2);
+			}
+
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return doclist2;
+
+	}
+
+
+	
 
 	@Override
 	public void updateCJ1(DocGiganVO docvo, String doc_num) throws Exception {
@@ -572,7 +762,6 @@ public class DocDAOOracle implements DocDAO {
 				num = rs.getString(1);
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			MyConnection.close(rs, pstmt, con);
@@ -640,13 +829,14 @@ public class DocDAOOracle implements DocDAO {
 		System.out.println("document");
 		Connection conn = con;
 		PreparedStatement pstmt = null;
-		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
-				+ "values(?,10,?,0,?,to_nclob(?),?,?)";
+		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, dept_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
+				+ "values(?,?,?,0,?,to_nclob(?),?,?)";
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(insertgianSQL);
 			int index = 0;
 			pstmt.setString(++index, giandoc.getDoc_num());
+			pstmt.setInt(++index, giandoc.getDoc_kind());
 			pstmt.setString(++index, giandoc.getEmp_num());
 			pstmt.setString(++index, giandoc.getDoc_title());
 			pstmt.setString(++index, giandoc.getDoc_content());
@@ -754,4 +944,20 @@ public class DocDAOOracle implements DocDAO {
 			MyConnection.close(rs, pstmt, con);
 		}
 	}
+	public static void main(String[] args) {
+		DocDAOOracle test = new DocDAOOracle();
+		try {
+			DocVO list = test.selectAll("1806-0001");
+			System.out.println(list);
+			List<DocVO> list2 = test.selectIng("1");
+			System.out.println(list2);
+			List<DocVO> list3 = test.selectDeptlist("100", "1,2,3", 1);
+			System.out.println("list"+list3);
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		} 
+	}
+
+	
 }

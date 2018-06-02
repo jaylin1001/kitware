@@ -38,11 +38,11 @@ public class DocWriteGianController implements Controller {
    public String execute(HttpServletRequest request, HttpServletResponse response)
          throws ServletException, IOException {
       List<DocDetailVO> list = new ArrayList<>();
-      
       HttpSession session = request.getSession();
       Members member = (Members) session.getAttribute("loginInfo");
       String doc_num = request.getParameter("doc_num").trim();
       String emp_num = member.getEmp_num();
+      int doc_kind = Integer.parseInt(request.getParameter("kind"));
       String date = request.getParameter("date").trim();
       String dept = request.getParameter("dept").trim();
       String title = request.getParameter("title").trim();
@@ -53,7 +53,9 @@ public class DocWriteGianController implements Controller {
       String g2 = request.getParameter("g2").trim();
       String g3_grade = request.getParameter("g3_grade").trim();
       String g3 = request.getParameter("g3");
-      System.out.println(g1+g2);
+      System.out.println(g1+g2); 
+      System.out.println(doc_kind); 
+      
       try {
          if (g1_grade.length() > 0) {
             DocDetailVO docdetail = new DocDetailVO();
@@ -78,6 +80,7 @@ public class DocWriteGianController implements Controller {
          DocVO giandoc = new DocVO();
          giandoc.setDoc_num(doc_num);
          giandoc.setEmp_num(emp_num);
+         giandoc.setDoc_kind(doc_kind);
          giandoc.setStart_date(date);
          giandoc.setRcv_dept(dept);
          giandoc.setDoc_title(title);
@@ -85,6 +88,7 @@ public class DocWriteGianController implements Controller {
          giandoc.setDoc_detail(list);
 
          service.insertgian(giandoc);
+         System.out.println(giandoc.getDoc_kind());
          request.setAttribute("result", 1);
       } catch (Exception e) {
          e.printStackTrace();
