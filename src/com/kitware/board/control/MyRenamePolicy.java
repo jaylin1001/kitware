@@ -17,7 +17,7 @@ public class MyRenamePolicy implements FileRenamePolicy {
 		String oName = origin.getName();		
 		//File newFile = new File(oName+"_");  
 		//return newFile;
-		int index = oName.indexOf(".");
+		int index = oName.lastIndexOf(".");
 		if( index < 0) {
 			return null;
 		}else {

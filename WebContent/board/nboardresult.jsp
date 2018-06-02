@@ -35,6 +35,9 @@
 				<td class="hit">${b.hit}</td>
 				<td hidden="hidden" class="seq" id="seq">${b.seq}</td>
 				<td hidden="hidden" class="content">${b.content}</td>
+				<td hidden="hidden" class="originFName">${b.originFileName}</td>
+				<td hidden="hidden" class="saveFName">${b.saveFileName}</td>
+				<td hidden="hidden" class="path">${b.path}</td>		
 			  </tr>
 		   </c:forEach>
 		</tbody>
@@ -118,9 +121,15 @@
 		<%-- 글 상세보기 및 조회수 증가--%>
 		$('tbody>tr a.title').click(function(path,method){
 			<%-- 조회수 증가 시키는 부분--%>
+			var formData = new FormData();
+			formData.append("hitseq",$(this).parent().siblings().eq(4).text());
 			$.ajax({
 				url:'${pageContext.request.contextPath}/boardedit.do',
-				data:{"hitseq":$(this).parent().siblings().eq(4).text()},
+				data: formData,
+				enctype:'multipart/form-data',
+				processData: false,  <%--파일 업로드시 필요하다.--%>
+		        contentType: false,   <%--파일 업로드시 필요하다.--%>
+		        cache: false,
 				type: 'post',
 				success:function(data){
 				}
@@ -172,6 +181,17 @@
 			hiddenField.setAttribute("value",$(this).parent().siblings().eq(5).html());
 			$form.append(hiddenField);
 			
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "originFName");
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(6).text());
+			$form.append(hiddenField);
+			
+			var hiddenField = document.createElement("input");
+			hiddenField.setAttribute("type", "hidden");
+			hiddenField.setAttribute("name", "path");
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(8).text());
+			$form.append(hiddenField);
 			
 			$(document.body).append($form);  <%--동적으로 만든 form을 document.body에 append--%>
 

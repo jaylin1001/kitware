@@ -1,12 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
-<div id="div1"></div>
 <div class="container">
 	<h3 class="write">글 수정</h3>
 	<div class="col-lg-12 write">
 		<div class="row">
-			<form>
+			<form method="post" enctype="multipart/form-data">
 				<div class="col-sm-12">
 					<div class="row">
 						<div class="col-sm-7 form-group">
@@ -19,20 +18,23 @@
 					</div>
 
 					<div id="summernote">
-						<textarea hidden="hidden" name="content"></textarea>
 					</div>
-					<input class="seq" type = "text" hidden="hidden" name="seq" value="${param.seq}">
+						<textarea hidden="hidden" name="content"></textarea>
+						<input class="seq" type = "text" hidden="hidden" name="seq" value="${param.seq}">
 				</div>
 				
-				<div class="col-sm-4 form-group">
-					<label>첨부파일</label>
-					<button type="button">...</button>
-					&nbsp; <input type="text" class="form-control">
-					<div>
-						<input type="button" class="btn btn-primary update" value="저장">
-						<input type="button" class="btn btn-primary delete" value="삭제">
-						<button type="button" class="btn btn-primary">취소</button>
-					</div>
+				<div class="col-sm-5 form-group fileupload">
+					<label>변경할 첨부파일</label>
+					<input type="file" class="form-control-file" name="file1"><br>
+					<c:if test="${!empty param.originFName}">
+						<label>기존에 첨부된 파일</label>
+						<input type="text" name="preFName" class="form-control" readonly="readonly" value="${param.originFName}">
+					</c:if>
+				</div>
+				<div class="col-lg-12">
+					<button type="submit" class="btn btn-primary update">저장</button>
+					<input type="button" class="btn btn-primary delete" value="삭제">
+					<button type="button" class="btn btn-primary">취소</button>
 				</div>
 			</form>
 
@@ -40,7 +42,6 @@
 		
 	</div>
 </div>
- <!-- Modal -->
   <div class="modal fade" id="myModal" role="dialog">
     <div class="modal-dialog modal-sm">
       <!-- Modal content-->
@@ -61,12 +62,19 @@
   </div>
   
 
-
+<style>
+.container{
+	padding:20px;
+}
+h3{
+	padding:12px;
+}
+.fileupload{
+	padding:15px;
+	margin-bottom: 15px;
+}
+</style>
 <script>
-	//board 에서 클릭한 글번호 가져올것
-	//그 글번호로 DB에서 select 해 데이터 가져온 후 뿌려줘야함 
-	//수정시 본인이 쓴거 아니면 수정 안됨
-
 	$(function() {
 		$(document).ready(function() {
 			<%-- 섬머노트 관련 부분--%>
@@ -81,14 +89,26 @@
 		});
 		
 		<%-- 수정버튼을 눌렀을 때 게시글을 수정한다.--%>
-		$('input.update').click(function() {
+		$('button[type=submit]').click(function() {
 			var markupStr = $('#summernote').summernote('code').trim();
+			console.log(markupStr);
 		    $('textarea').text(markupStr);
-			
-			$.ajax({
+		    
+		    <%-- ajax Form 전송시 multipart/form-data를 사용하기 위해서 선언.--%>
+		    var formData = new FormData();
+	  	  	formData.append("title", $("input[name=title]").val());
+	  	    formData.append("content", $('textarea[name=content]').text());
+	  	    formData.append("seq",$('input[name=seq]').val());
+	  	 	formData.append("file1", $("input[name=file1]")[0].files[0]);
+		
+	  	 	$.ajax({
 				  url: '${pageContext.request.contextPath}/boardedit.do',
 				  type:'post',
-				  data:$('form').serialize(),
+				  enctype:'multipart/form-data',
+				  processData: false,  <%--파일 업로드시 필요하다.--%>
+		          contentType: false,   <%--파일 업로드시 필요하다.--%>
+		          cache: false,
+				  data:formData,
 				  success:function(data){
 					  var result = data.trim();
 					  if(result == '1'){
@@ -131,5 +151,4 @@
 	console.log($('div#menutab li.'+className));
 	$('ul#side-menu').find('li.' + className).show();
 </script>
-<style>
 <%@ include file="../container/footer.jsp"%>

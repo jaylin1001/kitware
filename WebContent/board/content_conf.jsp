@@ -1,3 +1,4 @@
+<%@page import="java.io.File"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
@@ -20,14 +21,15 @@ button {
 	margin: 4px 2px;
 	cursor: pointer;
 }
+.outtable{
+	padding:20px;
+}
 </style>
 
 </head>
 <body>
 	<div>
-		<div class="title" align="center">
-		</div>
-		<div class="table">
+		<div class="outtable">
 			<table class="table table-bordered">
 				
 				<tr>
@@ -53,14 +55,12 @@ button {
 			<table class="table table-bordered">
 				<tr>
 					<th>첨부파일</th>
-					<td colspan="5"><input type="text">
-
-						<button>첨부파일</button></td>
+					<td colspan="5">
+						<a href="#" class="${param.path}">${param.originFName}</a>
+					</td>
 				</tr>
 			</table>
-			<div>
-				<br>
-			</div>
+			<br>
 			<tr>
 				<td colspan="6" align="center">
 					<button class="btn_edit" style="display:none;" >수정</button>
@@ -70,11 +70,16 @@ button {
 				</td>
 			</tr>
 		</div>
+		
+		<form id="formDownload">
+		  <input name="path" type="hidden">
+		  <input name="originFName" type="hidden">
+		</form>
 	</div>
 	<c:set var="loginInfo" value="${sessionScope.loginInfo}"/>
 	<script>
 		$(function() {
-			<%-- 본인이 쓴 글에만 수정 버튼을 보이게 한다.--%>
+			<%-- 관리자 아이디 일때만 수정 버튼을 보이게 한다.--%>
 			if($('td.writer').text() == "${loginInfo.name}"){
 				$('button.btn_edit').css("display","inline-block");  <%--처음에 display:non >> display:inline-block으로 바꾼다.--%>
 			}
@@ -113,12 +118,32 @@ button {
 				hiddenField.setAttribute("value",$('td.content').html());
 				$form.append(hiddenField);
 				
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "originFName");
+				hiddenField.setAttribute("value",$('td>a').text());
+				$form.append(hiddenField);
+				
 				
 				$(document.body).append($form);  <%--동적으로 만든 form을 document.body에 append--%>
 
 				$form.submit();
 				
 				return false;
+			});
+			
+			<%-- 첨부파일 클릭했을 때--%>
+			$('td>a').click(function(){
+				var classValue = $(this).attr("class").trim();
+				var textValue = $(this).text();
+				
+				$('#formDownload>input[name=path]').val(classValue);
+				$('#formDownload>input[name=originFName]').val(textValue);
+				$formObj = $("#formDownload");
+				$formObj.attr('action','${pageContext.request.contextPath}/boarddown.do');
+				$formObj.attr('method', 'post');
+				$formObj.submit();
+				
 			});
 		});
 		var className = 'board';
