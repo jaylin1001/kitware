@@ -829,7 +829,7 @@ public class DocDAOOracle implements DocDAO {
 		System.out.println("document");
 		Connection conn = con;
 		PreparedStatement pstmt = null;
-		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, dept_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
+		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
 				+ "values(?,?,?,0,?,to_nclob(?),?,?)";
 		int result = 0;
 		try {

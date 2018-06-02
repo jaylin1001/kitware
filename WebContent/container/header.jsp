@@ -1,6 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
+<c:set var="doclist" value="${requestScope.doc_list}"></c:set>
+<c:set var="schelist" value="${requestScope.schedule}"></c:set>
 <%
 	String root = "/kitware_50101526/WebContent/";
 %>
@@ -88,7 +91,7 @@
 				location.href="${pageContext.request.contextPath}/doclist.do";
 					break;
 			case 'home' :
-				location.href='${pageContext.request.contextPath}/home/home.jsp';
+				location.href='${pageContext.request.contextPath}/mainview.do';
 				break;
 			} 
 			
@@ -215,8 +218,7 @@ div.navbar-header> a.logout{
 <body>
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top"
-			style="margin-bottom: 0">
+		<nav class="navbar navbar-default navbar-static-top">
 			<div class="navbar-header">
 				<a class="navbar-brand" href="${pageContext.request.contextPath}/home/home.jsp">KIT Ware</a>
 				<a class="navbar-brand logout" href="#">Logout</a>
@@ -243,13 +245,29 @@ div.navbar-header> a.logout{
 			</div>
 
 			<div class="sidebar">
+			<div>
+					<div style ="padding-left:15px; width: 50%; float:left">
+					<img src="${pageContext.request.contextPath}/img/lee.jpg" width="100" height="100"></div>
+					<div style = "padding-left:15px; width: 50%; float:left;">
+					<h3>${sessionScope.loginInfo.name}</h3><h5>${sessionScope.loginInfo.gradeinfo.position_name}
+					<br>${sessionScope.loginInfo.deptinfo.dept_name}
+					</h5><br>
+					</div>
+					</div>
+					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">결재할 문서:&nbsp; &nbsp; 
+					&nbsp;${fn:length(doclist)}</a>
+					
+					<div>&nbsp;</div>
+					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정"
+					onclick="window.open(this.href, '_blank', 'width=300,height=400,toolbars=no,scrollbars=no'); return false;">오늘의 일정:&nbsp; &nbsp; &nbsp;${fn:length(schelist)}</a>
+					<hr>
 				<div class="sidebar-nav navbar-collapse">
-				
 					<ul class="nav" id="side-menu">
-					<li class="home"><a href="#">홈<span class="fa arrow"></span></a>
+					<li class="home">
+					<a href="#">빠른메뉴<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li><a href="#">문서작성</a></li>
-								<li><a href="#">일정추가</a></li>
+								<li><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">문서작성</a></li>
+								<li><a href="${pageContext.request.contextPath}/schedule/scheduleadd.jsp">일정추가</a></li>
 							</ul></li>
 						<li class="authorization"><a href="#">결재문서함<span
 								class="fa arrow"></span></a>
@@ -258,8 +276,10 @@ div.navbar-header> a.logout{
 								<li class = "gj_exp"><a href="${pageContext.request.contextPath}/gjexpectlist.do?exp=ex">결재예정</a></li>
 								<li class = "gj_ok"><a href="${pageContext.request.contextPath}/gjoklist.do?exp=ok">결재완료</a></li>
 							</ul></li>
+							
 						<li class="authorization"><a href="#">개인문서함<span
 								class="fa arrow"></span></a>
+								
 							<ul class="nav nav-second-level">
 								<li class = "gian_list"><a href="${pageContext.request.contextPath}/gjwaitlist.do?mode=all&page=1">기안문서함</a></li>
 								<li class = "gj_list"><a href="${pageContext.request.contextPath}/mygjoklist.do?mode=all&page=1">결재문서함</a></li>
@@ -277,7 +297,7 @@ div.navbar-header> a.logout{
 								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
 							</ul></li>
-						
+						<div>&nbsp;</div>
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>
 							<a href="#" id="schcompany">회사일정</a> <a href="#" id="schtotal">전체일정</a></li>
 
