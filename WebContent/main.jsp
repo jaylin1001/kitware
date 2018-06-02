@@ -23,7 +23,7 @@
 			location.href="${pageContext.request.contextPath}/boardlist.do";
 		}
 		else if(className=='home'){
-			location.href="${pageContext.request.contextPath}/home/home.jsp";
+			location.href="${pageContext.request.contextPath}/mainview.do";
 		}else{
 			 location.href=className+"/"+className+".jsp"; 
 		}
