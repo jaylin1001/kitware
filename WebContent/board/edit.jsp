@@ -89,7 +89,7 @@ h3{
 		});
 		
 		<%-- 수정버튼을 눌렀을 때 게시글을 수정한다.--%>
-		$('button[type=submit]').click(function() {
+		$('button.update').click(function() {
 			var markupStr = $('#summernote').summernote('code').trim();
 			console.log(markupStr);
 		    $('textarea').text(markupStr);
@@ -132,7 +132,7 @@ h3{
 			$.ajax({
 				url: '${pageContext.request.contextPath}/boardedit.do',
 				type: 'get',
-				data:{"seq":$('input.seq').val()},
+				data:{"delseq":$('input.seq').val()},
 				success:function(data){
 					var result = data.trim();
 					  if(result == '1'){
@@ -143,6 +143,7 @@ h3{
 				}
 			});
 			$('#myModal').modal('toggle');
+			return false;
 		});
 		
 	});

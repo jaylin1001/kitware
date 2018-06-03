@@ -19,6 +19,11 @@ public class BoardEditController implements Controller {
 	private BoardService service;
 	private String saveFileName;
 	private String originFileName;
+	private File file1;
+	private String hitseq;
+	private String seq;
+	private String title;
+	private String content;
 
 	public BoardEditController() {
 	}
@@ -36,39 +41,43 @@ public class BoardEditController implements Controller {
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
 		String saveDirectory = "D:\\apache-tomcat-8.5.30\\webapps\\upload";
-
+		String delseq = request.getParameter("delseq");
+		
 		NoticeBoard noticeBoard = new NoticeBoard();
-		// 파일첨부
-		MultipartRequest mr;
+		
 		int maxPostSize = 1024 * 2000000;
 		String encoding = "UTF-8";
 
 		// 객체가 생성됨과 동시에 파일업로드가 이루어짐.
-		mr = new MultipartRequest(request, saveDirectory, maxPostSize, encoding, new MyRenamePolicy());
-		File file1 = mr.getFile("file1"); //저장된 파일
-		if(file1 != null) {//새롭게 변경할 파일이 있다면
-			saveFileName = file1.getName();
-			int indexExt = saveFileName.lastIndexOf(".");
-			int index_ = saveFileName.lastIndexOf("_");
-			String ext = saveFileName.substring(indexExt); // .txt , .jpg  확장자
-			String fileName = saveFileName.substring(0, index_); // 확장자 없는 원본 파일명
-			originFileName = fileName+ext;
-			noticeBoard.setOriginFileName(originFileName);
-			noticeBoard.setSaveFileName(saveFileName);
-			noticeBoard.setPath(saveDirectory+"\\"+saveFileName);	
+		if(delseq == null) {
+			// 파일첨부
+			MultipartRequest mr;
+			mr = new MultipartRequest(request, saveDirectory, maxPostSize, encoding, new MyRenamePolicy());
+			file1 = mr.getFile("file1");
+			if(file1 != null) {//새롭게 변경할 파일이 있다면
+				saveFileName = file1.getName();
+				int indexExt = saveFileName.lastIndexOf(".");
+				int index_ = saveFileName.lastIndexOf("_");
+				String ext = saveFileName.substring(indexExt); // .txt , .jpg  확장자
+				String fileName = saveFileName.substring(0, index_); // 확장자 없는 원본 파일명
+				originFileName = fileName+ext;
+				noticeBoard.setOriginFileName(originFileName);
+				noticeBoard.setSaveFileName(saveFileName);
+				noticeBoard.setPath(saveDirectory+"\\"+saveFileName);	
+			}
+			hitseq = mr.getParameter("hitseq");
+			seq = mr.getParameter("seq");
+			title = mr.getParameter("title");
+			content = mr.getParameter("content");
+			noticeBoard.setSeq(seq);
+			noticeBoard.setTitle(title);
+			noticeBoard.setContent(content);
 		}
 		
-		String hitseq = mr.getParameter("hitseq");
-		String seq = mr.getParameter("seq");
-		String title = mr.getParameter("title");
-		String content = mr.getParameter("content");
-
-		noticeBoard.setSeq(seq);
-		noticeBoard.setTitle(title);
-		noticeBoard.setContent(content);
+		
 		try {
-			if (title == null && content == null) {
-				service.deleteNoticeBoard(seq);
+			if (delseq != null) {
+				service.deleteNoticeBoard(delseq);
 			}else {
 				if(file1 == null){ //새로 등록한 파일이 없을 때는 제목,내용만 수정
 					service.updateNoticeBoard(noticeBoard);
@@ -82,6 +91,7 @@ public class BoardEditController implements Controller {
 			if (hitseq != null) {
 				service.updateHit(hitseq);
 			}
+			
 			request.setAttribute("result", "1");
 		} catch (Exception e) {
 			e.printStackTrace();
