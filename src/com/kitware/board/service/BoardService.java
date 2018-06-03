@@ -46,4 +46,12 @@ public class BoardService {
 	public void updateNoticeBoardFile(NoticeBoard noticeBoard) throws Exception{
 		dao.updateNoticeBoardFile(noticeBoard);
 	}
+	//이전글찾기
+	public NoticeBoard findPre(String seq) throws Exception{
+		return dao.selectPrePost(seq);
+	}
+	//다음글찾기
+	public NoticeBoard findNext(String seq) throws Exception {
+		return dao.selectNextPost(seq);
+	}
 }

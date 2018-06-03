@@ -21,4 +21,8 @@ public interface BoardDAO {
 	void updateHit(String hitseq) throws Exception;
 	//글 수정시 파일 변화 있는 게시물 업데이트
 	void updateNoticeBoardFile(NoticeBoard noticeBoard) throws Exception;
+	//이전글 가져오기
+	NoticeBoard selectPrePost(String seq) throws Exception;
+	//다음글 가져오기
+	NoticeBoard selectNextPost(String seq) throws Exception;
 }

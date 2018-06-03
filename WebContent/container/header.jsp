@@ -156,6 +156,10 @@
 				}
 			});
 		});
+		//게시판 공지사항 눌렀을 때
+		$('.nav>li.noticeBoard').click(function(){
+			location.href="${pageContext.request.contextPath}/boardlist.do";
+		});
 		
 		
 		//로그아웃 버튼 누른다.
@@ -291,7 +295,7 @@ div.navbar-header> a.logout{
 						
 						<li class="board"><a href="#">게시판<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li><a href="#">공지사항</a></li>
+								<li class="noticeBoard"><a href="#">공지사항</a></li>
 								<li><a href="#">부서공지</a></li>
 							</ul></li>
 							

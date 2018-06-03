@@ -151,13 +151,12 @@ public class BoardDAOOracle implements BoardDAO {
 	public void updateHit(String hitseq) throws Exception {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		
-		String deleteNBSQL = "update notice_board " + 
+		String updateHitSQL = "update notice_board " + 
 				"set hit = hit + 1 " + 
 				"where seq = ?";
 		try {
 			con = MyConnection.getConnection();
-			pstmt = con.prepareStatement(deleteNBSQL);
+			pstmt = con.prepareStatement(updateHitSQL);
 			pstmt.setString(1, hitseq);
 			pstmt.executeUpdate();
 		}finally {
@@ -191,6 +190,84 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 		
 	}
+	//이전글 찾기
+	@Override
+	public NoticeBoard selectPrePost(String seq) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectPreSQL="select seq,emp_num,name,title,content,hit,to_char(log_time,'yyyy-mm-dd hh24:mi') log_time ,originfilename,savefilename , path\r\n" + 
+				"from notice_board\r\n" + 
+				"where seq = (select pre_seq from\r\n" + 
+				"            (\r\n" + 
+				"            select seq,\r\n" + 
+				"            lag(seq,1,0) over (order by seq) pre_seq " + 
+				"            from notice_board\r\n" + 
+				"            )\r\n" + 
+				"            where seq= ?)";
+		NoticeBoard nb = new NoticeBoard();
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectPreSQL);
+			pstmt.setString(1, seq);
+			rs = pstmt.executeQuery();		
+			while(rs.next()) {
+				nb.setSeq(rs.getString("seq"));
+				nb.setEmp_num(rs.getString("emp_num"));
+				nb.setName(rs.getString("name"));
+				nb.setTitle(rs.getString("title"));
+				nb.setContent(rs.getString("content"));
+				nb.setHit(rs.getString("hit"));
+				nb.setLog_time(rs.getString("log_time"));
+				nb.setOriginFileName(rs.getString("originfilename"));
+				nb.setSaveFileName(rs.getString("savefilename"));
+				nb.setPath(rs.getString("path"));
+			}
+			return nb;
+		}finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);			
+		}
+	}
+	//다음글 찾기
+	@Override
+	public NoticeBoard selectNextPost(String seq) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectPreSQL="select seq,emp_num,name,title,content,hit,to_char(log_time,'yyyy-mm-dd hh24:mi') log_time ,originfilename,savefilename , path\r\n" + 
+				"from notice_board\r\n" + 
+				"where seq = (select next_seq from\r\n" + 
+				"            (\r\n" + 
+				"            select seq,\r\n" + 
+				"            lead(seq,1,0) over (order by seq) next_seq " + 
+				"            from notice_board\r\n" + 
+				"            )\r\n" + 
+				"            where seq= ?)";
+		NoticeBoard nb = new NoticeBoard();
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectPreSQL);
+			pstmt.setString(1, seq);
+			rs = pstmt.executeQuery();		
+			while(rs.next()) {
+				nb.setSeq(rs.getString("seq"));
+				nb.setEmp_num(rs.getString("emp_num"));
+				nb.setName(rs.getString("name"));
+				nb.setTitle(rs.getString("title"));
+				nb.setContent(rs.getString("content"));
+				nb.setHit(rs.getString("hit"));
+				nb.setLog_time(rs.getString("log_time"));
+				nb.setOriginFileName(rs.getString("originfilename"));
+				nb.setSaveFileName(rs.getString("savefilename"));
+				nb.setPath(rs.getString("path"));
+			}
+			return nb;
+		}finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);			
+		}
+	}
 	
 	//테스트용 main method
 	public static void main(String[] args) {
@@ -203,5 +280,8 @@ public class BoardDAOOracle implements BoardDAO {
 		}
 		
 	}
+
+
+
 
 }
