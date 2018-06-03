@@ -142,7 +142,7 @@
 
 
 			<tr>
-				<td colspan="6" align="center">상기와 같은 사유로 인하여 결간(병가)계를 제출하오니
+				<td colspan="6" align="center">상기와 같은 사유로 인하여 결근(병가)계를 제출하오니
 					재가바랍니다.</td>
 			</tr>
 			<tr>

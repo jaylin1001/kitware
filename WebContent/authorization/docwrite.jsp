@@ -48,7 +48,14 @@
             </tr>
             <tr>
                <th>문서종류</th>
-               <td>${ }</td>
+               <c:choose>
+               <c:when test="${param.doc_kind eq '10'}">
+               <td>기안서</td>
+               </c:when>
+               <c:otherwise>
+               <td>발주서</td>
+               </c:otherwise>
+               </c:choose>
             </tr>
             <tr>
                <th>기안일</th>

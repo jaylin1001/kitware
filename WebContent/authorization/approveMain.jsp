@@ -22,7 +22,7 @@
 			<td>문서 이름</td>
 		</tr>
 		</thead>
-		<c:forEach var="doc0" items="${list0}" begin="1" end="5">
+		<c:forEach var="doc0" items="${list0}" begin="0" end="4">
 		<tr>
 				<td>${doc0.start_date}</td>
 				<td><a href="javascript:functionrt(${doc0.doc_kind},'${doc0.doc_num}');">${doc0.doc_title}</a></td>
@@ -63,7 +63,7 @@
 			<td>문서 이름</td>
 		</tr>
 	</thead>
-		<c:forEach var="doc" items="${list}" begin="1" end="5">
+		<c:forEach var="doc" items="${list}" begin="0" end="4">
 			<tr>
 				<td>${doc.start_date}</td>
 				<td><a href="javascript:functionrt(${doc.doc_kind},'${doc.doc_num}');">${doc.doc_title}</a></td>
@@ -94,7 +94,7 @@
 			<td>문서 이름</td>
 		</tr>
 	</thead>
-		<c:forEach var="doc2" items="${list2}" begin="1" end="5">
+		<c:forEach var="doc2" items="${list2}" begin="0" end="4">
 			<tr>
 				<td>${doc2.start_date}</td>
 				<td><a href="javascript:functionrt(${doc2.doc_kind},'${doc2.doc_num}');">${doc2.doc_title}</a></td>

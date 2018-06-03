@@ -47,12 +47,13 @@ public class DocGJOkController implements Controller {
 			intPage = Integer.parseInt(page);
 		}
 		try {
-			List<DocVO> list = service.findOk(emp_num);
+			String state = "2";
+			List<DocVO> list = service.selectGJOk(emp_num, state);
 			int totalCount = list.size();
 			//총페이지수계산
 			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
-			int endRow = cntPerPage * intPage;
-			int startRow = endRow - cntPerPage + 1;
+			int endRow = (cntPerPage * intPage)-1;
+			int startRow = (endRow+1) - cntPerPage;
 			int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다

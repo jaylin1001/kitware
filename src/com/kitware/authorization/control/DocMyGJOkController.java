@@ -43,6 +43,7 @@ public class DocMyGJOkController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		List<DocVO> list= null;
+		String state = null;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
 		String mode = request.getParameter("mode");
@@ -51,20 +52,25 @@ public class DocMyGJOkController implements Controller {
 			try {
 			//게시물 총목록수
 				if(mode.equals("ing")) {
-					list = service.selectGJOk1(emp_num);
+					state = "1";
+					list = service.selectGJOk(emp_num, state);
 				}else if(mode.equals("ok")) {
-					list = service.selectGJOk2(emp_num);
+					state = "2";
+					list = service.selectGJOk(emp_num, state);
 				}else if(mode.equals("cancel")) {
-					list = service.selectGJOk3(emp_num);
+					state = "3";
+					list = service.selectGJOk(emp_num, state);
 				}else if(mode.equals("all")){
-					list = service.selectGJOk(emp_num);
+					list = service.selectGJOkAll(emp_num);
+					System.out.println(list);
 				}
+				
 			// 게시물 총목록수
 				int totalCount = list.size();
 				//총페이지수계산
 				int cntPerPage = 5;// 1페이지별 5건씩 보여준다
-				int endRow = cntPerPage * intPage;
-				int startRow = endRow - cntPerPage + 1;
+				int endRow = (cntPerPage * intPage)-1;
+				int startRow = (endRow+1) - cntPerPage;
 				int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 				//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 				int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다

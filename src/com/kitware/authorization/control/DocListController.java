@@ -39,7 +39,6 @@ public class DocListController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		System.out.println("로그인번호"+emp_num);
-		int page = 1;
 		
 		try {
 			List<DocVO> docvo_list0 = service.selectGJWait(emp_num);

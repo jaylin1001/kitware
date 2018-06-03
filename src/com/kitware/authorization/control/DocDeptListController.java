@@ -63,14 +63,13 @@ public class DocDeptListController implements Controller {
 				state = "3";
 				list = service.selectDeptlist(dept_num, state);
 			}else if(mode.equals("all")){
-				state = "1";
-				list = service.selectDeptlist(dept_num, state);
+				list = service.selectDeptlistAll(dept_num);
 			}
 			int totalCount = list.size();
 			//총페이지수계산
 			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
-			int endRow = cntPerPage * intPage;
-			int startRow = endRow - cntPerPage + 1;
+			int endRow = (cntPerPage * intPage)-1;
+			int startRow = (endRow+1) - cntPerPage;
 			int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
@@ -86,6 +85,7 @@ public class DocDeptListController implements Controller {
 			pb.setStartPage(startPage); //시작페이지
 			pb.setEndPage(endPage); //끝페이지
 			
+			request.setAttribute("mode", mode);
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("startRow", startRow);

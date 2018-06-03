@@ -52,19 +52,14 @@ public class DocReadController implements Controller {
 			List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
 			request.setAttribute("docvo_list", docvo_list);
 			request.setAttribute("doc_detail_list", doc_detail_list);
-			if (doc_kind.equals("10")) {
-				// 기안서
-				forwardURL = "/authorization/docread.jsp";
-			} else if (doc_kind.equals("30")) {
-				// 발주
-				forwardURL = "/authorization/docread.jsp";
-			}else if (doc_kind.equals("40")) {
+			if(doc_kind.equals("40")) {
 				// 출장
 				forwardURL = "/authorization/chuljangread.jsp";
 			} else if (doc_kind.equals("60")||doc_kind.equals("80")) {
 				// 병가
 				forwardURL = "/authorization/jotaeRead.jsp";
-			} else { //못가져올경우
+			} else { 
+				//기안, 품의, 발주
 				forwardURL = "/authorization/docread.jsp";
 			}
 		} catch (Exception e) {

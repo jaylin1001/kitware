@@ -18,6 +18,7 @@
 				<td>문서제목</td>
 				<td>문서번호</td>
 				<td>문서상태</td>
+				<td>문서이름</td>
 			</tr>
 		</thead>
 		<c:set var="list" value="${pb.list}" />
@@ -29,7 +30,21 @@
 				<td><a
 					href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a></td>
 				<td>${b.doc_num}</td>
-				<td>${b.doc_state}</td>
+				<c:choose>
+      			 <c:when test="${b.doc_state eq '1'}">
+      			 <td>진행</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '2'}">
+      			 <td>완료</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '3'}">
+      			 <td>취소</td>
+      			 </c:when>
+      			 <c:otherwise>
+      			 <td>상신</td>
+      			 </c:otherwise>
+      			 </c:choose>
+      			 <td>${b.doc_kindvo.doc_name}</td>
 			</tr>
 		</c:forEach>
 	</table>

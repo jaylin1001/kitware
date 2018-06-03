@@ -209,7 +209,7 @@ div.navbar-header> a.logout{
 					<li class="home">
 					<a href="#">빠른메뉴<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">문서작성</a></li>
+								<li><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian&doc_kind=10">문서작성</a></li>
 								<li><a href="${pageContext.request.contextPath}/schedule/scheduleadd.jsp">일정추가</a></li>
 							</ul></li>
 						<li class="authorization"><a href="#">결재문서함<span
@@ -233,12 +233,12 @@ div.navbar-header> a.logout{
 						<li class="authorization"><a href="#" id="write">결재문서작성<span
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">기안서</a></li>
-								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee">품의서</a></li>
-								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang">출장신청</a></li>
-								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga">병가신청</a></li>
-								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae">조퇴신청</a></li>
-								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
+								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian&doc_kind=10">기안서</a></li>
+								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee&doc_kind=20">품의서</a></li>
+								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju&doc_kind=30">발주서</a></li>
+								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang&doc_kind=40">출장신청</a></li>
+								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga&doc_kind=60">병가신청</a></li>
+								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae&doc_kind=80">조퇴신청</a></li>
 							</ul></li>
 						<div>&nbsp;</div>
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>

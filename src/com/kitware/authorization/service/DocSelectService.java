@@ -42,19 +42,16 @@ public class DocSelectService {
 		return dao.selectOk(emp_num);
 	}
 	
-	public List<DocVO> selectGJOk(String conf_num) throws Exception{
-		return dao.selectGJOk(conf_num);
+	public List<DocVO> selectGJOk(String conf_num, String state) throws Exception{
+		return dao.selectGJOk(conf_num, state);
 	}
-	public List<DocVO> selectGJOk1(String conf_num) throws Exception {
-		return dao.selectGJOk1(conf_num);
+	public List<DocVO> selectGJOkAll(String conf_num) throws Exception{
+		return dao.selectGJOkAll(conf_num);
 	}
-	public List<DocVO> selectGJOk2(String conf_num) throws Exception {
-		return dao.selectGJOk2(conf_num);
+
+	public List<DocVO> selectDeptlistAll(String dept_num) throws Exception{
+		return dao.selectDeptlistAll(dept_num);
 	}
-	public List<DocVO> selectGJOk3(String conf_num) throws Exception {
-		return dao.selectGJOk3(conf_num);
-	}
-	
 	public List<DocVO> selectDeptlist(String dept_num, String state) throws Exception{
 		return dao.selectDeptlist(dept_num, state);
 	}

@@ -21,7 +21,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${boardlist}" var="b" varStatus="status"
-			 begin="1" end="5">
+			 begin="0" end="4">
 			<tr>
 			<td>${b.seq}</td>
 			<td>${b.title}</td>
@@ -78,7 +78,7 @@
 		</thead>
 		<tbody>
 		<c:forEach items="${doclist}" var="doc" varStatus="status"
-		begin="1" end="5">
+		begin="0" end="4">
 			<tr>
 				<td>${doc.start_date}</td>
 				<td><a href="javascript:functionrt(${doc.doc_kind},'${doc.doc_num}');">${doc.doc_title}</a></td>

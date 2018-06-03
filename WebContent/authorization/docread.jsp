@@ -79,7 +79,7 @@
 				<c:set var="sname" value="${session.name}" />
 				<c:set var="dname" value="${doc.members.name}" />
 				<c:choose>
-					<c:when test="${doc.doc_state ne '2'}">
+					<c:when test="${doc.doc_state ne '2'||doc.doc_state ne '3'}">
 						<c:if test="${sname eq dname}">
 						<input type="button" value="수정" id="edit" onclick = "editdocnum('${doc.doc_num}')"> 
 					    <input type="button" value="삭제" id="del" onclick = "deldocnum('${doc.doc_num}')">
