@@ -300,10 +300,10 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">기안서</a></li>
-								<li class="pumyee"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
-								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
-								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
-								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
+								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee">품의서</a></li>
+								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang">출장신청</a></li>
+								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga">병가신청</a></li>
+								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae">조퇴신청</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
 							</ul></li>
 						<div>&nbsp;</div>
@@ -320,7 +320,6 @@ div.navbar-header> a.logout{
 						
 						<li class="board"><a href="#">게시판<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="noticeBoard"><a href="#">공지사항</a></li>
 								<li><a href="#">부서공지</a></li>
 								<li class="imageBoard"><a href="#">사진게시판</a></li>
 							</ul></li>

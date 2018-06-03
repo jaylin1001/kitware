@@ -152,45 +152,45 @@
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "writer");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(1).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(1).text());
 			$form.append(hiddenField);
 			
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "log_time");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(2).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(2).text());
 			$form.append(hiddenField);
 			
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "hit");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(3).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(3).text());
 			$form.append(hiddenField);
 			
 
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "seq");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(4).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(4).text());
 			$form.append(hiddenField);
 			
 
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "content");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(5).html().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(5).html());
 			$form.append(hiddenField);
 			
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "originFName");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(6).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(6).text());
 			$form.append(hiddenField);
 			
 			var hiddenField = document.createElement("input");
 			hiddenField.setAttribute("type", "hidden");
 			hiddenField.setAttribute("name", "path");
-			hiddenField.setAttribute("value",$(this).parent().siblings().eq(8).text().trim());
+			hiddenField.setAttribute("value",$(this).parent().siblings().eq(8).text());
 			$form.append(hiddenField);
 			
 			$(document.body).append($form);  <%--동적으로 만든 form을 document.body에 append--%>

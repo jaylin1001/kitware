@@ -1,22 +1,16 @@
-<%@page import="com.kitware.member.vo.GradeInfo"%>
-<%@page import="com.kitware.member.vo.DeptInfo"%>
-<%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="com.kitware.member.vo.Members"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="../container/header.jsp"%>
 <%
 	SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
 %>
-<c:set var="session" value="${sessionScope.loginInfo}"/>
+<c:set var="session" value="${sessionScope.loginInfo}"/><form>
 <div>
-	<div class="title" align="center">
-		<h2>조퇴계 작성</h2>
-	</div>
-	<div class="table">
+   <div class="title" align="center"><h2>결근(병가)작성</h2></div>
+   <div class="table">
 		<table class="table table-bordered">
 			<tr>
 				<th>문서번호</th>
@@ -148,7 +142,7 @@
 
 
 			<tr>
-				<td colspan="6" align="center">상기와 같은 사유로 인하여 조퇴계를 제출하오니
+				<td colspan="6" align="center">상기와 같은 사유로 인하여 결간(병가)계를 제출하오니
 					재가바랍니다.</td>
 			</tr>
 			<tr>
@@ -209,7 +203,7 @@
 		
 		$('#go').click(function() {
 			$.ajax({
-	            url :'docwritegian.do?kind=80',
+	            url :'docwritegian.do?kind=60',
 	            method:'POST',
 	            data : {
 	               doc_num:$('input[name=doc_num]').val(),
@@ -230,7 +224,7 @@
 	            },
 	            success : function(data) {
 	               if(data==1){
-	                  alert("조퇴서 제출 성공");
+	                  alert("결근(병가)계 제출 성공");
 	                  location.href="/kitware_v1/doclist.do";
 	               }else if(data==-1){
 	                  alert("실-패");
