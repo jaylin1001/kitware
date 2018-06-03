@@ -29,7 +29,7 @@
 			</tr>
 		</thead>
 		<c:set var="list" value="${pb.list}" />
-		<c:forEach var="b" items="${list}">
+			<c:forEach var="b" items="${list}" begin="${requestScope.startRow}" end="${requestScope.endRow}" >
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
 			<tr>
 				<td>${b.start_date}</td>

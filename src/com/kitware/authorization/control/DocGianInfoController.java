@@ -60,6 +60,7 @@ public class DocGianInfoController implements Controller {
 				doc_num = doc_num.substring(0, sub) + "-"
 						+ String.format("%04d%n", (Integer.parseInt(doc_num.substring(sub + 1)) + 1));
 			}
+			request.setAttribute("kind", kind);
 			request.setAttribute("doc_num", doc_num);
 			request.setAttribute("deptlist", deptlist);
 			request.setAttribute("gradelist", gradelist);

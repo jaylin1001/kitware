@@ -45,43 +45,34 @@ public class DocGJOkController implements Controller {
 		int intPage = 1;
 		if (page != null) {
 			intPage = Integer.parseInt(page);
-			System.out.println("페이지가져온거" + page);
 		}
 		try {
-			// 게시물 총목록수
-			int totalCount = service.findCount();
-
-			// 총페이지수계산
-			int totalPage = 0;
-			int cntPerPage = 1;// 1페이지별 5건씩 보여준다
-			totalPage = (int) Math.ceil((double) totalCount / cntPerPage);
-
-			// 페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
-			int cntPerPageGroup = 1; // 페이지그룹별 1페이지씩 보여준다
-			int startPage = (int) Math.floor((double) (intPage) / (cntPerPageGroup + 1)) * cntPerPageGroup + 1;
-			int endPage = startPage + cntPerPageGroup - 1;
-			int prePage = intPage-1;
-			int nextPage = intPage+1;
-			if (endPage > totalPage) {
+			List<DocVO> list = service.findOk(emp_num);
+			int totalCount = list.size();
+			//총페이지수계산
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = cntPerPage * intPage;
+			int startRow = endRow - cntPerPage + 1;
+			int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
+			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
+			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
+			int startPage = (int)Math.floor((double)(intPage)/(cntPerPageGroup+1))*cntPerPageGroup+1;
+			int endPage = startPage+cntPerPageGroup-1;
+			if(endPage > totalPage)
 				endPage = totalPage;
-			}
-			if(prePage <1) {
-				prePage = 1;
-			}
-			List<DocVO> list = service.findOk(emp_num, intPage);
+			
 			PageBean<DocVO> pb = new PageBean<>();
-			pb.setCurrentPage(intPage);// 현재페이지
-			pb.setTotalPage(totalPage); // 총페이지
-			pb.setList(list); // 목록
-			pb.setStartPage(startPage); // 시작페이지
-			pb.setEndPage(endPage); // 끝페이지
-
+			pb.setCurrentPage(intPage);//현재페이지
+			pb.setTotalPage(totalPage); //총페이지
+			pb.setList(list); //목록
+			pb.setStartPage(startPage); //시작페이지
+			pb.setEndPage(endPage); //끝페이지
+			
 			request.setAttribute("pagebean", pb);
-			request.setAttribute("prePage", prePage);
-			request.setAttribute("nextPage", nextPage);
-			System.out.println(list.size());
-			System.out.println(pb.getList());
-			System.out.println("intpage:" + intPage);
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("startRow", startRow);
+			request.setAttribute("endRow", endRow);
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());

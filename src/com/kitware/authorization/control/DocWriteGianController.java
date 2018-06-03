@@ -46,6 +46,7 @@ public class DocWriteGianController implements Controller {
 		String doc_num = request.getParameter("doc_num").trim();
 		String emp_num = member.getEmp_num();
 		int doc_kind = Integer.parseInt(request.getParameter("kind"));
+		
 		System.out.println(kind);
 		String date = request.getParameter("date").trim();
 		String dept = request.getParameter("dept").trim();

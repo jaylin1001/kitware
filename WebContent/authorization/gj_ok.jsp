@@ -2,9 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
-<c:set var="session" value="${sessionScope.loginInfo}"></c:set>		
-<c:set var="pb" value="${requestScope.pagebean}"/> 
-<c:set var="exp" value="${param.exp}"/>
+<c:set var="session" value="${sessionScope.loginInfo}"></c:set>
+<c:set var="pb" value="${requestScope.pagebean}" />
+<c:set var="exp" value="${param.exp}" />
 <div id="div1"></div>
 <div class="container">
 	<div>&nbsp;</div>
@@ -12,39 +12,42 @@
 
 	<div>&nbsp;</div>
 	<table class="table table-striped table-hover">
-	<thead class = "thead-light">
+		<thead class="thead-light">
 			<tr class="table-primary">
 				<td>기안일</td>
 				<td>문서제목</td>
 				<td>문서번호</td>
 				<td>문서상태</td>
 			</tr>
-	</thead>
-			<c:set var="list" value="${pb.list}"/>
-			<c:forEach var="b" items="${list}" >
+		</thead>
+		<c:set var="list" value="${pb.list}" />
+		<c:forEach var="b" items="${list}" begin="${requestScope.startRow}"
+			end="${requestScope.endRow}">
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
-		<tr>
-								<td>${b.start_date}</td>
-								<td><a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a></td>
-								<td>${b.doc_num}</td>
-							    <td>${b.doc_state}</td>
-		</tr>
-			</c:forEach>
+			<tr>
+				<td>${b.start_date}</td>
+				<td><a
+					href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a></td>
+				<td>${b.doc_num}</td>
+				<td>${b.doc_state}</td>
+			</tr>
+		</c:forEach>
 	</table>
-	
-<div class="pagination">
- <c:set var="startPage" value="${pb.startPage}"/>
- <c:set var="endPage" value="${pb.endPage}"/>
- <c:if test="${startPage > 1}">  
-  <Button>이전</Button>
- </c:if>
- <c:forEach begin="${startPage}" end="${endPage}" var="i" >  
-  <button type="button">${i}</button>	  
- </c:forEach> 
- <c:if test="${endPage < pb.totalPage}" >  
-  <Button>다음</Button> 
-  </c:if>
-</div> 
+	<c:set var="startPage" value="${pb.startPage}" />
+	<c:set var="endPage" value="${pb.endPage}" />
+	<ul class="pagination">
+		<li class="page-item"><a class="page-link" href="#"
+			aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+		</a></li>
+		<c:forEach begin="${pb.startPage}" end="${pb.endPage}" var="i">
+			<li class="page-item"><a class="page-link" href="#">${i}</a></li>
+		</c:forEach>
+
+
+		<li class="page-item"><a class="page-link" href="#"
+			aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+		</a></li>
+	</ul>
 </div>
 <style>
 .container {
@@ -81,15 +84,16 @@ button {
 	margin: 4px 2px;
 	cursor: pointer;
 }
-thead{
+
+thead {
 	background-color: #337ab7;
 	color: white;
 	font-weight: bold;
 }
 </style>
 
-<c:set var="prePage" value="${requestScope.prePage}"/> 
-<c:set var="nextPage" value="${requestScope.nextPage}"/> 
+<c:set var="prePage" value="${requestScope.prePage}" />
+<c:set var="nextPage" value="${requestScope.nextPage}" />
 <script>
 function functionrt(data, data1) {
 	console.log(data);
@@ -97,20 +101,30 @@ function functionrt(data, data1) {
 		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data + "&exp=" + '${exp}';
 	}
 $(function(){
-	$('.pagination button').click(function(){
+	
+	$('.pagination a').click(function(){
 		var page;
-		if($(this).text() == '이전'){
-			page=${prePage};
-			location.href="gjoklist.do?page="+page;
-		}else if($(this).text() == '다음'){
-			page=${nextPage};
-			location.href="gjoklist.do?page="+page;
+		var mode = '${requestScope.mode}';
+		var selectPage = $(this).text().trim();
+		if(selectPage == '«'){   <%-- 시작페이지가 1인 경우 return--%>
+			if(${pb.startPage} != '1'){
+				page=${pb.startPage}-1;
+				location.href = "gjoklist.do?page=" + page + "&mode=" + mode;
+			}else{
+				return;	
+			}
+		}else if(selectPage == '»'){
+			if(${pb.endPage} == ${pb.totalPage}){  <%--총페이지와 끝페이지가 다르면 return--%>
+				return;
+			}else{
+				page=${pb.endPage}+1;
+				location.href = "gjoklist.do?page=" + page + "&mode=" + mode;
+			}
 		}else{
-			page = $(this).text();
-			location.href="gjoklist.do?page="+page;
+			page = selectPage;
+			location.href = "gjoklist.do?page=" + page + "&mode=" + mode;
 		}
 		
-		return false;
 	});
 	$('.pagination a').each(function(index, element){
 		if($(element).text() == '${pb.currentPage}'){

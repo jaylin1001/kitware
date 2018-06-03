@@ -48,7 +48,7 @@
             </tr>
             <tr>
                <th>문서종류</th>
-               <td>기안서</td>
+               <td>${ }</td>
             </tr>
             <tr>
                <th>기안일</th>
@@ -82,12 +82,12 @@
 					<div class="replace">
 						<select name="dept" class="dept">
 							<option>부서 선택</option>
-							<c:forEach var="dept" items="${requestScope.deptlist }">
+							<c:forEach var="dept" items="${requestScope.deptlist}">
 								<option value="${dept.dept_num }">${dept.dept_name }</option>
 							</c:forEach>
 						</select> <select name="grade" class="grade">
 							<option id="init">직급 선택</option>
-							<c:forEach var="grade" items="${requestScope.gradelist }">
+							<c:forEach var="grade" items="${requestScope.gradelist}">
 								<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
 							</c:forEach>
 						</select> <select name="name" class="name">

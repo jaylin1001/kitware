@@ -42,14 +42,16 @@ public class DocListController implements Controller {
 		int page = 1;
 		
 		try {
-			List<DocVO> docvo_list0 = service.selectGJWait(emp_num, page);
+			List<DocVO> docvo_list0 = service.selectGJWait(emp_num);
 			request.setAttribute("docvo_list0", docvo_list0);
 			
-			List<DocVO> docvo_list = service.findIng(emp_num, page); 
+			List<DocVO> docvo_list = service.findIng(emp_num); 
 			request.setAttribute("docvo_list", docvo_list);
 			
-			List<DocVO> docvo_list2 = service.findOk(emp_num, page); 
+			List<DocVO> docvo_list2 = service.findOk(emp_num); 
 			request.setAttribute("docvo_list2", docvo_list2);
+			
+			
 			
 		} catch (Exception e) {
 			request.setAttribute("result", e.getMessage());

@@ -32,7 +32,7 @@
 				<td>문서이름</td>
 			</tr>
 		</thead>
-		<c:forEach var="b" items="${list}">
+			<c:forEach var="b" items="${list}" begin="${requestScope.startRow}" end="${requestScope.endRow}" >
 			<%-- <c:forEach begin="${1}" end="${totalCount}" var="j" > --%>
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
 			<tr class="doc_list_content">

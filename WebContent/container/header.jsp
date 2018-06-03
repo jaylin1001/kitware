@@ -2,8 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
-<c:set var="doclist" value="${requestScope.doc_list}"></c:set>
-<c:set var="schelist" value="${requestScope.schedule}"></c:set>
+
+<c:set var="doclist" value="${sessionScope.doc_list}"></c:set>
+<c:set var="schelist" value="${sessionScope.schedule}"></c:set>
 <%
 	String root = "/kitware_50101526/WebContent/";
 %>
@@ -197,12 +198,11 @@ div.navbar-header> a.logout{
 					</h5><br>
 					</div>
 					</div>
-					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">결재할 문서:&nbsp; &nbsp; 
-					&nbsp;${fn:length(doclist)}</a>
+					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">&nbsp;결재할 문서:&nbsp; &nbsp; &nbsp;${doclist}</a>
 					
 					<div>&nbsp;</div>
-					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정"
-					onclick="window.open(this.href, '_blank', 'width=300,height=400,toolbars=no,scrollbars=no'); return false;">오늘의 일정:&nbsp; &nbsp; &nbsp;${fn:length(schelist)}</a>
+					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
+					오늘의 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
 					<hr>
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
