@@ -8,14 +8,15 @@
 <%-- <jsp:include page="../container/header.jsp" flush="true"></jsp:include> --%>
 <%@ include file="../container/header.jsp"%>
 <%
+   Members mb = (Members) session.getAttribute("loginInfo");
    SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
 %>
-<c:set var="session" value="${sessionScope.loginInfo }"/>
+${requstScope.loginInfo}
 
 <div class="center-block">
    <form class="form-group">
       <div class="title" align="center">
-         <h2>기안서 작성</h2>
+         <h2>품의서 작성</h2>
       </div>
       <div>
          <table class="table table-bordered">
@@ -72,9 +73,9 @@
             </tr>
             <tr>
                <th>기안자</th>
-               <td>${session.gradeinfo.position_name }&nbsp;${session.name }</td>
+               <td><%=mb.getGradeinfo().getPosition_name()%>&nbsp;<%=mb.getName()%></td>
                <th>부서</th>
-               <td colspan="3">${session.deptinfo.dept_name }</td>
+               <td colspan="3"><%=mb.getDeptinfo().getDept_name()%></td>
             </tr>
             <tr>
 				<th>대체근무자</th>
@@ -144,7 +145,7 @@
 
       $('#go').click(function() {
          $.ajax({
-            url :'docwritegian.do?kind=10',
+            url :'docwritegian.do?kind=20',
             method:'POST',
             data : {
                doc_num:$('input[name=doc_num]').val(),
@@ -162,7 +163,7 @@
             },
             success : function(data) {
                if(data==1){
-                  alert("기안서 제출 성공");
+                  alert("품의서 제출 성공");
                   location.href="/kitware_v1/doclist.do";
                }else if(data==-1){
                   alert("실-패");
@@ -199,8 +200,6 @@
 			}
 			$(this).siblings('.name').children('option#init').prop('selected',true);
 		});
-      
-      
 
    });
 </script>

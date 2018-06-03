@@ -30,9 +30,7 @@ public class BoardService {
 	public void insertNoticeBoard(NoticeBoard noticeBoard) throws Exception{
 		dao.insertNoticeBoard(noticeBoard);
 	}
-	//글 수정 시 파일 변화 없을 때 
 	public void updateNoticeBoard(NoticeBoard noticeBoard)throws Exception {
-		System.out.println("여기까지도 왔니 여기는 파일변화없는 service야...");
 		dao.updateNoticeBoard(noticeBoard);
 	}
 	public void deleteNoticeBoard(String seq) throws Exception{
@@ -42,6 +40,7 @@ public class BoardService {
 	public void updateHit(String hitseq) throws Exception{
 		dao.updateHit(hitseq);
 	}
+<<<<<<< HEAD
 	//글 수정 시 파일 변화 있을 때
 	public void updateNoticeBoardFile(NoticeBoard noticeBoard) throws Exception{
 		dao.updateNoticeBoardFile(noticeBoard);
@@ -54,4 +53,6 @@ public class BoardService {
 	public NoticeBoard findNext(String seq) throws Exception {
 		return dao.selectNextPost(seq);
 	}
+=======
+>>>>>>> yunjey
 }

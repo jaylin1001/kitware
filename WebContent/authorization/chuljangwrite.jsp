@@ -1,7 +1,12 @@
+<%@page import="java.util.Date"%>
+<%@page import="java.text.SimpleDateFormat"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ include file="../container/header.jsp"%>
-<c:set var="session" value="${sessionScope.loginInfo}"></c:set>	
+<%
+	SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
+%>
+<c:set var="session" value="${sessionScope.loginInfo}"></c:set>
 <form id="formwrite">
 	<div>
 		<div class="title" align="center">
@@ -11,66 +16,132 @@
 			<table class="table table-bordered">
 				<tr>
 					<th>문서번호</th>
-					<td>1</td>
+					<td><input type="text" name="doc_num"
+						value="${requestScope.doc_num}" readonly></td>
 					<th rowspan="2">결재</th>
-					<td rowspan="2">
-						<div>승인자1</div> <input type="button" value="선택"
-						style="display: block">
+					<td rowspan="2" style="text-align: center;">
+						<div id="grantor1_grade"></div>
+						<div id="grantor1">승인자1</div> <a
+						href="${pageContext.request.contextPath}/addgrantor.do?id=1"
+						class="btn btn-default g1" data-toggle="modal"
+						data-target="#myModal" id="addgrantor1">선택</a>
 					</td>
-					<td rowspan="2">
-						<div>승인자2</div> <input type="button" value="선택"
-						style="display: block">
+					<td rowspan="2" style="text-align: center;">
+						<div id="grantor2_grade"></div>
+						<div id="grantor2">승인자2</div> <a
+						href="${pageContext.request.contextPath}/addgrantor.do?id=2"
+						class="btn btn-default g2" data-toggle="modal"
+						data-target="#myModal" id="addgrantor2">선택</a>
 					</td>
-					<td rowspan="2">
-						<div>승인자3</div> <input type="button" value="선택"
-						style="display: block">
+					<td rowspan="2" style="text-align: center;">
+						<div id="grantor3_grade"></div>
+						<div id="grantor3">승인자3</div> <a
+						href="${pageContext.request.contextPath}/addgrantor.do?id=3"
+						class="btn btn-default g3" data-toggle="modal"
+						data-target="#myModal" id="addgrantor3">선택</a>
 					</td>
 				</tr>
 				<tr>
 					<th>문서종류</th>
-					<td>출장</td>
+					<td>기안서</td>
 				</tr>
 				<tr>
 					<th>기안일</th>
-					<td><input type="text" style="width: 60px">년 <input
-						type="text" style="width: 40px">월 <input type="text"
-						style="width: 40px">일</td>
+					<td class="date">
+						<!-- <input class="form-control" type="text">년
+               <input class="form-control" type="text">월 <input
+               class="form-control" type="text">일</td> --> <!-- <input type="text"
+               id="testDatepicker" placeholder="날짜를 선택하세요" readonly> -->
+						<div id="date"><%=(String) dformat.format(new Date())%></div>
+					</td>
 					<th>수신부서</th>
-					<td colspan="3"><input type="text"> <input
-						type="button" value="수신부서지정"></td>
+					<td colspan="3">
+						<!-- <input class="form-control" type="text"> --> <!-- <button class="btn btn-default">수신부서지정</button> -->
+						<!-- <input class="form-control" type="button" value="수신부서지정"> -->
+						<select name="dept">
+							<c:forEach var="dept" items="${requestScope.deptlist }">
+								<option value="${dept.dept_num}">${dept.dept_name }</option>
+							</c:forEach>
+					</select>
+					</td>
 				</tr>
 				<tr>
 					<th>기안자</th>
-					<td>${session.loginInfo.name}</td>
+					<td>${session.gradeinfo.position_name }&nbsp;${session.name }</td>
 					<th>부서</th>
-					<td colspan="3">${session.loginInfo.gradeinfo.position_name}</td>
+					<td colspan="3">${session.deptinfo.dept_name }</td>
 				</tr>
-				<tr>
-					<th>참조자</th>
-					<td colspan="5"><input type="text">
-						<button id= "chamjo">참조자 지정</button></td>
-				</tr>
+				<%-- <tr>
+				<th>참조자</th>
+				<td colspan="5">
+					<div class="ref">
+						<select name="dept" class="dept">
+							<option>부서 선택</option>
+							<c:forEach var="dept" items="${requestScope.deptlist }">
+								<option value="${dept.dept_num }">${dept.dept_name }</option>
+							</c:forEach>
+						</select> <select name="grade" class="grade">
+							<option id="init">직급 선택</option>
+							<c:forEach var="grade" items="${requestScope.gradelist }">
+								<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
+							</c:forEach>
+						</select> <select name="name" class="name">
+							<option id="init" value="0">사원 선택</option>
+							<c:forEach var="emp" items="${requestScope.memberlist }">
+								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num }">${emp.name }</option>
+							</c:forEach>
+						</select>
+					</div>
+				</td>
+			</tr> --%>
 				<tr>
 					<th>제목</th>
-					<td colspan="5"><input type="text" name="doc_title"
+					<td colspan="5"><input type="text" name="title"
 						style="width: 700px"></td>
 				</tr>
 				<tr>
 					<th>기간</th>
-					<td><input type="text" id="testDatepicker" value="시작일" name= "start_date">
-						&nbsp;~&nbsp; <input type="text" id="testDatepicker2" value="종료일" name = "end_date">
+					<td><input type="text" id="datepicker" value="시작일"
+						class="start_date"> &nbsp;~&nbsp; <input type="text"
+						id="datepicker2" value="종료일" class="end_date"></td>
+				</tr>
+
+				<tr>
+					<th>대체근무자</th>
+					<td colspan="5">
+						<div class="replace">
+							<select name="dept" class="dept">
+								<option>부서 선택</option>
+								<c:forEach var="dept" items="${requestScope.deptlist }">
+									<option value="${dept.dept_num }">${dept.dept_name }</option>
+								</c:forEach>
+							</select> <select name="grade" class="grade">
+								<option id="init">직급 선택</option>
+								<c:forEach var="grade" items="${requestScope.gradelist }">
+									<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
+								</c:forEach>
+							</select> <select name="name" class="name">
+								<option id="init">사원 선택</option>
+								<c:forEach var="emp" items="${requestScope.memberlist }">
+									<option id="${emp.dept_num }${emp.position_num}"
+										style="display: none" value="${emp.emp_num }">${emp.name }</option>
+								</c:forEach>
+							</select>
+						</div>
 					</td>
 				</tr>
 
 				<tr>
 					<th>출장지</th>
-					<td colspan="5"><input type="text" style="width: 500px" id= "chuljang_space">
-						<button id ="chuljang_select">출장지 선택</button> <!--지도 api써도 좋을거같음 --></td>
+					<td colspan="5"><input type="text" style="width: 500px"
+						id="chuljang_space">
+						<button id="chuljang_select">출장지 선택</button> <!--지도 api써도 좋을거같음 --></td>
 				</tr>
 
 				<tr>
 					<th>출장목적</th>
-					<td colspan="5"><textarea rows="4" cols="100" id= "chuljang_textarea">
+					<td colspan="5"><textarea rows="4" cols="100"
+							id="chuljang_textarea">
 				</textarea></td>
 				</tr>
 				<tr>
@@ -85,15 +156,19 @@
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
 				<tr>
-					<td colspan="6" align="center"><input type="button" value="제출" id ="submit">
-						<input type="button" value="취소" id="cancle"></td>
+					<td colspan="6" align="center"><input type="button" value="제출"
+						id="go"> <input type="button" value="취소" id="cancle"></td>
 				</tr>
 			</table>
 		</div>
 	</div>
-	</form>	
-	<script type="text/javascript">
-
+</form>
+<div id="myModal" class="modal fade">
+	<div class="modal-dialog">
+		<div class="modal-content"></div>
+	</div>
+</div>
+<script type="text/javascript">
 	$(function() {
 		$("#testDatepicker").datepicker({
 			showOn : "both",
@@ -109,31 +184,89 @@
 			dateFormat : "yy-mm-dd"
 		});
 		var className = 'authorization';
-		$('div#menutab li.'+className).addClass('active');
-		console.log($('div#menutab li.'+className));
+		$('div#menutab li.' + className).addClass('active');
+		console.log($('div#menutab li.' + className));
 		$('ul#side-menu').find('li.' + className).show();
 	});
 </script>
 <script>
-$(function(){
-  $('form#formwrite').submit(function(){
-	  $.ajax({
-		  url:'docwritecj.do',
-		  method:'post',
-		  data:$('form').serialize(),
-		  success:function(data){
-			  data = data.trim();
-			  if(data == '1'){ //글쓰기 성공
-				  alert('글쓰기 성공');
-				 var $triggerObj = $("nav>ul li.board!!수정	해야함");
-				 $triggerObj.trigger('click');
-			  }else if(data == '-1'){ //글쓰기 실패
-				 alert('글쓰기 실패'); 
-			  }
-		  }
-	  });
-	  return false;
-  });
-});
+	$(function() {
+		$('.dept').change(
+				function() {
+					if ($(this).val() == '부서 선택') {
+						$(this).siblings('.grade').children('option#init')
+								.show();
+						$(this).siblings('.grade').children('option').hide();
+					} else {
+						$(this).siblings('.grade').children('option').show();
+					}
+					$(this).siblings('.grade').children('option#init').prop(
+							'selected', true);
+				});
+
+		$('.grade').change(
+				function() {
+
+					if ($(this).val() == '직급 선택') {
+						$(this).siblings('.name').children('option').hide();
+						$(this).siblings('.name').children('option#init')
+								.show();
+					} else {
+						$(this).siblings('.name').children('option').hide();
+						var dept = $(this).siblings('.dept').val();
+						var grade = $(this).val();
+						$(this).siblings('.name').children('option').each(
+								function() {
+									if ($(this).prop('id').trim() == dept
+											+ grade) {
+										$(this).show();
+									}
+								});
+					}
+					$(this).siblings('.name').children('option#init').prop(
+							'selected', true);
+				});
+
+		$('#datepicker').datepicker({
+			showOn : 'both',
+			dateFormat : 'yy-mm-dd'
+		});
+		$('#datepicker2').datepicker({
+			showOn : 'both',
+			dateFormat : 'yy-mm-dd'
+		});
+
+		$('#go').click(function() {
+			$.ajax({
+				url : 'docwritegian.do?kind=40',
+				method : 'POST',
+				data : {
+					doc_num : $('input[name=doc_num]').val(),
+					date : $('div#date').html(),
+					dept : $('select[name=dept]').val(),
+					title : $('input[name=title]').val(),
+					content : $('textarea').val(),
+					g1_grade : $('#grantor1_grade').html().trim(),
+					g1 : $('#grantor1').html().trim(),
+					g2_grade : $('#grantor2_grade').html().trim(),
+					g2 : $('#grantor2').html().trim(),
+					g3_grade : $('#grantor3_grade').html().trim(),
+					g3 : $('#grantor3').html().trim(),
+					//refmod:$('ref .name').val(),
+					start_date : $('.start_date').val(),
+					end_date : $('.end_date').val(),
+					replace : $('replace .name').val()
+				},
+				success : function(data) {
+					if (data == 1) {
+						alert("출장 신청서 제출 성공");
+						location.href = "/kitware_v1/doclist.do";
+					} else if (data == -1) {
+						alert("실-패");
+					}
+				}
+			});
+		});
+	});
 </script>
 <%@ include file="../container/footer.jsp"%>

@@ -1,6 +1,5 @@
 package com.kitware.board.control;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -15,13 +14,9 @@ import com.kitware.board.vo.NoticeBoard;
 import com.kitware.board.vo.PageBean;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.vo.Schedule;
-import com.oreilly.servlet.MultipartRequest;
-
 
 public class BoardWriteController implements Controller {
 	private BoardService service;
-	private String saveFileName;
-	private String originFileName;
 	
 	public BoardWriteController() {
 	}
@@ -40,10 +35,6 @@ public class BoardWriteController implements Controller {
 	@Override
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		//현재 컨텍스트의 톰캣 절대경로를 반환한다.
-		String contextPath = request.getSession().getServletContext().getRealPath("/");
-		String saveDirectory="D:\\apache-tomcat-8.5.30\\webapps\\upload";
-		
 		request.setCharacterEncoding("UTF-8");
 		//로그인 세션값 가져오기.
 		HttpSession session = request.getSession();
@@ -51,38 +42,16 @@ public class BoardWriteController implements Controller {
 		String emp_num = loginInfo.getEmp_num();
 		String name = loginInfo.getName();
 		
+
+		String title= request.getParameter("title");
+		String content= request.getParameter("content");
+		
 		NoticeBoard noticeBoard = new NoticeBoard();
 		
-		//파일첨부
-		MultipartRequest mr;
-		int maxPostSize = 1024*2000000;
-		String encoding = "UTF-8";
-		//객체가 생성됨과 동시에 파일업로드가 이루어짐.
-		mr = new MultipartRequest(request, saveDirectory, 
-				maxPostSize, encoding, 
-				new MyRenamePolicy());
-		
-		File file1 = mr.getFile("file1"); //저장된 파일
-		if(file1 != null) {
-			saveFileName = file1.getName();
-			int indexExt = saveFileName.lastIndexOf(".");
-			int index_ = saveFileName.lastIndexOf("_");
-			String ext = saveFileName.substring(indexExt); // .txt , .jpg  확장자
-			String fileName = saveFileName.substring(0, index_); // 확장자 없는 원본 파일명
-			originFileName = fileName+ext;
-			noticeBoard.setOriginFileName(originFileName);
-			noticeBoard.setSaveFileName(saveFileName);
-			noticeBoard.setPath(saveDirectory+"\\"+saveFileName);	
-		}
-		
-		String title= mr.getParameter("title");
-		String content= mr.getParameter("content");
-
 		noticeBoard.setEmp_num(emp_num);
 		noticeBoard.setName(name);
 		noticeBoard.setTitle(title);
 		noticeBoard.setContent(content);
-
 		
 		
 		try {

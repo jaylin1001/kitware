@@ -799,10 +799,12 @@ public class DocDAOOracle implements DocDAO {
 			con = com.kitware.sql.MyConnection.getConnection();
 			con.setAutoCommit(false);
 			int insertgian = insertGian(giandoc, con);
+			System.out.println("insertgian ++"+insertgian);
+			int insertgigan = insertDocGigan(giandoc.getDoc_gigan(), con);
+			System.out.println("insertgigan"+insertgigan);
 			List<DocDetailVO> list = giandoc.getDoc_detail();
 			int sunbeon = 0;
 			int cnt = 0;
-			System.out.println("list__" + list.size());
 			if (list.size() > 0) {
 				for (DocDetailVO detail : list) {
 					int insertdetail = insertGianDetail(detail, con, ++sunbeon);
@@ -810,9 +812,12 @@ public class DocDAOOracle implements DocDAO {
 					if (insertdetail > 0)
 						cnt++;
 				}
-				if (insertgian > 0 && cnt == list.size()) {
-					con.commit();
+				System.out.println("list++"+list.size());
+				System.out.println("cnt++"+cnt);
+				if (insertgian > 0 && insertgigan > 0 && cnt == list.size()) {
+					System.out.println("commit!");
 					System.out.println(list.size() + "::" + cnt);
+					con.commit();
 				}
 			}
 		} catch (SQLException e) {
@@ -829,8 +834,8 @@ public class DocDAOOracle implements DocDAO {
 		System.out.println("document");
 		Connection conn = con;
 		PreparedStatement pstmt = null;
-		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, doc_state, doc_title, doc_content, start_date, rcv_dept)\r\n"
-				+ "values(?,?,?,0,?,to_nclob(?),?,?)";
+		String insertgianSQL = "insert into document (doc_num, doc_kind, emp_num, doc_state, doc_title, doc_content, start_date, rcv_dept, refer)\r\n"
+				+ "values(?,?,?,0,?,to_nclob(?),?,?,?)";
 		int result = 0;
 		try {
 			pstmt = conn.prepareStatement(insertgianSQL);
@@ -842,6 +847,7 @@ public class DocDAOOracle implements DocDAO {
 			pstmt.setString(++index, giandoc.getDoc_content());
 			pstmt.setString(++index, giandoc.getStart_date());
 			pstmt.setString(++index, giandoc.getRcv_dept());
+			pstmt.setString(++index, giandoc.getRefer());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace(); // 톰캣콘솔
@@ -868,6 +874,30 @@ public class DocDAOOracle implements DocDAO {
 			pstmt.setString(++index, docdetail.getDoc_num());
 			pstmt.setString(++index, docdetail.getConf_num());
 			pstmt.setInt(++index, sunbeon);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace(); // 톰캣콘솔
+			throw e;
+		} finally {
+			com.kitware.sql.MyConnection.close(pstmt);
+		}
+		return result;
+	}
+
+	@Override
+	public int insertDocGigan(DocGiganVO doc_gigan, Connection con) throws Exception {
+		// TODO Auto-generated method stub
+		System.out.println("gigan");
+		Connection conn = con;
+		PreparedStatement pstmt = null;
+		String insertgianSQL = "insert into doc_gigan (doc_num, start_date, end_date)\r\n" + "values(?,?,?)";
+		int result = 0;
+		try {
+			pstmt = conn.prepareStatement(insertgianSQL);
+			int index = 0;
+			pstmt.setString(++index, doc_gigan.getDoc_num());
+			pstmt.setString(++index, doc_gigan.getStart_date());
+			pstmt.setString(++index, doc_gigan.getEnd_date());
 			result = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			e.printStackTrace(); // 톰캣콘솔

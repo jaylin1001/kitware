@@ -11,11 +11,15 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocManipulService;
+import com.kitware.member.service.MemberService;
 import com.kitware.member.vo.DeptInfo;
+import com.kitware.member.vo.GradeInfo;
+import com.kitware.member.vo.Members;
 
 public class DocGianInfoController implements Controller {
 	// Calendar cal = Calendar.getInstance();
 	DocManipulService service = DocManipulService.getInstance();
+	MemberService mservice = MemberService.getInstance();
 
 	public DocGianInfoController() {
 		super();
@@ -44,11 +48,12 @@ public class DocGianInfoController implements Controller {
 			String doc_num = service.getDocNum();
 			SimpleDateFormat dformat = new SimpleDateFormat("yyMM");
 			String year = dformat.format(new Date());
-			List<DeptInfo> list;
+			List<DeptInfo> deptlist = service.getDeptList();
+			List<GradeInfo> gradelist = mservice.getGradeInfo();
+			List<Members> memberlist = mservice.getAllmembers();
 			int sub = 0;
 			if (doc_num != null)
 				sub = doc_num.indexOf("-");
-			list = service.getDeptList();
 			if (doc_num == null || !doc_num.substring(0, sub).equals(year)) {
 				doc_num = year + "-0001";
 			} else {
@@ -56,7 +61,9 @@ public class DocGianInfoController implements Controller {
 						+ String.format("%04d%n", (Integer.parseInt(doc_num.substring(sub + 1)) + 1));
 			}
 			request.setAttribute("doc_num", doc_num);
-			request.setAttribute("list", list);
+			request.setAttribute("deptlist", deptlist);
+			request.setAttribute("gradelist", gradelist);
+			request.setAttribute("memberlist", memberlist);
 		} catch (Exception e1) {
 			e1.printStackTrace();
 		}
@@ -64,11 +71,14 @@ public class DocGianInfoController implements Controller {
 			forwardURL = "authorization/docwrite.jsp";
 		} else if (kind.equals("balju")) {
 			forwardURL = "authorization/baljuwrite.jsp";
-		} else if (kind.equals("chuljang")) {// 구현안됨
+		} else if (kind.equals("chuljang")) {
 			forwardURL = "authorization/chuljangwrite.jsp";
-		} else if (kind.equals("jotae")) {// 구현안됨
+		} else if (kind.equals("jotae")) {
 			forwardURL = "authorization/jotaewrite.jsp";
-		} else {
+		} else if (kind.equals("pumyee")){
+			forwardURL = "authorization/pumyeewrite.jsp";
+		}else if (kind.equals("byungga")){
+			forwardURL = "authorization/byunggawrite.jsp";
 		}
 		return forwardURL;
 	}

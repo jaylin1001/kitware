@@ -104,6 +104,7 @@
 			var list = $(this).text();
 			location.href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list="+list;
 		});
+<<<<<<< HEAD
 		$('.nav>li.gian').click(function() {
 			//var form = $('#write>li').attr('class');
 			$.ajax({
@@ -165,6 +166,8 @@
 		});
 		
 		
+=======
+>>>>>>> yunjey
 		//로그아웃 버튼 누른다.
 		$('div.navbar-header>a.logout').click(function(){
 			location.href="${pageContext.request.contextPath}/logout.do";
@@ -295,10 +298,10 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">기안서</a></li>
-								<li class="pumyee"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
-								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
-								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
-								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
+								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee">품의서</a></li>
+								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang">출장신청</a></li>
+								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga">병가신청</a></li>
+								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae">조퇴신청</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
 							</ul></li>
 						<div>&nbsp;</div>
