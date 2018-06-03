@@ -104,63 +104,6 @@
 			var list = $(this).text();
 			location.href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list="+list;
 		});
-		$('.nav>li.gian').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/docgianinfo.do',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.balju').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/balju.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.chuljang').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/chuljang.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.byungga').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/byungga.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.jotae').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/jotae.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		
-		
 		//로그아웃 버튼 누른다.
 		$('div.navbar-header>a.logout').click(function(){
 			location.href="${pageContext.request.contextPath}/logout.do";
@@ -291,10 +234,10 @@ div.navbar-header> a.logout{
 								class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="gian"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian">기안서</a></li>
-								<li class="pumyee"><a href="${pageContext.request.contextPath}/authorization/pumyee.jsp">품의서</a></li>
-								<li class="chuljang"><a href="${pageContext.request.contextPath}/authorization/chuljang.jsp">출장신청</a></li>
-								<li class="byungga"><a href="${pageContext.request.contextPath}/authorization/byungga.jsp">병가신청</a></li>
-								<li class="jotae"><a href="${pageContext.request.contextPath}/authorization/jotae.jsp">조퇴신청</a></li>
+								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee">품의서</a></li>
+								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang">출장신청</a></li>
+								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga">병가신청</a></li>
+								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae">조퇴신청</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju">발주서</a></li>
 							</ul></li>
 						<div>&nbsp;</div>

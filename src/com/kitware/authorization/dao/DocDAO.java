@@ -26,6 +26,7 @@ public interface DocDAO {
 	public void updateCJ1(DocGiganVO docvo, String doc_num) throws Exception;//출장에 대한 글 수정 doc_gigan
 	public void deleteDoc(String doc_num) throws Exception;//문서 삭제
 	public String getEmpNum(String g1, String g1_grade) throws Exception;
+	public int insertDocGigan(DocGiganVO doc_gigan, Connection con) throws Exception ;
 	public int insertGianDetail(DocDetailVO docdetail, Connection con, int sunbeon) throws Exception;
 	public int insertGian(DocVO giandoc, Connection con) throws Exception;
 	public void insertGianfull(DocVO giandoc) throws Exception;
@@ -37,6 +38,4 @@ public interface DocDAO {
 	public List<DocVO> selectGJOk3(String conf_num, int page) throws Exception;
 	public List<DocVO> selectGJOk2(String conf_num, int page) throws Exception;
 	public List<DocVO> selectGJOk1(String conf_num, int page) throws Exception;
-	
-	
 }
