@@ -163,6 +163,11 @@
 		$('.nav>li.noticeBoard').click(function(){
 			location.href="${pageContext.request.contextPath}/boardlist.do";
 		});
+		//사진게시판 눌렀을 때
+		$('.nav>li.imageBoard').click(function(){
+			location.href="${pageContext.request.contextPath}/imbboardlist.do";
+		});
+		
 		
 		
 		//로그아웃 버튼 누른다.
@@ -317,6 +322,7 @@ div.navbar-header> a.logout{
 							<ul class="nav nav-second-level">
 								<li class="noticeBoard"><a href="#">공지사항</a></li>
 								<li><a href="#">부서공지</a></li>
+								<li class="imageBoard"><a href="#">사진게시판</a></li>
 							</ul></li>
 							
 					</ul>

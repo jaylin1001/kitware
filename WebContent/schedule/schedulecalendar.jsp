@@ -239,7 +239,6 @@ select.sp {
 										        });  
 										    },
 											select: function(startDate, endDate) {
-										          alert('selected ' + startDate.format("YYYY-MM-DD HH:mm") + ' to ' + endDate.format("YYYY-MM-DD HH:mm"));
 										    },
 
 											navLinks : true, // can click day/week names to navigate views
