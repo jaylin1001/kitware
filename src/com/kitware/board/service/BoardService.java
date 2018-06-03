@@ -40,19 +40,4 @@ public class BoardService {
 	public void updateHit(String hitseq) throws Exception{
 		dao.updateHit(hitseq);
 	}
-<<<<<<< HEAD
-	//글 수정 시 파일 변화 있을 때
-	public void updateNoticeBoardFile(NoticeBoard noticeBoard) throws Exception{
-		dao.updateNoticeBoardFile(noticeBoard);
-	}
-	//이전글찾기
-	public NoticeBoard findPre(String seq) throws Exception{
-		return dao.selectPrePost(seq);
-	}
-	//다음글찾기
-	public NoticeBoard findNext(String seq) throws Exception {
-		return dao.selectNextPost(seq);
-	}
-=======
->>>>>>> yunjey
 }

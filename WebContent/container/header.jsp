@@ -104,70 +104,6 @@
 			var list = $(this).text();
 			location.href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list="+list;
 		});
-<<<<<<< HEAD
-		$('.nav>li.gian').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/docgianinfo.do',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.balju').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/balju.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.chuljang').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/chuljang.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.byungga').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/byungga.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		$('.nav>li.jotae').click(function() {
-			//var form = $('#write>li').attr('class');
-			$.ajax({
-				method : 'POST',
-				url : '${pageContext.request.contextPath}/authorization/jotae.jsp',
-				success : function(data) {
-					$('div#page-wrapper').empty();
-					$('div#page-wrapper').html(data);
-				}
-			});
-		});
-		//게시판 공지사항 눌렀을 때
-		$('.nav>li.noticeBoard').click(function(){
-			location.href="${pageContext.request.contextPath}/boardlist.do";
-		});
-		
-		
-=======
->>>>>>> yunjey
 		//로그아웃 버튼 누른다.
 		$('div.navbar-header>a.logout').click(function(){
 			location.href="${pageContext.request.contextPath}/logout.do";
@@ -318,7 +254,7 @@ div.navbar-header> a.logout{
 						
 						<li class="board"><a href="#">게시판<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
-								<li class="noticeBoard"><a href="#">공지사항</a></li>
+								<li><a href="#">공지사항</a></li>
 								<li><a href="#">부서공지</a></li>
 							</ul></li>
 							
