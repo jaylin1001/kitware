@@ -10,12 +10,15 @@ public class NoticeBoard {
 	private String content;
 	private String hit;
 	private String log_time;
+	private String originFileName;
+	private String saveFileName;
+	private String path;
 	
 	public NoticeBoard() {
 	}
 
 	public NoticeBoard(String number, String seq, String emp_num, String name, String title, String content, String hit,
-			String log_time) {
+			String log_time, String originFileName, String saveFileName, String path) {
 		super();
 		this.number = number;
 		this.seq = seq;
@@ -25,6 +28,9 @@ public class NoticeBoard {
 		this.content = content;
 		this.hit = hit;
 		this.log_time = log_time;
+		this.originFileName = originFileName;
+		this.saveFileName = saveFileName;
+		this.path = path;
 	}
 
 	public String getNumber() {
@@ -91,11 +97,35 @@ public class NoticeBoard {
 		this.log_time = log_time;
 	}
 
+	public String getOriginFileName() {
+		return originFileName;
+	}
+
+	public void setOriginFileName(String originFileName) {
+		this.originFileName = originFileName;
+	}
+
+	public String getSaveFileName() {
+		return saveFileName;
+	}
+
+	public void setSaveFileName(String saveFileName) {
+		this.saveFileName = saveFileName;
+	}
+
+	public String getPath() {
+		return path;
+	}
+
+	public void setPath(String path) {
+		this.path = path;
+	}
+
 	@Override
 	public String toString() {
 		return "NoticeBoard [number=" + number + ", seq=" + seq + ", emp_num=" + emp_num + ", name=" + name + ", title="
-				+ title + ", content=" + content + ", hit=" + hit + ", log_time=" + log_time + "]";
+				+ title + ", content=" + content + ", hit=" + hit + ", log_time=" + log_time + ", originFileName="
+				+ originFileName + ", saveFileName=" + saveFileName + ", path=" + path + "]";
 	}
-	
-	
+
 }
