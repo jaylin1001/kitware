@@ -11,10 +11,13 @@ import com.kitware.member.service.MemberService;
 import com.kitware.member.vo.Members;
 import com.kitware.member.vo.MembersDetailInfo;
 
-public class ModmemberController implements Controller {
+public class CorrectMemberController implements Controller {
 	private static final long serialVersionUID = 1L;
-	private MemberService service = new MemberService();	
-	public ModmemberController() {
+	private MemberService service = new MemberService();
+	
+	
+	
+	public CorrectMemberController() {
 	}
 
 	public MemberService getService() {
@@ -56,15 +59,15 @@ public class ModmemberController implements Controller {
 	members.setTel1(tel1);
 	members.setTel2(tel2);
 	members.setTel3(tel3);
-	String birth1 = request.getParameter("birthyear");
-	String birth2 = request.getParameter("birthmonth");
-	String birth3 = request.getParameter("birthday");
-	String hire_date1 = request.getParameter("hireyear");
-	String hire_date2 = request.getParameter("hiremonth");
-	String hire_date3 = request.getParameter("hireday");
-	String out_date1 = request.getParameter("outyear");
-	String out_date2 = request.getParameter("outmonth");
-	String out_date3 = request.getParameter("outday");
+	String birth1 = request.getParameter("birth1");
+	String birth2 = request.getParameter("birth2");
+	String birth3 = request.getParameter("birth3");
+	String hire_date1 = request.getParameter("hire_date1");
+	String hire_date2 = request.getParameter("hire_date2");
+	String hire_date3 = request.getParameter("hire_date3");
+	String out_date1 = request.getParameter("out_date1");
+	String out_date2 = request.getParameter("out_date2");
+	String out_date3 = request.getParameter("out_date3");
 	String zip1 = request.getParameter("zip1");
 	String zip2 = request.getParameter("zip2");
 	String addr1 = request.getParameter("addr1");
@@ -87,8 +90,8 @@ public class ModmemberController implements Controller {
 	mdetail.setAddr2(addr2);
 	mdetail.setMarriage(marriage);
 	try {
-		service.modmembers(members);
-		service.modmemberDetail(mdetail);
+		service.correctMembers(members);
+		service.correctMemberDetail(mdetail);
 		request.setAttribute("result", 1);
 	}catch(Exception e) {
 		e.printStackTrace();

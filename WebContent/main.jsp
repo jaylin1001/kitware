@@ -26,7 +26,7 @@
 			location.href="${pageContext.request.contextPath}/home/home.jsp";
 		}
 		else if(className=='modmember'){
-			location.href="${pageContext.request.contextPath}/modmember/memberstatus.jsp";
+			location.href="${pageContext.request.contextPath}/memberstatus.do";
 		}else{
 			 location.href=className+"/"+className+".jsp"; 
 		}

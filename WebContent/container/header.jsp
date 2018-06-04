@@ -36,7 +36,7 @@
 	src="https://cdnjs.cloudflare.com/ajax/libs/metisMenu/2.7.7/metisMenu.min.js"></script>
 
 <!-- Custom Theme JavaScript -->
-<script src="../js/custom/sb-admin-2.js"></script>
+
 
 <!-- include summernote css/js 추가두줄-->
 <script src="${pageContext.request.contextPath}/summernote/summernote.js"></script>
