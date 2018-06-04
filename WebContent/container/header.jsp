@@ -94,6 +94,9 @@
 			case 'home' :
 				location.href='${pageContext.request.contextPath}/mainview.do';
 				break;
+			case 'mail' :
+				location.href='${pageContext.request.contextPath}/maillist.do';
+				break;
 			} 
 			
 			$(this).addClass('active');
@@ -183,6 +186,8 @@ div.navbar-header> a.logout{
 							class="fa fa-clock-o"></i>근태관리</a></li>
 					<li class="board"><a href="#4" data-toggle="tab"><i
 							class="fa fa-bars"></i>게시판</a></li>
+					<li class="mail"><a href="#5" data-toggle="tab"><i
+							class="fa fa-envelope"></i>쪽지함</a></li>
 					<!-- ***추가됨 -->
 				</ul>
 
@@ -199,10 +204,11 @@ div.navbar-header> a.logout{
 					</div>
 					</div>
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">&nbsp;결재할 문서:&nbsp; &nbsp; &nbsp;${doclist}</a>
-					
 					<div>&nbsp;</div>
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
 					오늘의 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
+					<div>&nbsp;</div>
+					&nbsp;&nbsp; &nbsp;<a href="#">안읽은 쪽지:</a>
 					<hr>
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">

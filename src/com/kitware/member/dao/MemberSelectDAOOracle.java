@@ -7,8 +7,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kitware.authorization.dao.MyConnection;
+import com.kitware.authorization.vo.DocGiganVO;
+import com.kitware.authorization.vo.DocKindVO;
+import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
+import com.kitware.member.vo.Mail;
 import com.kitware.member.vo.Members;
 
 
@@ -67,16 +72,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 		}		
 	}
 	
-	//DB TEST
-	public static void main(String[] args) {
-		MemberSelectDAOOracle test = new MemberSelectDAOOracle();
-		try {
-			Members mbtest = test.selectMemberInfo("kim");
-			System.out.println(mbtest);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+	
 	
 	@Override
 	public List<Members> selectAllmembers() throws Exception {
@@ -118,17 +114,6 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 		}
 	}
 
-	// DB TEST
-	// public static void main(String[] args) {
-	// MemberSelectDAOOracle test = new MemberSelectDAOOracle();
-	// try {
-	// Members mbtest = test.selectMemberInfo("kim");
-	// System.out.println(mbtest);
-	// } catch (Exception e) {
-	// e.printStackTrace();
-	// }
-	// }
-
 	@Override
 	public List<DeptInfo> getDepartments() throws Exception {
 		Connection con = null;
@@ -148,7 +133,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 			e.printStackTrace(); // 톰캣콘솔
 			throw e;
 		} finally {
-			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+			MyConnection.close(rs, pstmt, con);
 		}
 	}
 
@@ -203,4 +188,131 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 			com.kitware.sql.MyConnection.close(rs, pstmt, con);
 		}
 	}
+
+	@Override
+	public List<Mail> selectMailList(String emp_num) throws Exception {
+
+				Connection con = null;
+				PreparedStatement pstmt = null;
+				ResultSet rs = null;
+
+				String selectMailListSQL = "select m.mail_num, mb.name, mb2.name name2, m.mail_title, m.send_date, m.watch_yn"
+						+" from mail m, members mb, members mb2"
+						+" where m.rcv_num = mb2.emp_num"
+						+" and m.emp_num = mb.emp_num"
+						+" and m.rcv_num = ?";
+				List<Mail> maillist = new ArrayList<>(); 
+				Mail mail = null; 
+				Members mem = new Members();
+				try {
+					con = MyConnection.getConnection();
+					pstmt = con.prepareStatement(selectMailListSQL);
+					pstmt.setString(1, emp_num);
+					rs = pstmt.executeQuery();
+					while (rs.next()) {
+						mail = new Mail();
+						mail.setMail_num(rs.getString("mail_num"));
+						mail.setMail_title(rs.getString("mail_title"));
+						mail.setSend_date(rs.getString("send_date"));
+						mail.setWatch_yn(rs.getString("watch_yn"));
+						mem = new Members(rs.getString("name"), rs.getString("name2"));
+						mail.setMembers(mem);
+						maillist.add(mail);
+					}
+
+				} finally {
+					MyConnection.close(rs, pstmt, con);
+				}
+				return maillist;
+			}
+
+	@Override
+	public void insertMail(Mail mail) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void updateWatch(String watch_yn) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Mail selectMailAll(String emp_num) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectMailListSQL = "select m.mail_num, mb.name, mb2.name name2, m.mail_content, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
+				+" from mail m, members mb, members mb2"
+				+" where m.rcv_num = mb2.emp_num"
+				+" and m.emp_num = mb.emp_num"
+				+" and m.rcv_num = ?";
+		Mail mail = null; 
+		Members mem = new Members();
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectMailListSQL);
+			pstmt.setString(1, emp_num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mail = new Mail();
+				mail.setMail_num(rs.getString("mail_num"));
+				mail.setMail_content(rs.getString("mail_content"));
+				mail.setMail_title(rs.getString("mail_title"));
+				mail.setSend_date(rs.getString("send_date"));
+				mail.setWatch_yn(rs.getString("watch_yn"));
+				mem = new Members(rs.getString("name"), rs.getString("name2"));
+				mail.setMembers(mem);
+			}
+
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return mail;
+	}
+
+	
+	@Override
+	public void updateEdit(Mail mail, String mail_num) throws Exception {
+			Connection con = null;
+			PreparedStatement pstmt = null;
+			ResultSet rs = null;
+
+			String updateEditSQL = "update mail"
+					+" set mail_title = ?,"
+					+" MAIL_CONTENT = ?,"
+					+" re_yn = '1'"
+					+" where mail_num =?";
+			try {
+				con = MyConnection.getConnection();
+				pstmt = con.prepareStatement(updateEditSQL);
+				pstmt.setString(1, mail.getMail_title());
+				pstmt.setString(2, mail.getMail_content());
+				pstmt.setString(3, mail_num);
+				pstmt.executeUpdate();
+
+			} finally {
+				MyConnection.close(rs, pstmt, con);
+			}
+
+		}
+		
+	
+	
+	//DB TEST
+		public static void main(String[] args) {
+			MemberSelectDAOOracle test = new MemberSelectDAOOracle();
+			try {
+				List<Mail> mtest = test.selectMailList("2");
+				System.out.println(mtest);
+				Mail mtest2 = test.selectMailAll("2");
+				System.out.println("aaaa"+mtest2);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+
+
 }
