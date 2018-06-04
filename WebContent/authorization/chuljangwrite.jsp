@@ -43,7 +43,7 @@
 				</tr>
 				<tr>
 					<th>문서종류</th>
-					<td>기안서</td>
+					<td>출장</td>
 				</tr>
 				<tr>
 					<th>기안일</th>
@@ -124,7 +124,7 @@
 								<option id="init">사원 선택</option>
 								<c:forEach var="emp" items="${requestScope.memberlist }">
 									<option id="${emp.dept_num }${emp.position_num}"
-										style="display: none" value="${emp.emp_num }">${emp.name }</option>
+										style="display: none" value="${emp.emp_num}">${emp.name}</option>
 								</c:forEach>
 							</select>
 						</div>

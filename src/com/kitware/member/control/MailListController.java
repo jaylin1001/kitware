@@ -49,6 +49,7 @@ public class MailListController implements Controller {
 		}
 		try {
 			List<Mail> list = service.selectMailList(emp_num);
+			List<Mail> list2 = service.selectMailList2(emp_num);
 			int totalCount = list.size();
 			//총페이지수계산
 			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
@@ -73,7 +74,7 @@ public class MailListController implements Controller {
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("startRow", startRow);
 			request.setAttribute("endRow", endRow);
-			
+			request.setAttribute("list2", list2);
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());

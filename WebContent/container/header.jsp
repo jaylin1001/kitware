@@ -5,6 +5,7 @@
 
 <c:set var="doclist" value="${sessionScope.doc_list}"></c:set>
 <c:set var="schelist" value="${sessionScope.schedule}"></c:set>
+<c:set var="maillist" value="${sessionScope.mail_list}"></c:set>
 <%
 	String root = "/kitware_50101526/WebContent/";
 %>
@@ -57,8 +58,6 @@
 <!-- datepicker js CDN-->
 <script
 	src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-
-	
 	
 <script>
 	$(function() {
@@ -208,7 +207,8 @@ div.navbar-header> a.logout{
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
 					오늘의 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
 					<div>&nbsp;</div>
-					&nbsp;&nbsp; &nbsp;<a href="#">안읽은 쪽지:</a>
+					&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/maillist.do">
+					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a>
 					<hr>
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
@@ -216,7 +216,8 @@ div.navbar-header> a.logout{
 					<a href="#">빠른메뉴<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=gian&doc_kind=10">문서작성</a></li>
-								<li><a href="${pageContext.request.contextPath}/schedule/scheduleadd.jsp">일정추가</a></li>
+								<li><a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">일정추가</a></li>
+								<li><a href="${pageContext.request.contextPath}/mailwrite.do?mode=writeview">쪽지보내기</a></li>
 							</ul></li>
 						<li class="authorization"><a href="#">결재문서함<span
 								class="fa arrow"></span></a>
@@ -267,8 +268,8 @@ div.navbar-header> a.logout{
 					</ul>
 				</div>
 				<!-- /.sidebar-collapse -->
-			</div>
+		</div>
 			<!-- /.navbar-static-side -->
 		</nav>
-		<div id="page-wrapper">
+		 <div id="page-wrapper">
 			<%-- <%@ include file="footer.jsp"%> --%>

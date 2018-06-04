@@ -23,8 +23,10 @@ ${mail.members.name0}
 <textarea class="form-control" id="exampleFormControlTextarea1" rows="10" readonly>${mail.mail_content}
  </textarea>
  <br>
+<%--  <c:if test="${requestScope.state ne 'my'}"> --%>
 <input type="button" value="답장" onclick = "editdocnum('${mail.mail_num}')">
-<input type="button" value="확인" onclick="window.history.go(-1); return false;">
+<%-- </c:if> --%>
+<input type="button" value="확인" onclick="location.href='maillist.do'">
 
 </body>
 <style>
@@ -62,11 +64,6 @@ thead {
 
 </style>
 <script>
-function functionrt(data, data1) {
-	console.log(data);
-	console.log(data1);
-		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
-	}
 function editdocnum(data) {
 	location.href= "mailcont.do?mail_num="+data+"&mode=editread"
 	console.log(data);

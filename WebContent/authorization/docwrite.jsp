@@ -60,16 +60,10 @@
             <tr>
                <th>기안일</th>
                <td class="date">
-                  <!-- <input class="form-control" type="text">년
-               <input class="form-control" type="text">월 <input
-               class="form-control" type="text">일</td> --> <!-- <input type="text"
-               id="testDatepicker" placeholder="날짜를 선택하세요" readonly> -->
                   <div id="date"><%=(String) dformat.format(new Date())%></div>
                </td>
                <th>수신부서</th>
                <td colspan="3">
-                  <!-- <input class="form-control" type="text"> --> <!-- <button class="btn btn-default">수신부서지정</button> -->
-                  <!-- <input class="form-control" type="button" value="수신부서지정"> -->
                   <select name="dept">
                      <c:forEach var="dept" items="${requestScope.deptlist }">
                         <option value="${dept.dept_num}">${dept.dept_name }</option>
@@ -100,7 +94,7 @@
 						</select> <select name="name" class="name">
 							<option id="init">사원 선택</option>
 							<c:forEach var="emp" items="${requestScope.memberlist }">
-								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num }">${emp.name }</option>
+								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num}" name="replace">${emp.name}</option>
 							</c:forEach>
 						</select>
 					</div>

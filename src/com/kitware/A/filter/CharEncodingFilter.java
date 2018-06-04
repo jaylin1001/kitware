@@ -15,6 +15,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import com.kitware.authorization.service.DocSelectService;
+import com.kitware.member.service.MemberService;
+import com.kitware.member.vo.Mail;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.service.SchCodeService;
 
@@ -42,7 +44,7 @@ public class CharEncodingFilter implements Filter {
 		String contextPath = req.getContextPath();
 		DocSelectService service = DocSelectService.getInstance();
 		SchCodeService sservice = SchCodeService.getInstance();
-
+		MemberService mservice = MemberService.getInstance();
 		// permit 리스트에 요청한 uri 값이 없다면 실행
 		if (!permitList.contains(uri)) {
 			HttpSession session = req.getSession();
@@ -55,6 +57,8 @@ public class CharEncodingFilter implements Filter {
 				try {
 					int doc_list = service.selectGJWait(mb.getEmp_num()).size();
 					int listSchedule = sservice.findSchPersonal(mb.getEmp_num()).size();
+					Mail mail_list = mservice.selectMailList3(mb.getEmp_num());
+					session.setAttribute("mail_list", mail_list);
 					session.setAttribute("doc_list", doc_list);
 					session.setAttribute("schedule", listSchedule);
 				} catch (Exception e) {

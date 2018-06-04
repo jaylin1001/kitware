@@ -42,7 +42,8 @@ public class MailController implements Controller{
 		Mail mails =null;
 		String mail_num = request.getParameter("mail_num");
 		String mode = request.getParameter("mode");
-		
+		String state = request.getParameter("state");
+		request.setAttribute("state", state);
 		String mail_content = request.getParameter("mail_content");
 		String mail_title = request.getParameter("mail_title");
 		System.out.println("로그인번호" + emp_num);
@@ -51,7 +52,7 @@ public class MailController implements Controller{
 
 		try {
 			if(mode.equals("editread")) {
-				mails = service.selectMailAll(emp_num);
+				mails = service.selectMailAll(mail_num);
 				forwardURL = "/Mail/mailEdit.jsp";
 			}
 			else if(mode.equals("update")) {
@@ -62,7 +63,8 @@ public class MailController implements Controller{
 				request.setAttribute("result", "1");
 				forwardURL = "/Mail/editresult.jsp";
 			}else if(mode.equals("read")) {
-				mails = service.selectMailAll(emp_num);
+				mails = service.selectMailAll(mail_num);
+				service.updateWatch(mail_num);
 				forwardURL = "/Mail/mailRead.jsp";
 			}
 			

@@ -196,11 +196,11 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 				PreparedStatement pstmt = null;
 				ResultSet rs = null;
 
-				String selectMailListSQL = "select m.mail_num, mb.name, mb2.name name2, m.mail_title, m.send_date, m.watch_yn"
+				String selectMailListSQL = "select rownum, m.mail_num, mb.name, mb2.name name2, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
 						+" from mail m, members mb, members mb2"
 						+" where m.rcv_num = mb2.emp_num"
 						+" and m.emp_num = mb.emp_num"
-						+" and m.rcv_num = ?";
+						+" and m.rcv_num = ? order by m.mail_num desc";
 				List<Mail> maillist = new ArrayList<>(); 
 				Mail mail = null; 
 				Members mem = new Members();
@@ -211,8 +211,10 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 					rs = pstmt.executeQuery();
 					while (rs.next()) {
 						mail = new Mail();
+						mail.setRownum(rs.getString("rownum"));
 						mail.setMail_num(rs.getString("mail_num"));
 						mail.setMail_title(rs.getString("mail_title"));
+						mail.setMail_content(rs.getString("mail_content"));
 						mail.setSend_date(rs.getString("send_date"));
 						mail.setWatch_yn(rs.getString("watch_yn"));
 						mem = new Members(rs.getString("name"), rs.getString("name2"));
@@ -225,36 +227,128 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 				}
 				return maillist;
 			}
-
 	@Override
-	public void insertMail(Mail mail) throws Exception {
-		// TODO Auto-generated method stub
+	public List<Mail> selectMailList2(String emp_num) throws Exception {
 		
-	}
-
-	@Override
-	public void updateWatch(String watch_yn) throws Exception {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public Mail selectMailAll(String emp_num) throws Exception {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-
-		String selectMailListSQL = "select m.mail_num, mb.name, mb2.name name2, m.mail_content, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
+		
+		String selectMailListSQL = "select rownum, m.mail_num, mb.name, mb2.name name2, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
 				+" from mail m, members mb, members mb2"
 				+" where m.rcv_num = mb2.emp_num"
 				+" and m.emp_num = mb.emp_num"
-				+" and m.rcv_num = ?";
+				+" and m.emp_num = ? order by m.mail_num desc";
+		List<Mail> maillist = new ArrayList<>(); 
 		Mail mail = null; 
 		Members mem = new Members();
 		try {
 			con = MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectMailListSQL);
 			pstmt.setString(1, emp_num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				mail = new Mail();
+				mail.setRownum(rs.getString("rownum"));
+				mail.setMail_num(rs.getString("mail_num"));
+				mail.setMail_title(rs.getString("mail_title"));
+				mail.setMail_content(rs.getString("mail_content"));
+				mail.setSend_date(rs.getString("send_date"));
+				mail.setWatch_yn(rs.getString("watch_yn"));
+				mem = new Members(rs.getString("name"), rs.getString("name2"));
+				mail.setMembers(mem);
+				maillist.add(mail);
+			}
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return maillist;
+	}
+	@Override
+	public Mail selectMailList3(String emp_num) throws Exception {
+		
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectMailListSQL = "select count(mail_num) count"
+								   +" from mail"
+								   +" where rcv_num=?"
+								   +" and watch_yn =0";
+		Mail mail = null;
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectMailListSQL);
+			pstmt.setString(1, emp_num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+			mail = new Mail();
+			mail.setCount(rs.getString("count"));
+			pstmt.executeQuery();
+			}
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return mail;
+	}
+
+	@Override
+	public void insertMail(Mail mail) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		
+		String insertMailSQL = "insert into mail(mail_num, emp_num, rcv_num, mail_title, mail_content)"
+				+" values (mail_num_seq.nextval,?,?,?,?)";
+		try {
+			con = MyConnection.getConnection();
+			pstmt= con.prepareStatement(insertMailSQL);
+			pstmt.setString(1, mail.getEmp_num());
+			pstmt.setString(2, mail.getRcv_num());
+			pstmt.setString(3, mail.getMail_title());
+			pstmt.setString(4, mail.getMail_content());
+			pstmt.executeUpdate();
+		}catch (SQLException e) {
+				e.printStackTrace();
+		}
+		finally {
+			MyConnection.close(pstmt, con);
+		}
+	}
+
+	@Override
+	public void updateWatch(String mail_num) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		try{
+			String updateWatchSQL ="update mail"
+									+" set watch_yn = 1"
+									+" where mail_num =?";
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(updateWatchSQL);
+			pstmt.setString(1, mail_num);
+			pstmt.executeUpdate();
+			
+		}finally {
+			MyConnection.close(pstmt, con);
+		}
+	}
+
+	@Override
+	public Mail selectMailAll(String mail_num) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+
+		String selectMailListSQL = "select m.mail_num, mb.name, mb2.name name2, m.mail_content, m.mail_title, m.send_date, m.watch_yn"
+				+" from mail m, members mb, members mb2"
+				+" where m.rcv_num = mb2.emp_num"
+				+" and m.emp_num = mb.emp_num"
+				+" and m.mail_num = ?";
+		Mail mail = null; 
+		Members mem = new Members();
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectMailListSQL);
+			pstmt.setString(1, mail_num);
 			rs = pstmt.executeQuery();
 			while (rs.next()) {
 				mail = new Mail();
@@ -283,7 +377,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 			String updateEditSQL = "update mail"
 					+" set mail_title = ?,"
 					+" MAIL_CONTENT = ?,"
-					+" re_yn = '1'"
+					+" re_yn = '1', watch_yn = '0'"
 					+" where mail_num =?";
 			try {
 				con = MyConnection.getConnection();
@@ -305,10 +399,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO{
 		public static void main(String[] args) {
 			MemberSelectDAOOracle test = new MemberSelectDAOOracle();
 			try {
-				List<Mail> mtest = test.selectMailList("2");
-				System.out.println(mtest);
-				Mail mtest2 = test.selectMailAll("2");
-				System.out.println("aaaa"+mtest2);
+				Mail test1 = test.selectMailList3("2");
+				System.out.println(test1);
+				
 			} catch (Exception e) {
 				e.printStackTrace();
 			}

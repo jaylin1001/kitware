@@ -131,7 +131,7 @@ public class DocDAOOracle implements DocDAO {
 								+" ((a.sunbeon = b.sunbeon-1 and a.acs_yn = 1 and b.acs_yn = 0) or (b.sunbeon=1 and b.acs_yn=0)))"
 								+" preconf where mydocnum.doc_num = preconf.doc_num"
 								+" and mydocnum.conf_num = ?"
-								+" and mydocnum.doc_kind = dk.doc_kind and mydocnum.doc_state !='3'";
+								+" and mydocnum.doc_kind = dk.doc_kind and mydocnum.doc_state !='3' order by mydocnum.doc_num desc";
 		List<DocVO> doclist = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo = null; // doc 데이터 담음
 		DocKindVO dock = new DocKindVO();// dockind 데이터 담음
@@ -172,7 +172,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectOkSQL = "select d.start_date, d.doc_kind, d.doc_title, d.doc_num, d.doc_state, dk.doc_name"
 				+ " from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state in('0','1')"
-				+ " and d.emp_num = ?";
+				+ " and d.emp_num = ? order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -248,7 +248,7 @@ public class DocDAOOracle implements DocDAO {
 		String selectOkSQL = "select d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
 				+" and d.doc_kind = dk.doc_kind and d.emp_num =?"
-				+" and d.doc_state = 2";
+				+" and d.doc_state = 2 order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -283,7 +283,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectSQL = "select rownum r, d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
 				+" from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 3"
-				+" and d.emp_num = ?";
+				+" and d.emp_num = ? order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -319,7 +319,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectExpectedSQL = "select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and dd.conf_num = ?" + " and dd.acs_yn = 0 and d.doc_state !=3";
+				+ " and d.doc_kind = dk.doc_kind" + " and dd.conf_num = ?" + " and dd.acs_yn = 0 and d.doc_state !=3 order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -355,7 +355,7 @@ public class DocDAOOracle implements DocDAO {
 
 		String selectGJOkSQL = "select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and d.doc_state in(?)";
+				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and d.doc_state in(?) order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -390,7 +390,7 @@ public class DocDAOOracle implements DocDAO {
 		
 		String selectGJOkSQL = "select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn in(0,1,2,3)";
+				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn in(0,1,2,3) order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -428,7 +428,7 @@ public class DocDAOOracle implements DocDAO {
 								+" where d.emp_num = m.emp_num"
 								+" and d.doc_kind = dk.doc_kind"
 								+" and m.dept_num = ?"
-								+" and d.doc_state in(?)";
+								+" and d.doc_state in(?) order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>();
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
@@ -468,7 +468,7 @@ public class DocDAOOracle implements DocDAO {
 								+" where d.emp_num = m.emp_num"
 								+" and d.doc_kind = dk.doc_kind"
 								+" and m.dept_num = ?"
-								+" and d.doc_state in(0,1,2,3)";
+								+" and d.doc_state in(0,1,2,3) order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>();
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음

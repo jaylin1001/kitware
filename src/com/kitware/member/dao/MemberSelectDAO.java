@@ -16,9 +16,11 @@ public interface MemberSelectDAO {
 	public List<Members> getGradeMember(String position_num, String dept_num) throws Exception;
 	//메일(쪽지) 파트
 	public List<Mail> selectMailList(String emp_num) throws Exception;//리스트
+	public List<Mail> selectMailList2(String emp_num) throws Exception;//리스트
+	public Mail selectMailList3(String emp_num) throws Exception;//안읽은거 리스트
 	public Mail selectMailAll(String emp_num) throws Exception;//상세보기
 	public void insertMail(Mail mail) throws Exception;
 	public void updateEdit(Mail mail, String mail_num) throws Exception;
-	public void updateWatch(String watch_yn) throws Exception;
+	public void updateWatch(String mail_num) throws Exception;
 	
 }
