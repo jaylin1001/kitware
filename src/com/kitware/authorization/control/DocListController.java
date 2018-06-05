@@ -39,17 +39,18 @@ public class DocListController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		System.out.println("로그인번호"+emp_num);
-		int page = 1;
 		
 		try {
-			List<DocVO> docvo_list0 = service.selectGJWait(emp_num, page);
+			List<DocVO> docvo_list0 = service.selectGJWait(emp_num);
 			request.setAttribute("docvo_list0", docvo_list0);
 			
-			List<DocVO> docvo_list = service.findIng(emp_num, page); 
+			List<DocVO> docvo_list = service.findIng(emp_num); 
 			request.setAttribute("docvo_list", docvo_list);
 			
-			List<DocVO> docvo_list2 = service.findOk(emp_num, page); 
+			List<DocVO> docvo_list2 = service.findOk(emp_num); 
 			request.setAttribute("docvo_list2", docvo_list2);
+			
+			
 			
 		} catch (Exception e) {
 			request.setAttribute("result", e.getMessage());

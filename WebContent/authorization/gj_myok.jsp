@@ -13,7 +13,6 @@
 <div class="container">
 	<div>&nbsp;</div>
 	<h2>내가 결재한 문서함</h2>
-	${totalCount}
 	<div>&nbsp;</div>
 	<div class="selectbutton">
 		&nbsp;
@@ -32,7 +31,7 @@
 				<td>문서이름</td>
 			</tr>
 		</thead>
-		<c:forEach var="b" items="${list}">
+			<c:forEach var="b" items="${list}" begin="${requestScope.startRow}" end="${requestScope.endRow}" >
 			<%-- <c:forEach begin="${1}" end="${totalCount}" var="j" > --%>
 			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
 			<tr class="doc_list_content">
@@ -42,7 +41,20 @@
 					<a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');"<%-- onclick="functionrt(${b.doc_kind},${b.doc_num});" --%>
 					>${b.doc_title}</a>
 				</td>
-				<td>${b.doc_state}</td>
+				<c:choose>
+      			 <c:when test="${b.doc_state eq '1'}">
+      			 <td>진행</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '2'}">
+      			 <td>완료</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '3'}">
+      			 <td>취소</td>
+      			 </c:when>
+      			 <c:otherwise>
+      			 <td>상신</td>
+      			 </c:otherwise>
+      			 </c:choose>
 				<td>${b.start_date}</td>
 				<td>${b.doc_kindvo.doc_name}</td>
 			</tr>

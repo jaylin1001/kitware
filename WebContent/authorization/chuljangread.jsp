@@ -84,21 +84,21 @@
 				<tr>	
 					<td colspan="6" align="center">
 					<c:set var="sname" value="${session.name}" />
-					<c:set var="dname" value="${doc.members.name}" />
-					<c:choose>
-					<c:when test="${doc.doc_state ne '2'}">
+				<c:set var="dname" value="${doc.members.name}" />
+				<c:choose>
+					<c:when test="${doc.doc_state ne '2'||doc.doc_state ne '3'}">
 						<c:if test="${sname eq dname}">
 						<input type="button" value="수정" id="edit" onclick = "editdocnum('${doc.doc_num}')"> 
 					    <input type="button" value="삭제" id="del" onclick = "deldocnum('${doc.doc_num}')">
 						</c:if>
 						</c:when>
 					</c:choose>
-						<c:set var="snum" value="${session.emp_num}" />
-						<c:if test="${exp eq null}">
+					<c:set var="snum" value="${session.emp_num}" />
+					<c:if test="${exp eq null}">
 					<c:forEach items="${doc_conf}" var="item" varStatus="status">
 					  <c:if test="${item.conf_num eq snum}">
 					  <c:if test="${item.acs_yn eq '0'}">
-					  						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${fn:length(doc_conf)} ')">
+						<input type="button" value="승인" id="ok" onclick = "gjdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}','${doc.doc_state}','${fn:length(doc_conf)} ')">
 						<input type="button" value="반려" id="down" onclick = "downdocnum(${doc_conf[0].acs_yn}${doc_conf[1].acs_yn}${doc_conf[2].acs_yn},'${doc.doc_num}')">
 					 </c:if>
 					  </c:if>

@@ -20,37 +20,51 @@
 				<td>문서이름</td>
 			</tr>
 		</thead>
-		<c:forEach var="b" items="${list}">
-			<%-- <c:forEach begin="${1}" end="${totalCount}" var="j" > --%>
-			<%-- <c:forEach begin="1" end="${b.level}">▷</c:forEach> --%>
+			<c:forEach var="b" items="${list}" begin="${requestScope.startRow}" end="${requestScope.endRow}" >
 			<tr class="doc_list_content">
 				<td>${b.doc_num}</td>
 				<td>
-					<!--  onclick="docContent()" --> <%-- <a href="docreadcj.do?doc_num=${b.doc_num}">${b.doc_title}</a></td> --%>
-					<a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');"<%-- onclick="functionrt(${b.doc_kind},${b.doc_num});" --%>
-					>${b.doc_title}</a>
+					<a href="javascript:functionrt(${b.doc_kind},'${b.doc_num}');">${b.doc_title}</a>
 				</td>
-				<td>${b.doc_state}</td>
+				<c:choose>
+      			 <c:when test="${b.doc_state eq '1'}">
+      			 <td>진행</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '2'}">
+      			 <td>완료</td>
+      			 </c:when>
+      			 <c:when test="${b.doc_state eq '3'}">
+      			 <td>취소</td>
+      			 </c:when>
+      			 <c:otherwise>
+      			 <td>상신</td>
+      			 </c:otherwise>
+      			 </c:choose>
 				<td>${b.start_date}</td>
 				<td>${b.doc_kindvo.doc_name}</td>
 			</tr>
 		</c:forEach>
 	</table>
 
-
-	<div class="pagination">
-		<c:set var="startPage" value="${pb.startPage}" />
-		<c:set var="endPage" value="${pb.endPage}" />
-		<c:if test="${startPage > 1}">
-			<Button>이전</Button>
-		</c:if>
-		<c:forEach begin="${startPage}" end="${endPage}" var="i">
-			<button type="button">${i}</button>
-		</c:forEach>
-		<c:if test="${endPage < pb.totalPage}">
-			<Button>다음</Button>
-		</c:if>
-	</div>
+<c:set var="startPage" value="${pb.startPage}"/>
+ 	<c:set var="endPage" value="${pb.endPage}"/>
+	  <ul class="pagination">
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Previous">
+	        <span aria-hidden="true">&laquo;</span>
+	      </a>
+	    </li>
+	    <c:forEach begin="${pb.startPage}" end="${pb.endPage}" var="i" >  
+		  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
+		</c:forEach> 
+			    
+	    
+	    <li class="page-item">
+	      <a class="page-link" href="#" aria-label="Next">
+	        <span aria-hidden="true">&raquo;</span>
+	      </a>
+	    </li>
+	  </ul>
 </div>
 <style>
 .container {
@@ -104,27 +118,31 @@ function functionrt(data, data1) {
 	}
 
 	$(function() {
-		$('.pagination button').click(function() {
+		$('.pagination a').click(function(){
 			var page;
-			if ($(this).text() == '이전') {
-				page = ${prePage};
-				location.href = "gjmywaitlist.do?page=" + page;
-			} else if ($(this).text() == '다음') {
-				page = ${nextPage};
-				location.href = "gjmywaitlist.do?page=" + page;
-			} else {
-				page = $(this).text();
-				location.href = "gjmywaitlist.do?page=" + page;
+			var mode = '${requestScope.mode}';
+			var selectPage = $(this).text().trim();
+			if(selectPage == '«'){   <%-- 시작페이지가 1인 경우 return--%>
+				if(${pb.startPage} != '1'){
+					page=${pb.startPage}-1;
+					location.href = "gjmywaitlist.do?page=" + page + "&mode=" + mode;
+				}else{
+					return;	
+				}
+			}else if(selectPage == '»'){
+				if(${pb.endPage} == ${pb.totalPage}){  <%--총페이지와 끝페이지가 다르면 return--%>
+					return;
+				}else{
+					page=${pb.endPage}+1;
+					location.href = "gjmywaitlist.do?page=" + page + "&mode=" + mode;
+				}
+			}else{
+				page = selectPage;
+				location.href = "gjmywaitlist.do?page=" + page + "&mode=" + mode;
 			}
-
-			return false;
+			
 		});
-
-		/* $('.doc_list_content').click(function(){
-			var doc_num = $('.doc_list_content a').text();
-				location.href="mygjoklist.do?doc_num="+doc_num;
-		}); */
-		//문서번호도 보내야함
+		
 		$('.pagination a').each(function(index, element) {
 			if ($(element).text() == '${pb.currentPage}') {
 				$(element).addClass('active');

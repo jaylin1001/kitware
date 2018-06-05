@@ -61,13 +61,12 @@ public class HeaderController implements Controller {
 		HttpSession session = request.getSession();
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
-		int intPage =1;
 		
 		try {
-			int doc_list =  service.selectGJWait(emp_num, intPage).size();
+			int doc_list =  service.selectGJWait(emp_num).size();
 			int listSchedule = sservice.findSchPersonal(emp_num).size();
-			request.setAttribute("doc_list", doc_list);
-			request.setAttribute("schedule", listSchedule);
+			session.setAttribute("doc_list", doc_list);
+			session.setAttribute("schedule", listSchedule);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

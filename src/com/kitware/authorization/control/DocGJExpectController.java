@@ -48,26 +48,22 @@ public class DocGJExpectController implements Controller{
 			System.out.println("페이지가져온거" + page);
 		}
 		try {
-			List<DocVO> list = service.selectExpected(emp_num, intPage);
+			List<DocVO> list = service.selectExpected(emp_num);
 			// 게시물 총목록수
-			int totalCount = service.findCount();
+			int totalCount = list.size();
 
-			// 총페이지수계산
+
 			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
-			int totalPage = (int) Math.ceil((double) totalCount/cntPerPage);
-
-			// 페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
-			int cntPerPageGroup = 5; // 페이지그룹별 2페이지씩 보여준다
-			int startPage = (int) Math.floor((double) (intPage) / (cntPerPageGroup + 1)) * cntPerPageGroup + 1;
-			int endPage = startPage + cntPerPageGroup - 1;
-			int prePage = intPage-1;
-			int nextPage = intPage+1;
-			if (endPage > totalPage) {
+			int endRow = (cntPerPage * intPage)-1;
+			int startRow = (endRow+1) - cntPerPage;
+			int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
+			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
+			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
+			int startPage = (int)Math.floor((double)(intPage)/(cntPerPageGroup+1))*cntPerPageGroup+1;
+			int endPage = startPage+cntPerPageGroup-1;
+			if(endPage > totalPage)
 				endPage = totalPage;
-			}
-			if(prePage <1) {
-				prePage = 1;
-			}
+			
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
@@ -76,11 +72,9 @@ public class DocGJExpectController implements Controller{
 			pb.setEndPage(endPage); // 끝페이지
 
 			request.setAttribute("pagebean", pb);
-			request.setAttribute("prePage", prePage);
-			request.setAttribute("nextPage", nextPage);
-			System.out.println(list.size());
-			System.out.println(pb.getList());
-			System.out.println("intpage:" + intPage);
+			request.setAttribute("totalCount", totalCount);
+			request.setAttribute("startRow", startRow);
+			request.setAttribute("endRow", endRow);
 
 		} catch (Exception e) {
 			e.printStackTrace();

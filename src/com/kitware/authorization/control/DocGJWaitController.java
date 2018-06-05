@@ -40,7 +40,6 @@ public class DocGJWaitController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		List<DocVO> list= null;
-		int totalCount;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
 		String mode = request.getParameter("mode");
@@ -50,11 +49,25 @@ public class DocGJWaitController implements Controller {
 		if(page != null) {
 			intPage = Integer.parseInt(page);
 		}try {
-			totalCount = service.findCount();
+			
+			
+			if(mode.equals("ing")) {
+				list = service.findIng(emp_num);
+			}else if(mode.equals("ok")) {
+				list = service.selectOK(emp_num);
+			}else if(mode.equals("cancel")) {
+				list = service.selectCancle(emp_num);
+			}else if(mode.equals("all")){
+				list = service.selectmyAll(emp_num);
+				System.out.println(list.size());
+			}
+			
+			int totalCount = list.size();
 			//총페이지수계산
-			int totalPage = 0;
-			int cntPerPage=7;//1페이지별 5건씩 보여준다
-			totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
+			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
+			int endRow = (cntPerPage * intPage)-1;
+			int startRow = (endRow+1) - cntPerPage;
+			int totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
 			int startPage = (int)Math.floor((double)(intPage)/(cntPerPageGroup+1))*cntPerPageGroup+1;
@@ -62,34 +75,18 @@ public class DocGJWaitController implements Controller {
 			if(endPage > totalPage)
 				endPage = totalPage;
 			
-			if(mode.equals("ing")) {
-				list = service.findIng(emp_num, intPage);
-			}else if(mode.equals("ok")) {
-				list = service.selectOK(emp_num, intPage);
-			}else if(mode.equals("cancel")) {
-				list = service.selectCancle(emp_num, intPage);
-			}else if(mode.equals("all")){
-				list = service.selectAll(emp_num, intPage);
-			}
-			
 			PageBean<DocVO> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);//현재페이지
 			pb.setTotalPage(totalPage); //총페이지
 			pb.setList(list); //목록
 			pb.setStartPage(startPage); //시작페이지
 			pb.setEndPage(endPage); //끝페이지
-			pb.setTotalCount(totalCount); //총 게시글 갯수
-			pb.setCntPerPage(cntPerPage);
-			/*System.out.println("현재페이지:"+intPage);
-			System.out.println("총페이지:"+totalPage);
-			System.out.println("시작페이지:"+startPage);
-			System.out.println("끝페이지:"+endPage);*/
-			request.setAttribute("pagebean", pb);
-			request.setAttribute("mode", mode);
 			
 			request.setAttribute("pagebean", pb);
 			request.setAttribute("totalCount", totalCount);
 			request.setAttribute("mode", mode);
+			request.setAttribute("startRow", startRow);
+			request.setAttribute("endRow", endRow);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -91,7 +91,6 @@ public class DocEditCJController implements Controller {
 				request.setAttribute("doc_detail_list", doc_detail_list);
 				request.setAttribute("docvo_list", docvo_list);
 				forwardURL = "/authorization/chuljang_edit.jsp";
-				System.out.println("1111"+forwardURL);
 			}
 		} catch (Exception e) {
 			/*request.setAttribute("result", "-1");*/

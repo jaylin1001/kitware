@@ -49,7 +49,7 @@ ${requstScope.loginInfo}
             </tr>
             <tr>
                <th>문서종류</th>
-               <td>기안서</td>
+               <td>품의서</td>
             </tr>
             <tr>
                <th>기안일</th>

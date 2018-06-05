@@ -48,21 +48,22 @@
             </tr>
             <tr>
                <th>문서종류</th>
+               <c:choose>
+               <c:when test="${param.doc_kind eq '10'}">
                <td>기안서</td>
+               </c:when>
+               <c:otherwise>
+               <td>발주서</td>
+               </c:otherwise>
+               </c:choose>
             </tr>
             <tr>
                <th>기안일</th>
                <td class="date">
-                  <!-- <input class="form-control" type="text">년
-               <input class="form-control" type="text">월 <input
-               class="form-control" type="text">일</td> --> <!-- <input type="text"
-               id="testDatepicker" placeholder="날짜를 선택하세요" readonly> -->
                   <div id="date"><%=(String) dformat.format(new Date())%></div>
                </td>
                <th>수신부서</th>
                <td colspan="3">
-                  <!-- <input class="form-control" type="text"> --> <!-- <button class="btn btn-default">수신부서지정</button> -->
-                  <!-- <input class="form-control" type="button" value="수신부서지정"> -->
                   <select name="dept">
                      <c:forEach var="dept" items="${requestScope.deptlist }">
                         <option value="${dept.dept_num}">${dept.dept_name }</option>
@@ -82,18 +83,18 @@
 					<div class="replace">
 						<select name="dept" class="dept">
 							<option>부서 선택</option>
-							<c:forEach var="dept" items="${requestScope.deptlist }">
+							<c:forEach var="dept" items="${requestScope.deptlist}">
 								<option value="${dept.dept_num }">${dept.dept_name }</option>
 							</c:forEach>
 						</select> <select name="grade" class="grade">
 							<option id="init">직급 선택</option>
-							<c:forEach var="grade" items="${requestScope.gradelist }">
+							<c:forEach var="grade" items="${requestScope.gradelist}">
 								<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
 							</c:forEach>
 						</select> <select name="name" class="name">
 							<option id="init">사원 선택</option>
 							<c:forEach var="emp" items="${requestScope.memberlist }">
-								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num }">${emp.name }</option>
+								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num}" name="replace">${emp.name}</option>
 							</c:forEach>
 						</select>
 					</div>

@@ -43,7 +43,6 @@ public class DocReadController implements Controller {
 		String emp_num = loginInfo.getEmp_num();
 		String doc_num = request.getParameter("doc_num");
 		String doc_kind = request.getParameter("doc_kind");
-		/*String exp = request.getParameter("exp");*/
 		System.out.println("로그인번호" + emp_num);
 		System.out.println("문서번호" + doc_num);
 
@@ -53,20 +52,15 @@ public class DocReadController implements Controller {
 			List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
 			request.setAttribute("docvo_list", docvo_list);
 			request.setAttribute("doc_detail_list", doc_detail_list);
-			System.out.println(docvo_list);
-			System.out.println(doc_detail_list);
-			if (doc_kind.equals("10")) {
-				// 기안서
-				forwardURL = "/authorization/docread.jsp";
-			} else if (doc_kind.equals("30")) {
-				// 발주
-				forwardURL = "/authorization/docread.jsp";
-			}else if (doc_kind.equals("40")) {
+			if(doc_kind.equals("40")) {
 				// 출장
 				forwardURL = "/authorization/chuljangread.jsp";
 			} else if (doc_kind.equals("60")||doc_kind.equals("80")) {
 				// 병가
 				forwardURL = "/authorization/jotaeRead.jsp";
+			} else { 
+				//기안, 품의, 발주
+				forwardURL = "/authorization/docread.jsp";
 			}
 		} catch (Exception e) {
 			request.setAttribute("result", e.getMessage());

@@ -15,58 +15,45 @@ public class DocSelectService {
 	public int findCount() throws Exception{
 		return dao.selectCount();
 	}
-	public List<DocVO> selectGJWait(String emp_num, int page) throws Exception{
-		return dao.selectGJWait(emp_num, page);
+	public List<DocVO> selectGJWait(String emp_num) throws Exception{
+		return dao.selectGJWait(emp_num);
 	}
 	public List<DocVO> findIng(String emp_num) throws Exception {
 		return dao.selectIng(emp_num);
 	}
-	public List<DocVO> findIng(String emp_num, int page) throws Exception{
-		return dao.selectIng(emp_num, page);
-	}
 
 	public List<DocVO> findOk(String emp_num) throws Exception {
 		System.out.println(dao.selectOk(emp_num));
-		return dao.selectOk(emp_num, 1);
+		return dao.selectOk(emp_num);
 	}
 	
-	public List<DocVO> findOk(String emp_num, int page) throws Exception {
-		return dao.selectOk(emp_num, page);
-	}
-	public List<DocVO> selectCancle(String emp_num, int page) throws Exception{
-		return dao.selectCancle(emp_num, page);
+	public List<DocVO> selectCancle(String emp_num) throws Exception{
+		return dao.selectCancle(emp_num);
 	}
 	
-	public List<DocVO> selectExpected(String conf_num, int page) throws Exception{
-		return dao.selectExpected(conf_num, page);
+	public List<DocVO> selectExpected(String conf_num) throws Exception{
+		return dao.selectExpected(conf_num);
 		
 	}
-	public List<DocVO> selectAll(String emp_num, int page) throws Exception{
-		return dao.selectAll(emp_num, page);
+	public List<DocVO> selectmyAll(String emp_num) throws Exception{
+		return dao.selectmyAll(emp_num);
 	}
-	public List<DocVO> selectOK(String emp_num, int page) throws Exception{
-		return dao.selectOk(emp_num, page);
+	public List<DocVO> selectOK(String emp_num) throws Exception{
+		return dao.selectOk(emp_num);
 	}
 	
-	public List<DocVO> selectGJOk(String conf_num, int page) throws Exception{
-		return dao.selectGJOk(conf_num, page);
-		
+	public List<DocVO> selectGJOk(String conf_num, String state) throws Exception{
+		return dao.selectGJOk(conf_num, state);
 	}
-	public List<DocVO> selectGJOk1(String conf_num, int page) throws Exception{
-		return dao.selectGJOk1(conf_num, page);
-		
+	public List<DocVO> selectGJOkAll(String conf_num) throws Exception{
+		return dao.selectGJOkAll(conf_num);
 	}
-	public List<DocVO> selectGJOk2(String conf_num, int page) throws Exception{
-		return dao.selectGJOk2(conf_num, page);
-		
+
+	public List<DocVO> selectDeptlistAll(String dept_num) throws Exception{
+		return dao.selectDeptlistAll(dept_num);
 	}
-	public List<DocVO> selectGJOk3(String conf_num, int page) throws Exception{
-		return dao.selectGJOk3(conf_num, page);
-		
-	}
-	
-	public List<DocVO> selectDeptlist(String dept_num, String state, int page) throws Exception{
-		return dao.selectDeptlist(dept_num, state, page);
+	public List<DocVO> selectDeptlist(String dept_num, String state) throws Exception{
+		return dao.selectDeptlist(dept_num, state);
 	}
 	public DocVO selectAll(String doc_num) throws Exception{
 		System.out.println(dao.selectAll(doc_num));
@@ -88,4 +75,5 @@ public class DocSelectService {
 		}
 		return service;
 	}
+	
 }

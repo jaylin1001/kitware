@@ -82,7 +82,7 @@ public class MainViewController implements Controller {
 		try {
 			List<NoticeBoard> board_list = bservice.findAll(intPage);
 			/*List<NoticeBoard> dept_list = bservice.findAll(intPage); 부서 게시판*/
-			List<DocVO> doc_list =  service.selectGJWait(emp_num, intPage);
+			List<DocVO> doc_list =  service.selectGJWait(emp_num);
 			List<Schedule> listSchedule = sservice.findSchPersonal(emp_num);
 			//근태 값 들어가야함 
 			request.setAttribute("board_list", board_list);

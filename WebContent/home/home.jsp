@@ -21,7 +21,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${boardlist}" var="b" varStatus="status"
-			 begin="1" end="5">
+			 begin="0" end="4">
 			<tr>
 			<td>${b.seq}</td>
 			<td>${b.title}</td>
@@ -77,7 +77,8 @@
 		</tr>
 		</thead>
 		<tbody>
-		<c:forEach items="${doclist}" var="doc" varStatus="status">
+		<c:forEach items="${doclist}" var="doc" varStatus="status"
+		begin="0" end="4">
 			<tr>
 				<td>${doc.start_date}</td>
 				<td><a href="javascript:functionrt(${doc.doc_kind},'${doc.doc_num}');">${doc.doc_title}</a></td>
@@ -128,54 +129,92 @@ $(document).ready(function() {
             center: 'title',
             right: 'month,agendaWeek,agendaDay'
         },
-        editable: true,
+        editable: false,
         // add event name to title attribute on mouseover
         eventMouseover: function(event, jsEvent, view) {
             if (view.name !== 'agendaDay') {
                 $(jsEvent.target).attr('title', event.title);
             }
         },
-        height: 350,
-        events: [
-            {
-            title: 'All Day Event',
-            start: new Date(y, m, 1)},
-        {
-            title: 'Long Event',
-            start: new Date(y, m, d - 5),
-            end: new Date(y, m, d - 2)},
-        {
-            id: 999,
-            title: 'Repeating Event',
-            start: new Date(y, m, d - 3, 16, 0),
-            allDay: false},
-        {
-            id: 999,
-            title: 'Repeating Event',
-            start: new Date(y, m, d + 4, 16, 0),
-            allDay: false},
-        {
-            title: 'Meeting',
-            start: new Date(y, m, d, 10, 30),
-            allDay: false},
-        {
-            title: 'Lunch',
-            start: new Date(y, m, d, 12, 0),
-            end: new Date(y, m, d, 14, 0),
-            allDay: false},
-        {
-            title: 'Birthday Party',
-            start: new Date(y, m, d + 1, 19, 0),
-            end: new Date(y, m, d + 1, 22, 30),
-            allDay: false},
-        {
-            title: 'Click for Google',
-            start: new Date(y, m, 28),
-            end: new Date(y, m, 29),
-            url: 'http://google.com/'}
-        ]
+        height: 325,
+        googleCalendarApiKey : "AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE",
+		eventSources : [ {
+			googleCalendarId : "ko.south_korea#holiday@group.v.calendar.google.com",
+			className : "koHolidays",
+			color : "#FF0000",
+			textColor : "#FFFFFF",
+		} ],
+        events:  
+			function(start, end, timezone, callback) { /* 개인일정 눌렀을 때는 개인일정만 뜰 수 있도록 설정 */
+			    $.ajax({
+			      url: '${pageContext.request.contextPath}/schpersonal.do',
+			      dataType: 'json',
+			      data: {
+			        start: start.unix(),
+			        end: end.unix()
+			      },
+			      success: function(data) {
+			        var events = [];
+			        
+			        
+			        $.each(data.schedule, function(index,sc){
+			        	contents = sc.contents;
+		        		if (contents == "" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
+		        			contents = "없음";
+		        		}
+		        		startmin = sc.startmin;
+		        		endmin = sc.endmin;
+		        		if(startmin == "" || endmin == ""){
+		        			startmin = "00";
+		        			endmin = "00";
+		        		}
+		        		
+			        	if(sc.starthour == "00" && sc.endhour == "00"){ /* 종일 일정일 때는 시작시간과 종료시간이 "00" */
+							events.push({
+					            title: sc.title,
+					            start: sc.startdate,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });
+			        	}else if(sc.starthour == ""  && sc.endhour == "" ){
+			        		events.push({
+					            title: sc.title,
+					            start: sc.startdate,
+					            end: sc.enddate,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });												        		
+			        	}else{
+							events.push({
+					            title: sc.title,
+					            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+					            end:sc.enddate+'T'+sc.endhour+':'+endmin,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            starthour : sc.starthour,
+					            startmin : startmin,
+					            endhour : sc.endhour,
+					            endmin : endmin,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });
+			        	}
+					});
+			        	callback(events);
+			      }
+			    });
+     	   }
     });
-    
     $('#calendarmini').fullCalendar({
         header: {
           left: 'today',
@@ -183,77 +222,87 @@ $(document).ready(function() {
           right: 'listDay,listWeek,month'
         },
 
-        // customize the button names,
-        // otherwise they'd all just say "list"
         views: {
           listDay: { buttonText: 'list day' },
           listWeek: { buttonText: 'list week' }
         },
 
-        defaultView: 'listWeek',
-        defaultDate: '2018-03-12',
-        navLinks: true, // can click day/week names to navigate views
-        editable: true,
-        eventLimit: true, // allow "more" link when too many events
-        events: [
-          {
-            title: 'All Day Event',
-            start: '2018-03-01'
-          },
-          {
-            title: 'Long Event',
-            start: '2018-03-07',
-            end: '2018-03-10'
-          },
-          {
-            id: 999,
-            title: 'Repeating Event',
-            start: '2018-03-09T16:00:00'
-          },
-          {
-            id: 999,
-            title: 'Repeating Event',
-            start: '2018-03-16T16:00:00'
-          },
-          {
-            title: 'Conference',
-            start: '2018-03-11',
-            end: '2018-03-13'
-          },
-          {
-            title: 'Meeting',
-            start: '2018-03-12T10:30:00',
-            end: '2018-03-12T12:30:00'
-          },
-          {
-            title: 'Lunch',
-            start: '2018-03-12T12:00:00'
-          },
-          {
-            title: 'Meeting',
-            start: '2018-03-12T14:30:00'
-          },
-          {
-            title: 'Happy Hour',
-            start: '2018-03-12T17:30:00'
-          },
-          {
-            title: 'Dinner',
-            start: '2018-03-12T20:00:00'
-          },
-          {
-            title: 'Birthday Party',
-            start: '2018-03-13T07:00:00'
-          },
-          {
-            title: 'Click for Google',
-            url: 'http://google.com/',
-            start: '2018-03-28'
-          }
-        ]
-      });
-    
-
+        defaultView: 'listDay',
+        
+        navLinks: true, 
+        editable: false,
+        eventLimit: true,
+        events:  
+			function(start, end, timezone, callback) { /* 개인일정 눌렀을 때는 개인일정만 뜰 수 있도록 설정 */
+			    $.ajax({
+			      url: '${pageContext.request.contextPath}/schpersonal.do',
+			      dataType: 'json',
+			      data: {
+			        start: start.unix(),
+			        end: end.unix()
+			      },
+			      success: function(data) {
+			        var events = [];
+			        
+			        $.each(data.schedule, function(index,sc){
+			        	contents = sc.contents;
+		        		if (contents == "" ){/* contents 상세일정이 null 이면 없음으로 찍히도록 설정. */
+		        			contents = "없음";
+		        		}
+		        		startmin = sc.startmin;
+		        		endmin = sc.endmin;
+		        		if(startmin == "" || endmin == ""){
+		        			startmin = "00";
+		        			endmin = "00";
+		        		}
+		        		
+			        	if(sc.starthour == "00" && sc.endhour == "00"){ /* 종일 일정일 때는 시작시간과 종료시간이 "00" */
+							events.push({
+					            title: sc.title,
+					            start: sc.startdate,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });
+			        	}else if(sc.starthour == ""  && sc.endhour == "" ){
+			        		events.push({
+					            title: sc.title,
+					            start: sc.startdate,
+					            end: sc.enddate,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });												        		
+			        	}else{
+							events.push({
+					            title: sc.title,
+					            start: sc.startdate+'T'+sc.starthour+':'+startmin,
+					            end:sc.enddate+'T'+sc.endhour+':'+endmin,
+					            color : "#41a6f4",
+					            description: "[일정상세] "+contents,
+					            category : sc.empno,
+					            type : sc.type,
+					            starthour : sc.starthour,
+					            startmin : startmin,
+					            endhour : sc.endhour,
+					            endmin : endmin,
+					            contents : sc.contents,
+					            schno : sc.schno
+				         	 });
+			        	}
+							
+					});
+			      	callback(events);
+			      }
+			    });
+     	   }
+    });
 });
 var className = 'home';
 $('div#menutab li.'+className).addClass('active');

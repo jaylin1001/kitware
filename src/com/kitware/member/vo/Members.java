@@ -9,6 +9,7 @@ public class Members {
 	private String id;
 	private String pwd;
 	private String name;
+	private String name0;
 	private String gender;
 	private String email1;
 	private String email2;
@@ -30,6 +31,12 @@ public class Members {
 	public Members(String name) {
 		super();
 		this.name = name;
+	}
+	
+	public Members(String name, String name0) {
+		super();
+		this.name = name;
+		this.name0 = name0;
 	}
 
 	public Members(String emp_num, String dept_num, String position_num, String id, String pwd, String name,
@@ -213,18 +220,23 @@ public class Members {
 	public void setGradeinfo(GradeInfo gradeinfo) {
 		this.gradeinfo = gradeinfo;
 	}
+	
 
+	public String getName0() {
+		return name0;
+	}
+
+	public void setName0(String name0) {
+		this.name0 = name0;
+	}
 
 	@Override
 	public String toString() {
 		return "Members [emp_num=" + emp_num + ", dept_num=" + dept_num + ", position_num=" + position_num + ", id="
-				+ id + ", pwd=" + pwd + ", name=" + name + ", gender=" + gender + ", email1=" + email1 + ", email2="
-				+ email2 + ", tel1=" + tel1 + ", tel2=" + tel2 + ", tel3=" + tel3 + ", picture=" + picture
-				+ ", detailinfo=" + detailinfo + ", deptinfo=" + deptinfo + ", gradeinfo=" + gradeinfo + "]";
+				+ id + ", pwd=" + pwd + ", name=" + name + ", name0=" + name0 + ", gender=" + gender + ", email1="
+				+ email1 + ", email2=" + email2 + ", tel1=" + tel1 + ", tel2=" + tel2 + ", tel3=" + tel3 + ", picture="
+				+ picture + ", detailinfo=" + detailinfo + ", deptinfo=" + deptinfo + ", gradeinfo=" + gradeinfo + "]";
 	}
 
-	
-	
-	
 	
 }

@@ -9,7 +9,16 @@
 %>
 <c:set var="session" value="${sessionScope.loginInfo}"/><form>
 <div>
-   <div class="title" align="center"><h2>결근(병가)작성</h2></div>
+   <div class="title" align="center">
+   		 <c:choose>
+          <c:when test="${param.doc_kind eq '60'}">
+          <h2>병가작성</h2>
+          </c:when>
+          <c:otherwise>
+          <h2>결근작성</h2>
+          </c:otherwise>
+          </c:choose>
+	</div>
    <div class="table">
 		<table class="table table-bordered">
 			<tr>
@@ -41,7 +50,14 @@
 			</tr>
 			<tr>
 				<th>문서종류</th>
-				<td>기안서</td>
+				 <c:choose>
+               <c:when test="${param.doc_kind eq '60'}">
+               <td>병가</td>
+               </c:when>
+               <c:otherwise>
+               <td>결근</td>
+               </c:otherwise>
+               </c:choose>
 			</tr>
 			<tr>
 				<th>기안일</th>
@@ -142,7 +158,7 @@
 
 
 			<tr>
-				<td colspan="6" align="center">상기와 같은 사유로 인하여 결간(병가)계를 제출하오니
+				<td colspan="6" align="center">상기와 같은 사유로 인하여 결근(병가)계를 제출하오니
 					재가바랍니다.</td>
 			</tr>
 			<tr>

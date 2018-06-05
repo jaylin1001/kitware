@@ -6,6 +6,7 @@ import com.kitware.member.dao.MemberSelectDAO;
 import com.kitware.member.dao.MemberSelectDAOOracle;
 import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
+import com.kitware.member.vo.Mail;
 import com.kitware.member.vo.Members;
 
 public class MemberService {
@@ -50,5 +51,27 @@ public class MemberService {
 	public List<GradeInfo> getGradeInfo() throws Exception {
 		return dao.getGradeInfo();
 	}
+	public List<Mail> selectMailList(String emp_num) throws Exception{
+		return dao.selectMailList(emp_num);
+	}//리스트
+	public List<Mail> selectMailList2(String emp_num) throws Exception{
+		return dao.selectMailList2(emp_num);
+	}//리스트
+	public Mail selectMailList3(String emp_num) throws Exception{
+		return dao.selectMailList3(emp_num);
+	}//리스트
+	public Mail selectMailAll(String emp_num) throws Exception{
+		return dao.selectMailAll(emp_num);
+	}//상세보기
+	public void updateEdit(Mail mail, String mail_num) throws Exception{
+		dao.updateEdit(mail, mail_num);
+	}
+	public void insertMail(Mail mail) throws Exception{
+		dao.insertMail(mail);
+	}
+	public void updateWatch(String mail_num) throws Exception{
+		dao.updateWatch(mail_num);
+	}
+		
 	
 }
