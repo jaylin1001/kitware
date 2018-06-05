@@ -120,18 +120,21 @@
 	function deldocnum(data) {
 		location.href= "docdelcj.do?doc_num="+data;
 		console.log(data);
+		alert("삭제완료");
 	}
 	function gjdocnum(data, data2, data3, data4) {
 		console.log(data);
 		console.log(data2);
 		location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up"+"&smode="+data3+"&count="+data4;
 		console.log(data);
+		alert("결재완료");
 	}
 	function downdocnum(data, data2) {
 		console.log(data);
 		console.log(data2);
 		location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=down";
 		console.log(data);
+		alert("반려완료");
 	}
 	$(function() {
 		$("#testDatepicker").datepicker({

@@ -91,6 +91,7 @@ public class MailWriteController implements Controller {
 			}
 		} catch (Exception e) {
 			request.setAttribute("result", -1);
+			forwardURL = "/Mail/writeresult.jsp";
 			e.printStackTrace();
 		}
 		

@@ -65,7 +65,14 @@
 			<tr>
 				<th>대체근무자</th>
 				<!-- db 값 가져와야함 대체근무자 컬럼 없음 -->
-					<td>null</td>
+				<c:choose>
+				<c:when test ="${doc.refer ne null}">
+					<td>${doc.refer}</td>
+				</c:when>
+				<c:otherwise>
+				Null
+				</c:otherwise>
+				</c:choose>
 			</tr>
 			<tr>
 				<th>사유</th>
@@ -121,18 +128,21 @@ function editdocnum(data) {
 function deldocnum(data) {
 	location.href= "docdelcj.do?doc_num="+data;
 	console.log(data);
+	alert("삭제완료");
 }
 function gjdocnum(data, data2, data3, data4) {
 	console.log(data);
 	console.log(data2);
 	location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=up"+"&smode="+data3+"&count="+data4;
 	console.log(data);
+	alert("승인완료");
 }
 function downdocnum(data, data2) {
 	console.log(data);
 	console.log(data2);
 	location.href= "docgjupdate.do?doc_num="+data2+"&mode="+data+"&kind=down";
 	console.log(data);
+	alert("반려완료");
 }
 $(function() {
 	

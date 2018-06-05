@@ -11,6 +11,7 @@ import com.kitware.member.vo.DeptInfo;
 public interface DocDAO {
 	public int selectCount() throws Exception;//totalcnt값 가져옴
 	public DocVO selectAll(String doc_num) throws Exception; //Document 내용 뿌려줌
+	public DocVO selectAllRefer(String doc_num) throws Exception;//Document 내용 뿌려줌 Refer있는 ver
 	public List<DocDetailVO> selectConf(String doc_num) throws Exception; //Document에 대한 conf_num(결재자) 가져오기
 	public List<DocVO> selectGJWait(String emp_num) throws Exception; //내가 당장 결재 해야하는  문서 리스트
 	public List<DocVO> selectIng(String emp_num) throws Exception; //진행문서 select (내가 올린거)

@@ -39,6 +39,7 @@ public class DocReadController implements Controller {
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
 		String forwardURL = null;
+		DocVO docvo_list = null;
 		Members loginInfo = (Members) session.getAttribute("loginInfo");
 		String emp_num = loginInfo.getEmp_num();
 		String doc_num = request.getParameter("doc_num");
@@ -47,8 +48,12 @@ public class DocReadController implements Controller {
 		System.out.println("문서번호" + doc_num);
 
 		try {
-			
-			DocVO docvo_list = service.selectAll(doc_num);
+			DocVO list = service.selectAll(doc_num);
+			if(list.getRefer() == null) {
+				docvo_list = service.selectAll(doc_num);
+			}else {
+				docvo_list = service.selectAllRefer(doc_num);
+			}
 			List<DocDetailVO> doc_detail_list = service.selectConf(doc_num);
 			request.setAttribute("docvo_list", docvo_list);
 			request.setAttribute("doc_detail_list", doc_detail_list);

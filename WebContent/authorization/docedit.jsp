@@ -58,7 +58,6 @@
 			<td colspan="6" align="center">
 						<input type="submit" value="확인" onclick = "submitfn('${doc.doc_num}')">  
 						<input type="button" value="취소" id="back">
-						<input type="button" value="삭제" id="del">
 					</td>
 				</tr>
 			</table>
@@ -71,6 +70,7 @@
 		document.getElementById("formwrite").submit();
 		//document.form.submit();//이부분 post로 데이터 못가져와서 null이 docvd에 set됨
 		console.log(data);
+		 alert("수정완료");
 	}
 	
 	$(function() {

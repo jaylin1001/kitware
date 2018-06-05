@@ -60,6 +60,11 @@ public class DocSelectService {
 		return dao.selectAll(doc_num);
 		
 	}
+	public DocVO selectAllRefer(String doc_num) throws Exception{
+		System.out.println(dao.selectAll(doc_num));
+		return dao.selectAllRefer(doc_num);
+		
+	}
 	public List<DocDetailVO> selectConf(String doc_num) throws Exception{
 		System.out.println(dao.selectConf(doc_num));
 		return dao.selectConf(doc_num);

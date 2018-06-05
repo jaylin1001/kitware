@@ -236,7 +236,7 @@
 	               //refmod:$('ref .name').val(),
 	               start_date:$('.start_date').val(),
 	               end_date:$('.end_date').val(),
-	               replace:$('replace .name').val()
+	               replace : $("select[name=name]").val()
 	            },
 	            success : function(data) {
 	               if(data==1){
