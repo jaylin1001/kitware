@@ -96,7 +96,7 @@
 				location.href="${pageContext.request.contextPath}/boardlist.do";
 				break;
 			case 'attendance': // 근태 tab 눌렀을 때 
-				location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
+				location.href="${pageContext.request.contextPath}/attendance/attendance.jsp";
 					break;
 			case 'authorization': // 전자결재 tab 눌렀을 때 
 				location.href="${pageContext.request.contextPath}/doclist.do";
@@ -341,19 +341,10 @@ div.navbar-header>a.logout {
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>
 							<a href="#" id="schcompany">회사일정</a> <a href="#" id="schtotal">전체일정</a></li>
 
-						<li class="attendance"><a href="#">내 근태 현황<span
-								class="fa arrow"></span></a>
-							<ul class="nav nav-second-level">
-								<li class="mymonth"><a
-									href="${pageContext.request.contextPath}/attendance/attendance.jsp">월간
-										현황</a></li>
-								<li class="myyear"><a
-									href="${pageContext.request.contextPath}/attendance/myyear.jsp">연간
-										현황</a></li>
-							</ul></li>
-						<li class="attendance"><a
-							href="${pageContext.request.contextPath}/attendance/myyeoncha.jsp">내
-								연차 현황</a></li>
+						<li class="attendance"><a href="${pageContext.request.contextPath}/attendance/attendance.jsp">내 근태 현황<span class="fa arrow"></span></a></li>
+						<li class="attendance"><a href="${pageContext.request.contextPath}/ycdist.do">내 연차 현황</a></li>
+								
+								
 						<li class="board"><a href="#">게시판<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="noticeBoard"><a href="#">공지사항</a></li>

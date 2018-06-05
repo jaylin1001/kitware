@@ -17,7 +17,7 @@
 			location.href="${pageContext.request.contextPath}/doclist.do";
 		}
 		else if(className=='attendance'){
-			location.href="${pageContext.request.contextPath}/attendance/mymonth.jsp";
+			location.href="${pageContext.request.contextPath}/attendance/attendance.jsp";
 		}
 		else if(className=='board'){
 			location.href="${pageContext.request.contextPath}/boardlist.do";

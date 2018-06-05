@@ -7,9 +7,9 @@ import java.sql.ResultSet;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.kitware.authorization.dao.MyConnection;
 import com.kitware.board.vo.NoticeBoard;
 import com.kitware.board.vo.PhotoBoard;
-import com.kitware.sql.MyConnection;
 
 
 
