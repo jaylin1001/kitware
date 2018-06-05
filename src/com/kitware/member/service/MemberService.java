@@ -75,8 +75,8 @@ public class MemberService {
 		return dao.selectMaxEnum();	}
 
 	public String idCheck(String idValue) throws Exception{	
-			Members mb =  dao.idCheck(idValue);
-			if(mb==null) {
+			String id =  dao.idCheck(idValue);			
+			if(id==null) {
 				return "1"; //아이디가 없는경우
 			}else {
 				return "-1";

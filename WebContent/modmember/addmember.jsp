@@ -23,8 +23,7 @@
 					data = data.trim();
 					if (data == '1') {					
 							alert('사용가능한 ID입니다.');
-					} else if (data == '-1') {
-						
+					} else if (data == '-1') {						
 							alert('이미사용중인ID입니다.');
 					}
 				}
@@ -39,6 +38,7 @@
 				method : 'post',
 				data : $('form').serialize(),
 				success : function(data) {
+					alert(11);
 					data = data.trim();
 					if (data == '1') {
 						alert('사원추가완료');

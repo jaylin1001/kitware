@@ -29,11 +29,11 @@ public class IdCheckController implements Controller{
 		String idValue = request.getParameter("id");		
 		try {
 			String result = service.idCheck(idValue);
-			request.setAttribute("result", result);
+			request.setAttribute("result", result);			
 		}catch(Exception e) {
 			request.setAttribute("result", e.getMessage());
 		}	
-		String forwardURL = "idcheckresult.jsp";
+		String forwardURL = "modmember/idcheckresult.jsp";
 		return forwardURL;
 	}
 

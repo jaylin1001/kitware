@@ -517,10 +517,11 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 	}
 
 	@Override
-	public Members idCheck(String idValue) throws Exception {
+	public String idCheck(String idValue) throws Exception {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
+		String id;
 		String checkSQL="select * from members where id=?";
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -530,11 +531,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			if(!rs.next()) { //아이디가 없는경우
 				return null;
 			} else {
-				return new Members(
-						rs.getString("emp_num"),null,null,null,null
-						,null,null,null,null,null,null,null
-						,null,null,null,null
-						);						
+				id = rs.getString("emp_num");					
 			}
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -543,6 +540,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		finally {
 			com.kitware.sql.MyConnection.close(rs, pstmt, con);
 		}
+		return id;
 		
 	}
 	/*public static void main(String[] args) {

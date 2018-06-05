@@ -25,5 +25,5 @@ public interface MemberSelectDAO {
 	List<StatusBoard> selectId(int page, String idsearch) throws Exception;
 	List<StatusBoard> selectName(int page, String namesearch) throws Exception;
 	Members selectMaxEnum() throws Exception;
-	Members idCheck(String idValue) throws Exception;	
+	String idCheck(String idValue) throws Exception;	
 }
