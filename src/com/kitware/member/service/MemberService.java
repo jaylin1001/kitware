@@ -71,6 +71,15 @@ public class MemberService {
 	public List<StatusBoard> findByName(int page, String namesearch) throws Exception {
 		return dao.selectName(page, namesearch);
 	}
+	public Members findMaxEmum() throws Exception{
+		return dao.selectMaxEnum();	}
 
-	
+	public String idCheck(String idValue) throws Exception{	
+			Members mb =  dao.idCheck(idValue);
+			if(mb==null) {
+				return "1"; //아이디가 없는경우
+			}else {
+				return "-1";
+			}		
+	}	
 }

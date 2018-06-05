@@ -23,5 +23,7 @@ public interface MemberSelectDAO {
 	List<StatusBoard> selectDept(int page, String deptsearch2) throws Exception;
 	List<StatusBoard> selectGrade(int page, String grsearch2) throws Exception;
 	List<StatusBoard> selectId(int page, String idsearch) throws Exception;
-	List<StatusBoard> selectName(int page, String namesearch) throws Exception;	
+	List<StatusBoard> selectName(int page, String namesearch) throws Exception;
+	Members selectMaxEnum() throws Exception;
+	Members idCheck(String idValue) throws Exception;	
 }

@@ -76,10 +76,8 @@
 									</tr>
 								</table>
 							</div>
-						</div>
-						<input type="button" class="btn btn-lg btn-info" id="mdetailinput"
-							value="상세정보보기">
-						<div class="memberdetail" id="memberdetail" style="display: none">
+						</div>						
+						<div class="memberdetail" id="memberdetail">
 							<table>
 								<tr>
 									<td><label>생년월일</label></td>
@@ -140,14 +138,7 @@
 	</div>
 </body>
 <script>
-	$(function() {
-		$('#mdetailinput').click(function() {
-			if ($('div#memberdetail').css('display') == 'none') {
-				$('div#memberdetail').show();
-			} else {
-				$('div#memberdetail').hide();
-			}
-		})
+	$(function() {	
 		var emp_num = $('#emp_num').val();
 		$('#modify').click(function() {
 			$.ajax({

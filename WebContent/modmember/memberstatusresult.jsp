@@ -155,7 +155,13 @@
 		});
 		
 		$('#writeform').click(function() {			
-			location.href="modmember/addmember.jsp";			
+			$.ajax({
+				url:"${pageContext.request.contextPath}/addmember.do",
+				method:"get",				
+				success:function(data){
+					location.href="${pageContext.request.contextPath}/addmember.do"
+				}
+			})				
 		});		
 		
 		 $('.pagination a').click(function(){		

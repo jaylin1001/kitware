@@ -1,6 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="rs" value="${requestScope.result}" />
 <script>
 	var className = 'modmember';
 	$('div#menutab li.' + className).addClass('active');
@@ -12,6 +14,24 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(function() {
+		$('#idcheck').click(function() {
+			$.ajax({
+				method : 'post',
+				data : 'id=' + $('#id').val(),
+				url : '${pageContext.request.contextPath}/idcheck.do',
+				success : function(data) {					
+					data = data.trim();
+					if (data == '1') {					
+							alert('사용가능한 ID입니다.');
+					} else if (data == '-1') {
+						
+							alert('이미사용중인ID입니다.');
+					}
+				}
+			});
+		});
+
+
 		$('form#modmember').submit(function() {
 
 			$.ajax({
@@ -31,27 +51,19 @@
 			});
 			return false;
 		});
-		$('#mdetailinput').click(function() {
-			if ($('div#memberdetail').css('display') == 'none') {
-				$('div#memberdetail').show();
-			} else {
-				$('div#memberdetail').hide();
-			}
-		})
 		$('#cancel').click(function() {
 			location.href = "${pageContext.request.contextPath}/memberstatus.do";
 		})
 	});
 </script>
 <style>
-#submit, #cancel{
-padding: 10px;
-
+#submit, #cancel {
+	padding: 10px;
 }
 </style>
 
 
-<body>	
+<body>
 	<div class="container">
 		<h2 class="well">사원추가</h2>
 		<div class="col-lg-12 well">
@@ -60,63 +72,70 @@ padding: 10px;
 					<div class="col-sm-12">
 						<div class="row">
 							<div class="col-sm-6 form-group">
-								<label>사원번호</label> <input type="text" class="form-control"
-									name="emp_num">
+								<label>사원번호</label> <input required="required" type="text"
+									class="form-control" name="emp_num" value="${rs.emp_num}"
+									readonly="readonly">
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>부서번호</label> <input type="text" class="form-control"
-									name="dept_num">
+								<label>부서번호</label> <input required="required" type="text"
+									class="form-control" name="dept_num"
+									placeholder="100:개발부/200:기획부/300:인사부/400:영업부/500:사업부">
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>직급번호</label> <input type="text" class="form-control"
-									name="position_num">
+								<label>직급번호</label> <input required="required" type="text"
+									class="form-control" name="position_num"
+									placeholder="10:사장 / 20:이사 / 30:부장 / 40:과장 / 50:대리 / 60:사원">
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>ID</label> <input type="text" class="form-control"
-									name="id">
+								<label>ID</label> <input required="required" type="text"
+									class="form-control" name="id" id="id">
+								<input type="button" id="idcheck" value="ID중복확인">
 							</div>
 						</div>
 
 						<div class="row">
 							<div class="col-sm-4 form-group">
-								<label>비밀번호</label> <input type="text" class="form-control"
-									name="pwd">
+								<label>비밀번호</label> <input required="required" type="text"
+									class="form-control" name="pwd">
 
 							</div>
 							<div class="col-sm-4 form-group">
-								<label>이름</label> <input type="text" class="form-control"
-									name="name">
+								<label>이름</label> <input required="required" type="text"
+									class="form-control" name="name">
 							</div>
 							<div class="col-sm-4 form-group">
-								<label>성별</label> <input type="text" class="form-control"
-									name="gender" placeholder="M/F">
+								<label>성별</label> <input required="required" type="text"
+									class="form-control" name="gender" placeholder="M/F">
 							</div>
 						</div>
 						<div class="row">
 							<div class="col-sm-6 form-group">
-								<label>email 1</label> <input type="text" class="form-control"
-									name="email1">
+								<label>email 1</label> <input required="required" type="text"
+									class="form-control" name="email1">
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>email 2</label> <input type="text" class="form-control"
-									name="email2">
+								<label>email 2</label> <input required="required" type="text"
+									class="form-control" name="email2">
 							</div>
-							<div class="col-sm-6 form-group" >
+							<div class="col-sm-6 form-group">
 								<label>전화번호</label> <input type="text" class="form-control"
-									name="tel1" placeholder="010" > <input type="text"
-									class="form-control" name="tel2" placeholder="xxxx" > <input
-									type="text" class="form-control" name="tel3" placeholder="xxxx">
+									required="required" name="tel1" placeholder="010"> <input
+									type="text" class="form-control" required="required"
+									name="tel2" placeholder="xxxx"> <input type="text"
+									class="form-control" required="required" name="tel3"
+									placeholder="xxxx">
 							</div>
 						</div>
-						<input type="button" class="btn btn-lg btn-info" id="mdetailinput"
-							value="상세정보입력"> 
-						<div class="memberdetail" id="memberdetail" style="display: none">
+
+						<h4>---상세정보---</h4>
+						<div class="memberdetail" id="memberdetail">
 							<table>
 								<tr>
 									<td><label>생년월일</label></td>
-									<td><input name="birthyear" placeholder="yyyy"><input
+									<td><input required="required" name="birthyear"
+										placeholder="yyyy"><input required="required"
 										name="birthmonth" placeholder="mm"><input
-										name="birthday" placeholder="dd"></td>
+										required="required" name="birthday" placeholder="dd"></td>
 								</tr>
 								<tr>
 									<td><label>고용년월일</label></td>
@@ -132,7 +151,8 @@ padding: 10px;
 								</tr>
 								<tr>
 									<td><label>우편번호</label></td>
-									<td><input name="zip1"><input name="zip2"></td>
+									<td><input required="required" name="zip1"><input
+										name="zip2"></td>
 								</tr>
 								<tr>
 									<td><label>주소</label></td>
@@ -147,11 +167,12 @@ padding: 10px;
 									<td><input name="marriage"></td>
 								</tr>
 							</table>
-						</div>														
+						</div>
 					</div>
-				</form>	
-				&nbsp;&nbsp;
-					<input type="submit" value="저장" form="modmember" class="btn btn-lg btn-info" id="submit"> <button id="cancel" class="btn btn-lg btn-info" id="cancel">취소</button>				
+				</form>
+				&nbsp;&nbsp; <input type="submit" value="저장" form="modmember"
+					class="btn btn-lg btn-info" id="submit">
+				<button id="cancel" class="btn btn-lg btn-info" id="cancel">취소</button>
 			</div>
 		</div>
 	</div>

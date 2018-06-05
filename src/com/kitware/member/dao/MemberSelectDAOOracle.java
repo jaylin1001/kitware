@@ -152,8 +152,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y'\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y'\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -183,25 +184,23 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectSDSQL="select m.emp_num,m.dept_num,m.position_num,m.id,m.pwd,m.name,m.gender,m.email1,m.email2,m.tel1,m.tel2,m.tel3,\r\n" + 
-				"md.birth1,md.birth2,md.birth3,md.hire_date1,md.hire_date2,md.hire_date3,md.out_date1,md.out_date2,md.out_date3,md.zip1,md.zip2,\r\n" + 
-				"md.addr1,md.addr2,md.marriage\r\n" + 
-				"from members m, members_detail md\r\n" + 
-				"where m.emp_num = md.emp_num\r\n" + 
-				"and m.emp_num = ?";
+		String selectSDSQL = "select m.emp_num,m.dept_num,m.position_num,m.id,m.pwd,m.name,m.gender,m.email1,m.email2,m.tel1,m.tel2,m.tel3,\r\n"
+				+ "md.birth1,md.birth2,md.birth3,md.hire_date1,md.hire_date2,md.hire_date3,md.out_date1,md.out_date2,md.out_date3,md.zip1,md.zip2,\r\n"
+				+ "md.addr1,md.addr2,md.marriage\r\n" + "from members m, members_detail md\r\n"
+				+ "where m.emp_num = md.emp_num\r\n" + "and m.emp_num = ?";
 		List<StatusDetailBoard> list = new ArrayList<StatusDetailBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectSDSQL);
 			pstmt.setInt(1, emp_num);
-			rs= pstmt.executeQuery();
+			rs = pstmt.executeQuery();
 			if (!rs.next()) { // 아이디가 없는경우
 				return null;
 			} else {
-				StatusDetailBoard sdb = new StatusDetailBoard();						
-				sdb.setEmp_num(rs.getString("emp_num"));			
-				sdb.setDept_num(rs.getString("dept_num"));			
-				sdb.setPosition_num(rs.getString("position_num"));		
+				StatusDetailBoard sdb = new StatusDetailBoard();
+				sdb.setEmp_num(rs.getString("emp_num"));
+				sdb.setDept_num(rs.getString("dept_num"));
+				sdb.setPosition_num(rs.getString("position_num"));
 				sdb.setId(rs.getString("id"));
 				sdb.setPwd(rs.getString("pwd"));
 				sdb.setName(rs.getString("name"));
@@ -224,15 +223,13 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				sdb.setZip2(rs.getString("zip2"));
 				sdb.setAddr1(rs.getString("addr1"));
 				sdb.setAddr2(rs.getString("addr2"));
-				sdb.setMarriage(rs.getString("marriage"));		
+				sdb.setMarriage(rs.getString("marriage"));
 				return sdb;
-				}					
+			}
+		} finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
 		}
-		finally {
-			com.kitware.sql.MyConnection.close(rs, pstmt, con);			
-		}		
 	}
-	
 
 	@Override
 	public void CorrectMembers(Members members) throws Exception {
@@ -289,21 +286,21 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			MyConnection.close(pstmt, con);
 		}
 
-	}	
+	}
 
 	@Override
 	public void deleteMembers(String emp_num) throws Exception {
 		Connection con = null;
 		PreparedStatement pstmt = null;
-		String deleteSQL="update members set memberyn='N' where emp_num=?";
+		String deleteSQL = "update members set memberyn='N' where emp_num=?";
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
 			pstmt = con.prepareStatement(deleteSQL);
 			pstmt.setString(1, emp_num);
 			pstmt.executeUpdate();
-		}finally {
-			MyConnection.close(pstmt, con);			
-		}		
+		} finally {
+			MyConnection.close(pstmt, con);
+		}
 	}
 
 	@Override
@@ -316,8 +313,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.emp_num=?\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.emp_num=?\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -327,7 +325,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);
 			System.out.println("endRow:" + endRow);
-			pstmt.setString(1,enumsearch);
+			pstmt.setString(1, enumsearch);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
@@ -353,8 +351,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.dept_num=?\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.dept_num=?\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -364,7 +363,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);
 			System.out.println("endRow:" + endRow);
-			pstmt.setString(1,deptsearch2);
+			pstmt.setString(1, deptsearch2);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
@@ -390,8 +389,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.position_num=?\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.position_num=?\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -401,7 +401,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);
 			System.out.println("endRow:" + endRow);
-			pstmt.setString(1,grsearch2);
+			pstmt.setString(1, grsearch2);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
@@ -427,8 +427,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.id=?\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.id=?\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -438,7 +439,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);
 			System.out.println("endRow:" + endRow);
-			pstmt.setString(1,idsearch);
+			pstmt.setString(1, idsearch);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
@@ -464,8 +465,9 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				+ "from(select rownum r, a.*\r\n"
 				+ "    from(select m.emp_num, di.dept_name, gi.position_name, m.id, m.name, m.gender, m.email1, m.tel1,m.tel2,m.tel3\r\n"
 				+ "        from members m, dept_info di, grade_info gi\r\n"
-				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.name=?\r\n" + "        and   m.position_num = gi.position_num\r\n"
-				+ "        order by gi.POSITION_NUM) a)b\r\n" + "where r between ? and ?";
+				+ "        where m.dept_num = di.dept_num and m.memberyn='Y' and m.name=?\r\n"
+				+ "        and   m.position_num = gi.position_num\r\n" + "        order by gi.POSITION_NUM) a)b\r\n"
+				+ "where r between ? and ?";
 		List<StatusBoard> list = new ArrayList<StatusBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -475,7 +477,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);
 			System.out.println("endRow:" + endRow);
-			pstmt.setString(1,namesearch);
+			pstmt.setString(1, namesearch);
 			pstmt.setInt(2, startRow);
 			pstmt.setInt(3, endRow);
 			rs = pstmt.executeQuery();
@@ -488,18 +490,70 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 			return list;
 		} finally {
 			com.kitware.sql.MyConnection.close(rs, pstmt, con);
-		}		
-	}
-	public static void main(String[] args) {
-		MemberSelectDAOOracle test = new MemberSelectDAOOracle();
-		
+		}
+	}	
+
+	@Override
+	public Members selectMaxEnum() throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String selectSDSQL = "select max(emp_num)+1 emp_num\r\n" + "from members";
+		List<StatusDetailBoard> list = new ArrayList<StatusDetailBoard>();
 		try {
-			List<StatusBoard> list =test.selectName(1,"김지웅");
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectSDSQL);
+			rs = pstmt.executeQuery();
+			if (!rs.next()) { // 아이디가 없는경우
+				return null;
+			} else {
+				Members mb = new Members();
+				mb.setEmp_num(rs.getString("emp_num"));
+				return mb;
+			}
+		} finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+		}
+	}
+
+	@Override
+	public Members idCheck(String idValue) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		String checkSQL="select * from members where id=?";
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(checkSQL);
+			pstmt.setString(1, idValue);
+			rs=pstmt.executeQuery();
+			if(!rs.next()) { //아이디가 없는경우
+				return null;
+			} else {
+				return new Members(
+						rs.getString("emp_num"),null,null,null,null
+						,null,null,null,null,null,null,null
+						,null,null,null,null
+						);						
+			}
+		}catch(SQLException e) {
+			e.printStackTrace();
+			throw e;
+		}
+		finally {
+			com.kitware.sql.MyConnection.close(rs, pstmt, con);
+		}
+		
+	}
+	/*public static void main(String[] args) {
+		MemberSelectDAOOracle test = new MemberSelectDAOOracle();
+		try {
+			List<StatusBoard> list = test.selectName(1, "김지웅");
 			System.out.println(list);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-	
-	}
+	}*/
+
 }

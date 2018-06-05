@@ -333,7 +333,7 @@ div.navbar-header>a.logout {
 								<li class="memberstatus"><a
 									href="${pageContext.request.contextPath}/memberstatus.do">사원관리</a></li>
 								<li class="addmember"><a
-									href="${pageContext.request.contextPath}/modmember/addmember.jsp">사원추가</a></li>
+									href="${pageContext.request.contextPath}/addmember.do">사원추가</a></li>
 							</ul></li>
 					</ul>
 				</div>

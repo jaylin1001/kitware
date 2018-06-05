@@ -33,11 +33,9 @@ public class StatusListController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String page = request.getParameter("page");
-		String category = request.getParameter("category");
-		System.out.println("category::::::::::"+category);
+		String category = request.getParameter("category");		
 		String enumsearch = request.getParameter("enumsearch");
-		String deptsearch = request.getParameter("deptsearch");
-		System.out.println(deptsearch);
+		String deptsearch = request.getParameter("deptsearch");		
 		String deptsearch2 = "";
 		if (deptsearch != null) {
 			if (deptsearch.equals("1")) {
@@ -71,14 +69,12 @@ public class StatusListController implements Controller {
 			}
 		}
 		String idsearch = request.getParameter("idsearch");
-		String namesearch = request.getParameter("namesearch");
-		System.out.println("id::::::::::"+idsearch);
+		String namesearch = request.getParameter("namesearch");		
 		List<StatusBoard> list = new ArrayList<>();
 
 		int intPage = 1;
 		int flag = 0;
-		if (page != null) {
-			System.out.println("page:::::::"+page);
+		if (page != null) {			
 			intPage = Integer.parseInt(page);
 			flag = 1;
 		}
@@ -95,8 +91,7 @@ public class StatusListController implements Controller {
 			}
 			
 			if (category != null) {
-				if (category.equals("1")) {
-					System.out.println("111111111111111");
+				if (category.equals("1")) {				
 					list = service.findByEmpnum(intPage, enumsearch);
 				} else if (category.equals("2")) {
 					list = service.findByDept(intPage, deptsearch2);
@@ -112,8 +107,7 @@ public class StatusListController implements Controller {
 			}else {
 				list = service.findAll(intPage);
 			}
-			PageBean<StatusBoard> pb = new PageBean<>();
-			System.out.println("controllerlist" + list);
+			PageBean<StatusBoard> pb = new PageBean<>();			
 			pb.setCurrentPage(intPage);// 현재페이지
 			pb.setTotalPage(totalPage); // 총페이지
 			pb.setList(list); // 목록
