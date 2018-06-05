@@ -2,15 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="doclist" value="${sessionScope.doc_list}"></c:set>
 <c:set var="schelist" value="${sessionScope.schedule}"></c:set>
 <c:set var="maillist" value="${sessionScope.mail_list}"></c:set>
 <c:set var="loginInfo" value="${sessionScope.loginInfo}"></c:set>
+<c:set var="now" value="<%=new java.util.Date()%>" />
+<c:set var="sysYear"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set>
 
-<%
-	String root = "/kitware_50101526/WebContent/";
-%>
 <!-- jQuery CDN-->
 <!DOCTYPE html>
 <html>
@@ -293,7 +292,14 @@ div.navbar-header>a.logout {
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">&nbsp;결재할 문서:&nbsp; &nbsp; &nbsp;${doclist}</a>
 					<div>&nbsp;</div>
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
-					내 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
+					내 일정:&nbsp; &nbsp; &nbsp;
+					<%-- <c:forEach items="${schelist}" var="item" varStatus="status">
+					<c:if test="${item.sch_startdate eq 'sysYear'}"> --%>
+					<%-- ${fn:length(item.sch_startdate)} --%>
+					${fn:length(schelist)}
+					<%--  </c:if>
+					</c:forEach> --%>
+					</a>
 					<div>&nbsp;</div>
 					&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/maillist.do">
 					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a>

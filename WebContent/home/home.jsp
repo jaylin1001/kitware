@@ -2,9 +2,15 @@
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
+<c:set var="now" value="<%=new java.util.Date()%>" />
+<c:set var="sysYear"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set>
 <c:set var="boardlist" value="${requestScope.board_list}"></c:set>
 <c:set var="schelist" value="${requestScope.schedule}"></c:set>
 <c:set var="doclist" value="${requestScope.doc_list}"></c:set>
+<c:set var="yc" value="${requestScope.Yeoncha}"/>
+<c:set var="yg" value="${requestScope.Yeoncha_gigan}"/>
+<c:set var="listGunte" value="${requestScope.Gunte}"/>
 <h1>Hello Kitware!</h1>
 
 <div style="width:40%; height:350px; float:left; padding-right:10px;">
@@ -57,7 +63,7 @@
 </table>
 </div>
  <div id='calendar' style = "float:right">
- <p>
+<hr>
  <div id='calendarmini'>
  </div>
  </div> <!-- 풀캘린더 뜨는 부분 -->
@@ -105,15 +111,61 @@
 
 <div></div>
 </div>
-<div style="border:1px solid gray; width:80%;height:250px;">
+<div style="width:79%;height:250px;">
 <h3>출퇴근 내역</h3>
+ <table class="table table-bordered">
+ 	<thead id="board">
+      	<tr>
+			<th>총연차</th>
+			<th>사용 연차</th>
+			<th>잔여 연차</th>
+		</tr>
+		</thead>
+		<tr>
+			<td>${yc.all_yeoncha}</td>
+			<td>${yc.use_yeoncha}</td>
+			<td>${yc.all_yeoncha-yc.use_yeoncha}</td>
+		</tr>
+		<thead id="board">
+		<tr>
+		<th>오늘날짜</th>
+		<th>출근시각</th>
+		<th>퇴근시각</th>
+		</tr>
+		</thead>
+    
+     <c:forEach items="${listGunte}" var="gtlist" varStatus="status">
+     <tr>
+     <c:if test="${gtlist.in_day eq sysYear}">
+    <td>${gtlist.in_day}</td>
+     <td>${gtlist.in_time}</td>
+    <td>${gtlist.out_time}</td>
+    </c:if>
+    </tr>
+     </c:forEach>
+ </table>	
+<button class="btn btn-primary btn-lg" id="inbtn">출근</button>
+<button class="btn btn-primary btn-lg" id="outbtn">퇴근</button>
 </div>
+
+
 <script>
 function functionrt(data, data1) {
 	console.log(data);
 	console.log(data1);
 		location.href = "docread.do?doc_num=" + data1 + "&doc_kind=" + data;
 	}
+
+$(function() {
+	$('.gtstyle button').click(function() {
+		if ($(this).text() == '출근') {
+			location.href = "${pageContext.request.contextPath}/gtapply.do?mode=in"
+		}else if($(this).text() == '퇴근') {
+			location.href = "${pageContext.request.contextPath}/gtapply.do?mode=out"
+		}
+		return false;
+	});
+});
 
 $(document).ready(function() {
 
@@ -228,10 +280,17 @@ $(document).ready(function() {
         },
 
         defaultView: 'listDay',
-        
+        height: 325,
         navLinks: true, 
         editable: false,
         eventLimit: true,
+        googleCalendarApiKey : "AIzaSyDcnW6WejpTOCffshGDDb4neIrXVUA1EAE",
+		eventSources : [ {
+			googleCalendarId : "ko.south_korea#holiday@group.v.calendar.google.com",
+			className : "koHolidays",
+			color : "#FF0000",
+			textColor : "#FFFFFF",
+		} ],
         events:  
 			function(start, end, timezone, callback) { /* 개인일정 눌렀을 때는 개인일정만 뜰 수 있도록 설정 */
 			    $.ajax({

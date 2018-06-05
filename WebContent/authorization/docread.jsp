@@ -58,11 +58,13 @@
 					</c:choose>
 					
 					<th>수신부서</th>
-					<td colspan="5">${doc.rcv_dept}</td>
+					<td colspan="3">${doc.rcv_dept}</td>
 				</tr>
 				<tr>
 					<th>기안자</th>
-					<td colspan="5">${doc.members.name}(${doc.gradeinfo.position_name})</td>
+					<td colspan="3">${doc.members.name}(${doc.gradeinfo.position_name})</td>
+					<th>참조자</th>	
+					<td>${doc.refer}</td>
 					<th>부서</th>
 					<td>${doc.deptinfo.dept_name}</td>
 				</tr>

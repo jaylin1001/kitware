@@ -19,6 +19,7 @@ import com.kitware.member.service.MemberService;
 import com.kitware.member.vo.Mail;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.service.SchCodeService;
+import com.kitware.schedule.vo.Schedule;
 
 public class CharEncodingFilter implements Filter {
 	String encoding;
@@ -56,7 +57,7 @@ public class CharEncodingFilter implements Filter {
 			}else {
 				try {
 					int doc_list = service.selectGJWait(mb.getEmp_num()).size();
-					int listSchedule = sservice.findSchPersonal(mb.getEmp_num()).size();
+					List<Schedule> listSchedule = sservice.findSchPersonal(mb.getEmp_num());
 					Mail mail_list = mservice.selectMailList3(mb.getEmp_num());
 					session.setAttribute("mail_list", mail_list);
 					session.setAttribute("doc_list", doc_list);
