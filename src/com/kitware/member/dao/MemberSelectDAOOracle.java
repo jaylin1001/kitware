@@ -158,7 +158,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
 			pstmt = con.prepareStatement(selectSBSQL);
-			int cntPerPage = 10;// 1페이지별 3건씩 보여준다
+			int cntPerPage = 10;// 1페이지별 10건씩 보여준다
 			int endRow = cntPerPage * page;
 			int startRow = endRow - cntPerPage + 1;
 			System.out.println("startRow:" + startRow);

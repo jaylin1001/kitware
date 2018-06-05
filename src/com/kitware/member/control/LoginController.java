@@ -49,7 +49,7 @@ public class LoginController implements Controller {
 			Members mb = service.login(idValue, pwdValue);
 			if(mb != null) { //로그인 성공: Members, 실패:-1
 				session = request.getSession();
-				session.setAttribute("loginInfo", mb);
+				session.setAttribute("loginInfo", mb);			
 			}
 			request.setAttribute("result", "-1"); //로그인 실패
 		}catch(Exception e) {
@@ -58,5 +58,4 @@ public class LoginController implements Controller {
 		String forwardURL = "/loginresult.jsp";
 		return forwardURL;
 	}
-
 }

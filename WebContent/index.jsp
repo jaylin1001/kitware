@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="loginInfo" value="${sessionScope.loginInfo}"></c:set>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -49,10 +52,10 @@ div.hover:hover {
 }
 </style>
 <script>
-	$(function(){
-		$('.hover').click(function(){
+	$(function() {
+		$('.hover').click(function() {
 			var name = $(this).attr('id');
-			location.href="main.jsp?page="+name;
+			location.href = "main.jsp?page=" + name;
 		});
 	});
 </script>
@@ -71,8 +74,9 @@ div.hover:hover {
 			<div class="hover effect1" id="schedule">일정관리</div>
 			<div class="hover effect1" id="notice">공지사항</div>
 			<div class="hover effect1" id="board">게시판</div>
-			<div class="hover effect1" id="modmember">관리자</div>
-			
+			<c:if test="${loginInfo.id eq 'admin'}">
+				<div class="hover effect1" id="modmember">관리자</div>
+			</c:if>
 		</div>
 	</center>
 </body>

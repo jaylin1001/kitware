@@ -29,7 +29,7 @@
 			<option value="3">인사부</option>
 			<option value="4">영업부</option>
 			<option value="5">사업부</option>
-		</select> <select style="display: none;" id="grsearch" name="possearch">
+		</select> <select style="display: none;" id="grsearch" name="grsearch">
 			<option value="0" selected="selected">직급명</option>
 			<option value="1">사장</option>
 			<option value="2">이사</option>
@@ -170,10 +170,12 @@
 					page=startPage-1;
 				}else{
 					return;	
+					alert("첫페이지입니다");
 				}
 			}else if(selectPage == '»'){
 				if(endPage == totalpage){  //총페이지와 끝페이지가 다르면 return
 					return;
+					alert("마지막페이지입니다");
 				}else{
 					page=endPage+1;
 				}
@@ -208,10 +210,12 @@
 						page=startPage-1;
 					}else{
 						return;	
+					 	alert("첫페이지입니다");
 					}
 				}else if(selectPage == '»'){
 					if(endPage == totalpage){  //총페이지와 끝페이지가 다르면 return
 						return;
+						alert("마지막페이지입니다");
 					}else{
 						page=endPage+1;
 					}
