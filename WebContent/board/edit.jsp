@@ -93,10 +93,11 @@ h3{
 		        fileName = e.target.files[0].name;
 		 });
 		 <%-- fileName이 이미지 파일인지 아닌지 구별하는 함수--%>
+		 <%-- 수정할 땐 기본파일이 존재하므로 "" 도 추가한다.--%>
 			function isImageFile(fileName){
 				var fileEXT = fileName.substring(fileName.lastIndexOf(".")+1);<%--확장자명만 추출--%>
 				fileEXT = fileEXT.toLowerCase(); <%--소문자로 일괄변경--%>
-				if("jpg" == fileEXT || "jpeg" == fileEXT || "gif" == fileEXT || "png"== fileEXT || "bmp" == fileEXT){
+				if( "" == fileEXT || "jpg" == fileEXT || "jpeg" == fileEXT || "gif" == fileEXT || "png"== fileEXT || "bmp" == fileEXT){
 					return true;
 				}else{
 					return false;
@@ -109,12 +110,6 @@ h3{
 			if($('input[name=title]').val() == ""){
 	 			alert('글 제목이 없습니다.');
 	 			history.back();
-	 			
-	 		}else if("${param.flag}" == "1"){
-	 			if(!isImageFile(fileName)){
-					alert('이미지 파일만 선택하세요!!!');
-					history.back();
-				}
 	 		}else{
 			var markupStr = $('#summernote').summernote('code').trim();
 			console.log(markupStr);
