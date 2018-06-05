@@ -104,7 +104,6 @@ $(function(){
 				
 			if(isImageFile(fileName)){
 					alert('썸네일 파일이 등록되었습니다!!!');
-					return;
 			}
 		}
 		
