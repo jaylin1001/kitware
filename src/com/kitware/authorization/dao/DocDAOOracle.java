@@ -91,7 +91,9 @@ public class DocDAOOracle implements DocDAO {
 				+ " m2.name refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content, m.name, gi.position_name, di.dept_name"
 				+ " from document d, doc_kind dk, doc_gigan dg, members m, members m2, grade_info gi, dept_info di"
 				+ " where dk.doc_kind = d.doc_kind" + " and m.emp_num = d.emp_num and d.refer=m2.emp_num"
-				+ " and m.position_num = gi.position_num" + " and m.dept_num = di.dept_num" + " and d.doc_num = ?";
+				+ " and m.position_num = gi.position_num" + " and m.dept_num = di.dept_num" 
+				+ " and dg.doc_num = d.doc_num"
+				+ " and d.doc_num = ?";
 		
 		DocVO docvo = null; // doc 데이터 담음
 		try {
@@ -842,10 +844,10 @@ public class DocDAOOracle implements DocDAO {
 		try {
 			
 			DocVO list = test.selectAll("1806-0005");
-			System.out.println(list);
+			System.out.println(list);	
+			DocVO list2 = test.selectAllRefer("1806-0002");
+			System.out.println(list2);
 			
-			List<DocVO> list3 =test.selectGJOkAll("2");
-			System.out.println(list3);
 			
 		} catch (Exception e) {
 			e.printStackTrace();

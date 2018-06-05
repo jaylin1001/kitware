@@ -64,13 +64,12 @@
 
 			<tr>
 				<th>대체근무자</th>
-				<!-- db 값 가져와야함 대체근무자 컬럼 없음 -->
 				<c:choose>
-				<c:when test ="${doc.refer ne null}">
-					<td>${doc.refer}</td>
+				<c:when test ="${doc.refer eq '0'}">
+				없음
 				</c:when>
 				<c:otherwise>
-				Null
+				${doc.refer}
 				</c:otherwise>
 				</c:choose>
 			</tr>
@@ -84,8 +83,6 @@
 
 					<button>첨부파일</button></td>
 			</tr>
-
-
 			<tr>
 				<td colspan="6" align="center">상기와 같은 사유로 인하여 조퇴계를 제출하오니
 					재가바랍니다.</td>
