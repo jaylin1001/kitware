@@ -144,8 +144,14 @@
     </tr>
      </c:forEach>
  </table>	
-<button class="btn btn-primary btn-lg" id="inbtn">출근</button>
-<button class="btn btn-primary btn-lg" id="outbtn">퇴근</button>
+<div class="gtstyle">
+		<div id="gt1">
+			<span id="clock"></span>
+			<span class="btnstyle">
+				<button class="btn btn-primary btn-lg" id="inbtn">출근</button>
+		        <button class="btn btn-primary btn-lg" id="outbtn">퇴근</button>
+	        </span>
+        </div>
 </div>
 
 
