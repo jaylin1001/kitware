@@ -6,6 +6,7 @@
 <jsp:useBean id="toDay" class="java.util.Date" />
 <fmt:formatDate value='${toDay}' pattern='yyyyMMdd' var="nowDate"/>
 <c:set var="mail" value="${requestScope.Mailcont}" />
+<c:set var="session" value="${sessionScope.loginInfo}" />
 
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -32,12 +33,14 @@
   <label>제목 : </label>
    <input type ="text" name ="mail_title" value="RE:${mail.mail_title}" style="width:300px"readonly>&nbsp; &nbsp; 
   <hr>
-<textarea class="form-control" id="exampleFormControlTextarea1" rows="10"
-	name = "mail_content">${mail.mail_content}
-${mail.members.name}/${toDay}
------------------------------------
-
-
+<textarea class="form-control" id="txarea" rows="10"
+	name = "mail_content">${mail.mail_content}답장:
+	
+	 
+	 
+	
+${session.name}/${toDay}
+----------------------------------------------------
 </textarea>
 
  <br>
@@ -80,6 +83,7 @@ thead {
 
 </style>
 <script>
+
 function submitfn(data) {
 	location.href= "mailcont.do"
 	document.getElementById("formwrite").submit();

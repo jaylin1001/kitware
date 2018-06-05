@@ -1,7 +1,6 @@
 package com.kitware.authorization.dao;
 
 import java.sql.Connection;
-
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -76,6 +75,51 @@ public class DocDAOOracle implements DocDAO {
 				docvo.setDeptinfo(deptinfo);
 			}
 
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return docvo;
+	}
+	@Override
+	public DocVO selectAllRefer(String doc_num) throws Exception {
+		// 문서 상세보기
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectAllSQL = "select d.doc_num,d.doc_state, d.emp_num, dk.doc_name,d.start_date,d.rcv_dept,"
+				+ " m2.name refer,d.doc_title, dg.start_date, dg.end_date, d.doc_content, m.name, gi.position_name, di.dept_name"
+				+ " from document d, doc_kind dk, doc_gigan dg, members m, members m2, grade_info gi, dept_info di"
+				+ " where dk.doc_kind = d.doc_kind" + " and m.emp_num = d.emp_num and d.refer=m2.emp_num"
+				+ " and m.position_num = gi.position_num" + " and m.dept_num = di.dept_num" + " and d.doc_num = ?";
+		
+		DocVO docvo = null; // doc 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectAllSQL);
+			pstmt.setString(1, doc_num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo = new DocVO();
+				docvo.setDoc_num(rs.getString("doc_num"));
+				docvo.setDoc_state(rs.getString("doc_state"));
+				DocKindVO dock = new DocKindVO(docvo.getDoc_kind(), rs.getString("doc_name"));
+				docvo.setStart_date(rs.getString("start_date"));
+				docvo.setRcv_dept(rs.getString("rcv_dept"));
+				docvo.setRefer(rs.getString("refer"));
+				docvo.setDoc_title(rs.getString("doc_title"));
+				DocGiganVO giganvo = new DocGiganVO(rs.getString("start_date"), rs.getString("end_date"));
+				Members mem = new Members(rs.getString("name"));
+				GradeInfo gradeinfo = new GradeInfo(rs.getString("position_name"));
+				DeptInfo deptinfo = new DeptInfo(rs.getString("dept_name"));
+				docvo.setDoc_content(rs.getString("doc_content"));
+				docvo.setDoc_kindvo(dock);
+				docvo.setDoc_gigan(giganvo);
+				docvo.setMembers(mem);
+				docvo.setGradeinfo(gradeinfo);
+				docvo.setDeptinfo(deptinfo);
+			}
+			
 		} finally {
 			MyConnection.close(rs, pstmt, con);
 		}
@@ -797,6 +841,8 @@ public class DocDAOOracle implements DocDAO {
 		DocDAOOracle test = new DocDAOOracle();
 		try {
 			
+			DocVO list = test.selectAll("1806-0005");
+			System.out.println(list);
 			
 			List<DocVO> list3 =test.selectGJOkAll("2");
 			System.out.println(list3);

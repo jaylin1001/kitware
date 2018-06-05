@@ -2,6 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<jsp:useBean id="toDay" class="java.util.Date" />
+<fmt:formatDate value='${toDay}' pattern='yyyyMMdd' var="nowDate"/>
 <c:set var="session" value="${sessionScope.loginInfo }"/>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -11,7 +14,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 </head>
 <body>
-<form id="formwrite">
+<form id="formwrite" name="test">
 <h1>쪽지작성</h1>
 <label>보낸사람:</label>
 <input type ="text" name ="namesend" value="${session.name}" readonly>&nbsp; &nbsp; 
@@ -43,11 +46,16 @@
 <br>
 
   <label>제목 : </label>
-   <input type ="text" name ="mail_title">
+   <input type ="text" name ="mail_title" size="35">
   <hr>
   <div style="width:400px">
-<textarea class="form-control" id="exampleFormControlTextarea1" rows="10"
+<textarea class="form-control" id="txarea" rows="10"
 	name = "mail_content">
+
+
+
+${session.name}/${toDay}
+----------------------------------------------------
 </textarea>
 </div>
 
@@ -92,6 +100,10 @@ thead {
 
 </style>
 <script>
+	
+	var txarea = document.getElementById('txarea')
+	document.test.txarea.focus();
+	document.test.txarea.value = txarea.value;
 
 $(function() {
 
@@ -142,8 +154,13 @@ $(function() {
 	          }
 	       }
 	    });
+	    
 	    return false;
 	 });//ajax close
+	 $('#back').click(function() {
+		    location.href="maillist.do";
+		    return false;
+		 });
 
 });
 	var className = 'mail';

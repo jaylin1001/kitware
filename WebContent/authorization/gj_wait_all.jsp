@@ -9,7 +9,7 @@
 <c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
 <div id="div1"></div>
 <div class="container">
-	<h2>전체 기안 문서함</h2>
+	<h2>내 기안 문서함</h2>
 	<div>&nbsp;</div>
 	<div class="selectbutton">
 		&nbsp;

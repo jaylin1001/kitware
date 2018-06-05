@@ -13,7 +13,7 @@ import com.kitware.A.control.Controller;
 import com.kitware.authorization.service.DocSelectService;
 
 public class DocDownController implements Controller {
-	DocSelectService service;
+	private DocSelectService service;
 
 	public DocSelectService getService() {
 		return service;
