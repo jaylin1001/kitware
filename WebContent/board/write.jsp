@@ -12,7 +12,7 @@
 					<div class="row">
 						<div class="col-sm-9 form-group">
 							<label>글 제목</label>
-							<input name="title" required="required" type="text" class="form-control">
+							<input name="title" type="text" class="form-control">
 						</div>
 						<div class="col-sm-12 form-group">
 							<label>글 내용</label>
@@ -25,7 +25,7 @@
 				</div>
 				<div class="col-sm-4 form-group">
 					 <label>첨부파일</label>
-					 <input type="file" required="required" class="form-control-file" name="file1">
+					 <input type="file" class="form-control-file" name="file1">
 					 <br>
 					<div>
 						<button type = "submit" class="btn btn-primary btn_save">완료</button>
@@ -82,29 +82,36 @@ $(function(){
 		});
 	
 	
-	
+	<%--저장 버튼을 눌렀을 때!--%>
  	$('button[type=submit]').click(function(){
- 		console.log(fileName);
+ 		<%--글 제목 입력 확인--%>
+ 		if($('input[name=title]').val() == ""){
+ 			alert('글 제목을 입력해주세요.');
+ 			return;
+ 		}
+ 		
  		<%--이미지 게시판인 경우에는 flag값을 받아서 파일을 반드시 선택하도록 한다. --%>
 		if("${flag}" == "1"){
 			if(fileName == ""){
 				alert('썸네일 파일을 반드시 선택하세요!!!');
 				return;
-			}else{
-				if(!isImageFile(fileName)){
+			}
+				
+			if(!isImageFile(fileName)){
 					alert('이미지 파일만 선택하세요!!!');
 					return;
-				}
+			}
 				
-				if(isImageFile(fileName)){
+			if(isImageFile(fileName)){
 					alert('썸네일 파일이 등록되었습니다!!!');
-				}
+					return;
 			}
 		}
 		
  		var markupStr = $('#summernote').summernote('code').trim();
 	    $('textarea').text(markupStr);
-	    
+
+	
 	    
 		<%-- ajax Form 전송시 multipart/form-data를 사용하기 위해서 선언.--%>
 	    var formData = new FormData();

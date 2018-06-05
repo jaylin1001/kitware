@@ -115,17 +115,14 @@ $(function() {
 		
 		<%-- 조회수 증가 시키는 부분--%>
 		<%-- 이미지 게시판 데이터를 보낼때는 flag 를 1값을 줄것이다.--%>
-		var formData = new FormData();
-		formData.append("hitseq",$(this).siblings().eq(0).val());
-		formData.append("flag","1");
 		$.ajax({
 			url:'${pageContext.request.contextPath}/boardedit.do',
-			data: formData,
-			enctype:'multipart/form-data',
-			processData: false,  <%--파일 업로드시 필요하다.--%>
-	        contentType: false,   <%--파일 업로드시 필요하다.--%>
-	        cache: false,
-			type: 'post',
+			data: {"hitseq":$(this).siblings().eq(0).val(),"flag":"1"},
+			<%-- enctype:'multipart/form-data',
+			processData: false,  파일 업로드시 필요하다.
+	        contentType: false,   파일 업로드시 필요하다.
+	        cache: false, --%>
+			type: 'get',
 			success:function(data){
 			}
 		});

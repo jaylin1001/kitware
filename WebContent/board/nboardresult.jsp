@@ -118,16 +118,10 @@
 		<%-- 글 상세보기 및 조회수 증가--%>
 		$('tbody>tr a.title').click(function(path,method){
 			<%-- 조회수 증가 시키는 부분--%>
-			var formData = new FormData();
-			formData.append("hitseq",$(this).parent().siblings().eq(4).text());
 			$.ajax({
 				url:'${pageContext.request.contextPath}/boardedit.do',
-				data: formData,
-				enctype:'multipart/form-data',
-				processData: false,  <%--파일 업로드시 필요하다.--%>
-		        contentType: false,   <%--파일 업로드시 필요하다.--%>
-		        cache: false,
-				type: 'post',
+				data: {"hitseq":$(this).parent().siblings().eq(4).text()},
+				type: 'get',
 				success:function(data){
 				}
 			});

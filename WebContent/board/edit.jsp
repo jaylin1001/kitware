@@ -87,8 +87,35 @@ h3{
 			$('#summernote').summernote('code', '${param.content}');
 		
 		
+	     <%-- 파일이 첨부가 되면 change 함수를 통해 fileName을 얻어온다.--%>
+	     var fileName = "";
+		 $('input[type="file"]').change(function(e){
+		        fileName = e.target.files[0].name;
+		 });
+		 <%-- fileName이 이미지 파일인지 아닌지 구별하는 함수--%>
+			function isImageFile(fileName){
+				var fileEXT = fileName.substring(fileName.lastIndexOf(".")+1);<%--확장자명만 추출--%>
+				fileEXT = fileEXT.toLowerCase(); <%--소문자로 일괄변경--%>
+				if("jpg" == fileEXT || "jpeg" == fileEXT || "gif" == fileEXT || "png"== fileEXT || "bmp" == fileEXT){
+					return true;
+				}else{
+					return false;
+				}
+			}
+		 
 		<%-- 수정버튼을 눌렀을 때 게시글을 수정한다.--%>
 		$('button.update').click(function() {
+			<%--글 제목 유무 확인--%>
+			if($('input[name=title]').val() == ""){
+	 			alert('글 제목이 없습니다.');
+	 			history.back();
+	 			
+	 		}else if("${param.flag}" == "1"){
+	 			if(!isImageFile(fileName)){
+					alert('이미지 파일만 선택하세요!!!');
+					history.back();
+				}
+	 		}else{
 			var markupStr = $('#summernote').summernote('code').trim();
 			console.log(markupStr);
 		    $('textarea').text(markupStr);
@@ -99,8 +126,7 @@ h3{
 	  	    formData.append("content", $('textarea[name=content]').text());
 	  	    formData.append("seq",$('input[name=seq]').val());
 	  	 	formData.append("file1", $("input[name=file1]")[0].files[0]);
-			formData.append("flag","${param.flag}");
-	  	 	
+			formData.append("editflag","${param.flag}");
 	  	 	$.ajax({
 				  url: '${pageContext.request.contextPath}/boardedit.do',
 				  type:'post',
@@ -123,6 +149,7 @@ h3{
 					  }
 				  }
 			  });
+	 		}
 			  return false;
 		});
 		

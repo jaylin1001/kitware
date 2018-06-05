@@ -27,7 +27,8 @@ public class BoardEditController implements Controller {
 	private String seq;
 	private String title;
 	private String content;
-	private String flag; //이미지 게시판 파일 처리를 위한 flag 변수
+	private String flag; // 이미지 게시판 조회수를 위한 flag 변수
+	private String editflag; //이미지 게시판 정보수정을 위한 editflag 변수
 
 	public BoardEditController() {
 	}
@@ -47,34 +48,41 @@ public class BoardEditController implements Controller {
 		String saveDirectory = "D:\\apache-tomcat-8.5.30\\webapps\\upload";
 		String delseq = request.getParameter("delseq");
 		String delflag = request.getParameter("delflag");
-		
+		hitseq = request.getParameter("hitseq");
+		flag = request.getParameter("flag");//조회수를 위한 flag
+		if(flag == null) {
+			flag = "0";   //0이라는건 공지게시판  1은 이미지게시판
+		}
+		System.out.println("flag 지금 몇임?"+flag);
+		System.out.println("hitseq 몇임:"+hitseq);
 		NoticeBoard noticeBoard = new NoticeBoard();
 		PhotoBoard photoBoard = new PhotoBoard();
-		
+
 		int maxPostSize = 1024 * 2000000;
 		String encoding = "UTF-8";
 
-		// 객체가 생성됨과 동시에 파일업로드가 이루어짐.
-		if(delseq == null) {
+		// 삭제,조회수 증가가 아닐때만 실행될 곳
+		if (delseq == null && hitseq == null) {
 			// 파일첨부
 			MultipartRequest mr;
+			// 객체가 생성됨과 동시에 파일업로드가 이루어짐.
 			mr = new MultipartRequest(request, saveDirectory, maxPostSize, encoding, new MyRenamePolicy());
 			file1 = mr.getFile("file1");
-			flag = mr.getParameter("flag");
-			if(file1 != null) {//새롭게 변경할 파일이 있다면
+			editflag = mr.getParameter("editflag"); //정보 및 파일 처리를 위한 flag
+			if (file1 != null) {// 새롭게 변경할 파일이 있다면
 				saveFileName = file1.getName();
 				int indexExt = saveFileName.lastIndexOf(".");
 				int index_ = saveFileName.lastIndexOf("_");
-				String ext = saveFileName.substring(indexExt); // .txt , .jpg  확장자
+				String ext = saveFileName.substring(indexExt); // .txt , .jpg 확장자
 				String fileName = saveFileName.substring(0, index_); // 확장자 없는 원본 파일명
-				originFileName = fileName+ext;
-				
-				if(flag.equals("1")) {//이미지 게시판 수정이 들어왔을 때만 썸네일 처리를 하면 된다.
-					//썸네일 처리 부분.
+				originFileName = fileName + ext;
+
+				if (editflag.equals("1")) {// 이미지 게시판 수정이 들어왔을 때만 썸네일 처리를 하면 된다.
+					// 썸네일 처리 부분.
 					int thumbnail_width = 600;
 					int thumbnail_height = 400;
-					String upfolder = saveDirectory+"\\thumbnail";
-			 		File SrcImgFile = new File(saveDirectory + File.separator + mr.getFilesystemName("file1"));
+					String upfolder = saveDirectory + "\\thumbnail";
+					File SrcImgFile = new File(saveDirectory + File.separator + mr.getFilesystemName("file1"));
 					BufferedImage srcImg = ImageIO.read(SrcImgFile);
 					BufferedImage thumbImg;
 					thumbImg = new BufferedImage(thumbnail_width, thumbnail_height, BufferedImage.TYPE_3BYTE_BGR);
@@ -82,65 +90,64 @@ public class BoardEditController implements Controller {
 					g.drawImage(srcImg, 0, 0, thumbnail_width, thumbnail_height, null);
 					File outFile = new File(upfolder + File.separator + mr.getFilesystemName("file1"));
 					ImageIO.write(thumbImg, "PNG", outFile);
-					
+
 					photoBoard.setOriginFileName(originFileName);
 					photoBoard.setSaveFileName(saveFileName);
-					photoBoard.setPath(saveDirectory+"\\"+saveFileName);
-				}else {
+					photoBoard.setPath(saveDirectory + "\\" + saveFileName);
+				} else {
 					noticeBoard.setOriginFileName(originFileName);
 					noticeBoard.setSaveFileName(saveFileName);
-					noticeBoard.setPath(saveDirectory+"\\"+saveFileName);	
+					noticeBoard.setPath(saveDirectory + "\\" + saveFileName);
 				}
 			}
-			
-			hitseq = mr.getParameter("hitseq");
 			seq = mr.getParameter("seq");
 			title = mr.getParameter("title");
 			content = mr.getParameter("content");
-			if(flag != null) {
+
+			if (editflag.equals("1")) {
 				photoBoard.setSeq(seq);
 				photoBoard.setTitle(title);
 				photoBoard.setContent(content);
-			}else {
+			} else {
 				noticeBoard.setSeq(seq);
 				noticeBoard.setTitle(title);
 				noticeBoard.setContent(content);
 			}
 		}
-		
-		
+
 		try {
+
 			if (delseq != null) {
-				if(delflag.equals("1")) {
+				if (delflag.equals("1")) {
 					service.deletePhotoBoard(delseq);
-				}else {
+				} else {
 					service.deleteNoticeBoard(delseq);
 				}
-			}else {
-				if(file1 == null){ //새로 등록한 파일이 없을 때는 제목,내용만 수정
-					if(flag != null) {
-						service.updatePhotoBoard(photoBoard);
-					}else {
-						service.updateNoticeBoard(noticeBoard);
+			} else {
+				if (hitseq != null) {
+					
+					if (flag.equals("1")) {
+						service.updatePBHit(hitseq);
+					} else {
+						service.updateHit(hitseq);
 					}
-				}else {// 새로 등록한 파일이 존재할 때는 제목,내용,파일까지 전부 수정.
-					if(flag != null) {
-						service.updatePhotoBoardFile(photoBoard);
-					}else {
-						service.updateNoticeBoardFile(noticeBoard);
+				} else {
+					if (file1 == null) { // 새로 등록한 파일이 없을 때는 제목,내용만 수정
+						if (editflag.equals("1")) {
+							service.updatePhotoBoard(photoBoard);
+						} else {
+							service.updateNoticeBoard(noticeBoard);
+						}
+					} else {// 새로 등록한 파일이 존재할 때는 제목,내용,파일까지 전부 수정.
+						if (editflag.equals("1")) {
+							service.updatePhotoBoardFile(photoBoard);
+						} else {
+							service.updateNoticeBoardFile(noticeBoard);
+						}
 					}
 				}
 			}
-			
-			if (hitseq != null) {
-				if(flag != null) {
-					service.updatePBHit(hitseq);
-				}else {
-					service.updateHit(hitseq);
-				}
-				
-			}
-			
+
 			request.setAttribute("result", "1");
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -186,7 +186,11 @@ button {
 			
 			<%--목록 버튼 누르면 일정 목록으로 간다.--%>
 			$('.btn_list').click(function() {
-				location.href="${pageContext.request.contextPath}/boardlist.do";
+				if("${param.flag}" == "1"){
+					location.href="${pageContext.request.contextPath}/imgboardlist.do";
+				}else{
+					location.href="${pageContext.request.contextPath}/boardlist.do";
+				};
 			});
 			return false;
 		});
