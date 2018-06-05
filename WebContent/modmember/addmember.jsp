@@ -38,7 +38,6 @@
 				method : 'post',
 				data : $('form').serialize(),
 				success : function(data) {
-					alert(11);
 					data = data.trim();
 					if (data == '1') {
 						alert('사원추가완료');
