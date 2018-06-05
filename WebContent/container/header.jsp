@@ -282,7 +282,18 @@ div.navbar-header>a.logout {
 			<div class="sidebar">
 			<div>
 					<div style ="padding-left:15px; width: 50%; float:left">
-					<img src="${pageContext.request.contextPath}/img/lee.jpg" width="100" height="100"></div>
+					<c:choose>
+					<c:when test="${sessionScope.loginInfo.name eq '관리자'}">
+					<img src="${pageContext.request.contextPath}/img/teemo2.gif" width="100" height="100">
+					</c:when>
+					<c:when test="${sessionScope.loginInfo.name eq '이혜련'}">
+					<img src="${pageContext.request.contextPath}/img/lee.jpg" width="100" height="100">
+					</c:when>
+					<c:otherwise>
+					<img src="${pageContext.request.contextPath}/img/teemo.gif" width="100" height="100">	
+					</c:otherwise>
+					</c:choose>				
+					</div>
 					<div style = "padding-left:15px; width: 50%; float:left;">
 					<h3>${sessionScope.loginInfo.name}</h3><h5>${sessionScope.loginInfo.gradeinfo.position_name}
 					<br>${sessionScope.loginInfo.deptinfo.dept_name}
