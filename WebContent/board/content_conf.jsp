@@ -179,11 +179,12 @@ button {
 	<c:set var="loginInfo" value="${sessionScope.loginInfo}"/>
 	<script>
 		$(function() {
-			<%-- 관리자 아이디 일때만 수정 버튼을 보이게 한다.--%>
+			<%-- 본인이 작성한 글에만 수정버튼이 뜬다.--%>
 			if($('td.writer').text().trim() == "${loginInfo.name}"){
-				$('button.btn_edit').css("display","inline-block");  <%--처음에 display:non >> display:inline-block으로 바꾼다.--%>
+					$('button.btn_edit').css("display","inline-block");  <%--처음에 display:non >> display:inline-block으로 바꾼다.--%>
 			}
 			
+			<%--목록 버튼 누르면 일정 목록으로 간다.--%>
 			$('.btn_list').click(function() {
 				location.href="${pageContext.request.contextPath}/boardlist.do";
 			});
@@ -199,6 +200,11 @@ button {
 				$form.attr("method", "post");
 				$form.attr("action", path);
 				
+				var hiddenField = document.createElement("input");
+				hiddenField.setAttribute("type", "hidden");
+				hiddenField.setAttribute("name", "flag");
+				hiddenField.setAttribute("value", "${param.flag}");
+				$form.append(hiddenField);
 				
 				var hiddenField = document.createElement("input");
 				hiddenField.setAttribute("type", "hidden");
@@ -246,14 +252,24 @@ button {
 				
 			});
 			
-			<%--이전글 눌렀을 때--%>
+			<%--이전글 눌렀을 때  flag값을 일반게시판0 이미지게시판3--%>
 			$('button.prePost').click(function(){
-				location.href="${pageContext.request.contextPath}/boardprenext.do?flag=0&seq="+$('td.seq').text();
+				if("${param.flag}" == "1"){<%--param flag가 1일때는 이미지로 쿼리스트링 flag를 3으로 보낸다.--%>
+					location.href="${pageContext.request.contextPath}/boardprenext.do?prenext=3&seq="+$('td.seq').text();
+				}else{
+					location.href="${pageContext.request.contextPath}/boardprenext.do?prenext=0&seq="+$('td.seq').text();
+				}
+				
 			});
 			
-			<%--다음글 눌렀을 때 --%>
+			<%--다음글 눌렀을 때 flag값을 일반게시판 1 이미지게시판4 --%>
 			$('button.nextPost').click(function(){
-				location.href="${pageContext.request.contextPath}/boardprenext.do?flag=1&seq="+$('td.seq').text();
+				if("${param.flag}" == "1"){<%--param flag가 1일때는 이미지로 쿼리스트링 flag를 4으로 보낸다.--%>
+					location.href="${pageContext.request.contextPath}/boardprenext.do?prenext=4&seq="+$('td.seq').text();
+				}else{
+					location.href="${pageContext.request.contextPath}/boardprenext.do?prenext=1&seq="+$('td.seq').text();
+				}
+				
 			});
 		});
 		var className = 'board';

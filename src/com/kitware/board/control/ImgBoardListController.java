@@ -11,6 +11,7 @@ import com.kitware.A.control.Controller;
 import com.kitware.board.service.BoardService;
 import com.kitware.board.vo.NoticeBoard;
 import com.kitware.board.vo.PageBean;
+import com.kitware.board.vo.PhotoBoard;
 
 public class ImgBoardListController implements Controller {
 	private BoardService service;
@@ -32,16 +33,14 @@ public class ImgBoardListController implements Controller {
 		String page = request.getParameter("page");
 		
 		int intPage = 1;
-		int flag = 0; //첫 요청일 경우 0 아닐 경우 1
 		if(page != null) {
 			intPage = Integer.parseInt(page);
-			flag = 1;
 		}try {
 			//게시물 총목록수
-			totalCount = service.findCount();
+			totalCount = service.findPBCount();
 			//총페이지수계산
 			int totalPage = 0;
-			int cntPerPage=6;//1페이지별 6건씩 보여준다
+			int cntPerPage=4;//1페이지별 6건씩 보여준다
 			totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
@@ -50,8 +49,8 @@ public class ImgBoardListController implements Controller {
 			if(endPage > totalPage) {
 				endPage = totalPage;
 			}	
-			List<NoticeBoard> list = service.findAll(intPage);
-			PageBean<NoticeBoard> pb = new PageBean<>();
+			List<PhotoBoard> list = service.findPhotoAll(intPage);
+			PageBean<PhotoBoard> pb = new PageBean<>();
 			pb.setCurrentPage(intPage);//현재페이지
 			pb.setTotalPage(totalPage); //총페이지
 			pb.setList(list); //목록
@@ -59,21 +58,19 @@ public class ImgBoardListController implements Controller {
 			pb.setEndPage(endPage); //끝페이지
 			pb.setTotalCount(totalCount); //총 게시글 갯수
 			pb.setCntPerPage(cntPerPage);
-			/*System.out.println("현재페이지:"+intPage);
+			System.out.println("현재페이지:"+intPage);
 			System.out.println("총페이지:"+totalPage);
 			System.out.println("시작페이지:"+startPage);
-			System.out.println("끝페이지:"+endPage);*/
+			System.out.println("끝페이지:"+endPage);
 			request.setAttribute("pagebean", pb);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		if(flag == 0) {
-			forwardURL = "/board/imgboard.jsp";
-		}else {
-			forwardURL = "/board/imgboardresult.jsp";
-		}
+		
+		forwardURL = "/board/imgboardresult.jsp";
+		
 		return forwardURL;
 	}
 

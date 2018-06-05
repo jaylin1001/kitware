@@ -44,22 +44,19 @@
 	</table>
 </div>
 	<button class="btn btn-primary btn-sm" id="writeform">글쓰기</button>
-	 
 	<c:set var="startPage" value="${pb.startPage}"/>
  	<c:set var="endPage" value="${pb.endPage}"/>
 	  <ul class="pagination">
 	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Previous">
+	      <a class="page-link" href="" aria-label="Previous">
 	        <span aria-hidden="true">&laquo;</span>
 	      </a>
 	    </li>
 	    <c:forEach begin="${startPage}" end="${endPage}" var="i" >  
 		  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
-		</c:forEach> 
-			    
-	    
+		</c:forEach>
 	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
+	      <a class="page-link" href="" aria-label="Next">
 	        <span aria-hidden="true">&raquo;</span>
 	      </a>
 	    </li>

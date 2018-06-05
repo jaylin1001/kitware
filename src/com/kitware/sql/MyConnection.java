@@ -29,6 +29,7 @@ public class MyConnection {
 		close(null, pstmt, con);
 	}
 	public static void close(ResultSet rs, PreparedStatement pstmt, Connection con) {
+		
 		if(rs != null)
 			try {
 				rs.close();

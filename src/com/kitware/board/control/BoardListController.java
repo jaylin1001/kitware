@@ -46,7 +46,7 @@ public class BoardListController implements Controller {
 			totalCount = service.findCount();
 			//총페이지수계산
 			int totalPage = 0;
-			int cntPerPage=7;//1페이지별 5건씩 보여준다
+			int cntPerPage=4;//1페이지별 5건씩 보여준다
 			totalPage = (int)Math.ceil((double)totalCount/ cntPerPage);
 			//페이지그룹에서 쓰일 시작페이지값, 끝페이지값계산
 			int cntPerPageGroup=5; //페이지그룹별 5페이지씩 보여준다
