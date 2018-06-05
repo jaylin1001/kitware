@@ -267,7 +267,7 @@ div.navbar-header> a.logout{
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">&nbsp;결재할 문서:&nbsp; &nbsp; &nbsp;${doclist}</a>
 					<div>&nbsp;</div>
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
-					오늘의 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
+					내 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
 					<div>&nbsp;</div>
 					&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/maillist.do">
 					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a>

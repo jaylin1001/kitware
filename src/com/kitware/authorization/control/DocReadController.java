@@ -49,8 +49,9 @@ public class DocReadController implements Controller {
 
 		try {
 			DocVO list = service.selectAll(doc_num);
-			if(list.getRefer() == null) {
+			if(list.getRefer() == null||list.getRefer().equals("사원 선택")) {
 				docvo_list = service.selectAll(doc_num);
+				docvo_list.setRefer("Null");
 			}else {
 				docvo_list = service.selectAllRefer(doc_num);
 			}

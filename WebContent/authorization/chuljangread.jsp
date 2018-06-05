@@ -52,7 +52,14 @@
 				</tr>
 				<tr>
 					<th>참조자</th>
-					<td colspan="5">${doc.refer}</td>
+					<td colspan="5"><c:choose>
+				<c:when test ="${doc.refer ne null}">
+					${doc.refer}
+				</c:when>
+				<c:otherwise>
+				Null
+				</c:otherwise>
+				</c:choose></td>
 				</tr>
 				<tr>
 					<th>제목</th>
