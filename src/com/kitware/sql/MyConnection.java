@@ -18,13 +18,16 @@ public class MyConnection {
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+
 	}*/
 	public static Connection getConnection() throws SQLException , NamingException , ClassNotFoundException{
 		Context initCtx = new InitialContext();
 		DataSource ds = (DataSource)initCtx.lookup("java:/comp/env/jdbc/myoracle");
 		Connection conn = ds.getConnection();
 		return conn;
+
 	}
+
 	public static void close(PreparedStatement pstmt, Connection con) {
 		close(null, pstmt, con);
 	}
