@@ -168,14 +168,12 @@
 		});
 		//사진게시판 눌렀을 때
 		$('.nav>li.imageBoard').click(function(){
-			location.href="${pageContext.request.contextPath}/imbboardlist.do";
+			location.href="${pageContext.request.contextPath}/imgboardlist.do";
 		});
-		
 		//로그아웃 버튼 누른다.
 		$('div.navbar-header>a.logout').click(function(){
 			location.href="${pageContext.request.contextPath}/logout.do";
 		});
-		
 	});
 </script>
 

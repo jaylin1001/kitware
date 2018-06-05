@@ -44,22 +44,19 @@
 	</table>
 </div>
 	<button class="btn btn-primary btn-sm" id="writeform">글쓰기</button>
-	 
 	<c:set var="startPage" value="${pb.startPage}"/>
  	<c:set var="endPage" value="${pb.endPage}"/>
 	  <ul class="pagination">
 	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Previous">
+	      <a class="page-link" href="" aria-label="Previous">
 	        <span aria-hidden="true">&laquo;</span>
 	      </a>
 	    </li>
 	    <c:forEach begin="${startPage}" end="${endPage}" var="i" >  
 		  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
-		</c:forEach> 
-			    
-	    
+		</c:forEach>
 	    <li class="page-item">
-	      <a class="page-link" href="#" aria-label="Next">
+	      <a class="page-link" href="" aria-label="Next">
 	        <span aria-hidden="true">&raquo;</span>
 	      </a>
 	    </li>
@@ -121,16 +118,10 @@
 		<%-- 글 상세보기 및 조회수 증가--%>
 		$('tbody>tr a.title').click(function(path,method){
 			<%-- 조회수 증가 시키는 부분--%>
-			var formData = new FormData();
-			formData.append("hitseq",$(this).parent().siblings().eq(4).text());
 			$.ajax({
 				url:'${pageContext.request.contextPath}/boardedit.do',
-				data: formData,
-				enctype:'multipart/form-data',
-				processData: false,  <%--파일 업로드시 필요하다.--%>
-		        contentType: false,   <%--파일 업로드시 필요하다.--%>
-		        cache: false,
-				type: 'post',
+				data: {"hitseq":$(this).parent().siblings().eq(4).text()},
+				type: 'get',
 				success:function(data){
 				}
 			});

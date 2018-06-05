@@ -214,7 +214,12 @@ select.sp {
 												}
 										        var dateStr = date.format();
 										        var schetitle = prompt('일정제목을 입력하세요.');
-										        console.log("일정코드:"+$('#code').val());
+										        if (schetitle == null){ <%-- 빠른일정 취소버튼을 누른 경우에 return--%>
+										        	return;
+										        }else if(schetitle == ""){<%--빠른일정 입력란에 아무것도 입력하지 않았을 때--%>
+										        	alert('일정 제목을 입력하세요!');
+										        	return;
+										        }
 										        $.ajax({
 										        	url: '${pageContext.request.contextPath}/schqadd.do',
 												    dataType: 'json',
@@ -749,8 +754,57 @@ select.sp {
 				
 			}
 		});
+		<%--날짜 시간 비교를 위한 함수--%>
+		function comparedate(date1,date2,hour1,hour2,min1,min2){
+			var arr1 = date1.split('-');
+			var arr2 = date2.split('-');
+			if(!hour1)
+				hour1 = "0";
+			if(!hour2)
+				hour2 = "0";
+			if(!min1)
+				min1 = "0";
+			if(!min2)
+				min2 = "0";
+			var h1 = parseInt(hour1);
+			var h2 = parseInt(hour2);
+			var m1 = parseInt(min1);
+			var m2 = parseInt(min2);
+			var dt1 = new Date(arr1[0],parseInt(arr1[1])-1,arr1[2]);
+			var dt2 = new Date(arr2[0],parseInt(arr2[1])-1,arr2[2]);
+			if(dt1 > dt2){
+				return false;
+			}else{
+				if(h1 == h2){
+					if(m1 >m2){
+						return false;
+					}else{
+						return true;
+					}
+				}else if(h1 > h2){
+					return false;
+				}else{
+					return true;
+				}
+			}
+		}
+
+		
 		<%--일정 추가 submit--%>
 		$('div.modal-footer input.addschedule').click(function(){
+			<%--날짜 및 시간 확인--%>
+			if(! comparedate($("div.modal-body input#testDatepicker").val(),$("div.modal-body input#testDatepicker2").val(),
+					$("div.modal-body select#starthour").val(),$("div.modal-body select#endhour").val(),
+					$("div.modal-body select#startmin").val(),$("div.modal-body select#endmin").val())){
+					alert('날짜 및 시간 선택에 오류가 있습니다!');
+					return;
+				}
+			<%-- 제목 입력 유무 확인--%>
+			if($("div.modal-body input#schtitle").val() == ""){
+				alert('일정 제목을 입력해주세요.');
+				return;
+			};
+				
 				$.ajax({
 					  url: '${pageContext.request.contextPath}/schadd.do',
 					  type:'post',
@@ -780,6 +834,18 @@ select.sp {
 			
 		<%--일정 수정 submit--%>
 			$('div.modal-footer input.editschedule').click(function(){
+				<%--날짜 및 시간 확인--%>
+				if(! comparedate($("div.modal-body input#testDatepicker").val(),$("div.modal-body input#testDatepicker2").val(),
+						$("div.modal-body select#starthour").val(),$("div.modal-body select#endhour").val(),
+						$("div.modal-body select#startmin").val(),$("div.modal-body select#endmin").val())){
+						alert('날짜 및 시간 선택에 오류가 있습니다!');
+						return;
+					}
+				<%-- 제목 입력 유무 확인--%>
+				if($("div.modal-body input#schtitle").val() == ""){
+					alert('일정 제목을 입력해주세요.');
+					return;
+				};
 				$.ajax({
 					  url: '${pageContext.request.contextPath}/schmod.do',
 					  type:'post',
