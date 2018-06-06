@@ -131,33 +131,34 @@
 					</td>
 				</tr>
 
-				<tr>
-					<th>출장지</th>
-					<td colspan="5"><input type="text" style="width: 500px"
-						id="chuljang_space">
-						<button id="chuljang_select">출장지 선택</button> <!--지도 api써도 좋을거같음 --></td>
-				</tr>
+					<!-- <tr>
+						<th>출장지</th>
+						<td colspan="5"><input type="text" style="width: 500px"
+							id="chuljang_space">
+							<button id="chuljang_select">출장지 선택</button> 지도 api써도 좋을거같음</td>
+					</tr> -->
 
 				<tr>
 					<th>출장목적</th>
-					<td colspan="5"><textarea rows="4" cols="100"
-							id="chuljang_textarea">
-				</textarea></td>
+					<td colspan="5"><textarea rows="20" cols="100" id="chuljang_textarea"></textarea></td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th>첨부파일</th>
 					<td colspan="5"><input type="text">
 
 						<button>첨부파일</button></td>
 				</tr>
-
+ -->
 
 				<tr>
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
 				<tr>
-					<td colspan="6" align="center"><input type="button" value="제출"
-						id="go"> <input type="button" value="취소" id="cancle"></td>
+					<td colspan="6" align="center">
+					<input type="button" value="제출"
+						id="go"> 
+					<input type="button" value="취소" onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
+						</td>
 				</tr>
 			</table>
 		</div>

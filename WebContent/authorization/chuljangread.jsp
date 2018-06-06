@@ -70,10 +70,6 @@
 					<td>${doc.doc_gigan.start_date} &nbsp;~&nbsp; ${doc.doc_gigan.end_date}</td>
 				</tr>
 
-				<tr>
-					<th>출장지</th>
-					<td colspan="5"> null<!--지도 api써도 좋을거같음 --></td>
-				</tr>
 
 				<tr>
 					<th>출장목적</th>

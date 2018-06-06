@@ -61,8 +61,7 @@ public class DocReadController implements Controller {
 			if(doc_kind.equals("40")) {
 				// 출장
 				forwardURL = "/authorization/chuljangread.jsp";
-			} else if (doc_kind.equals("60")||doc_kind.equals("80")) {
-				// 병가
+			} else if (doc_kind.equals("60")||doc_kind.equals("80")||doc_kind.equals("50")) {
 				forwardURL = "/authorization/jotaeRead.jsp";
 			} else { 
 				//기안, 품의, 발주

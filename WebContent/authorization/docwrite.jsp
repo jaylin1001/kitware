@@ -111,11 +111,10 @@
             </tr>
             <tr>
                <td colspan="6" align="center">
-                  <button class="btn btn-success" style="background: gray;" id="go">제출</button>
+                  <button id="go">제출</button>
                   <!-- <input type="submit" class="btn btn-success" value="제출"> -->
-                  <button class="btn btn-success" style="background: gray;">취소</button>
-                  <!-- <input type="button" value="제출">
-               <input type="button" value="취소"> -->
+                  <input type="button" value="취소" onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
+                
                </td>
             </tr>
          </table>

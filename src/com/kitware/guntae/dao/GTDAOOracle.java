@@ -7,10 +7,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kitware.authorization.dao.MyConnection;
 import com.kitware.authorization.vo.DocGiganVO;
 import com.kitware.guntae.vo.Gunte;
 import com.kitware.guntae.vo.Yeoncha;
+import com.kitware.sql.MyConnection;
 
 
 public class GTDAOOracle implements GTDAO {

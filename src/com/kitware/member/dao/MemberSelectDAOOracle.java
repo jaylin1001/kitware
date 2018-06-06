@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.kitware.authorization.dao.MyConnection;
 import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Mail;
@@ -15,6 +14,7 @@ import com.kitware.member.vo.Members;
 import com.kitware.member.vo.MembersDetailInfo;
 import com.kitware.member.vo.StatusBoard;
 import com.kitware.member.vo.StatusDetailBoard;
+import com.kitware.sql.MyConnection;
 
 public class MemberSelectDAOOracle implements MemberSelectDAO {
 

@@ -1,6 +1,7 @@
 package com.kitware.authorization.dao;
 
-import java.sql.Connection;
+import java.sql.Connection
+;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Members;
+import com.kitware.sql.MyConnection;
 
 public class DocDAOOracle implements DocDAO {
 
@@ -612,7 +614,7 @@ public class DocDAOOracle implements DocDAO {
 	 */
 
 	@Override
-	public String getMaxDocNum() {
+	public String getMaxDocNum() throws Exception{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

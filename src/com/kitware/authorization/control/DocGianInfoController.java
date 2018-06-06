@@ -80,6 +80,8 @@ public class DocGianInfoController implements Controller {
 			forwardURL = "authorization/pumyeewrite.jsp";
 		}else if (kind.equals("byungga")){
 			forwardURL = "authorization/byunggawrite.jsp";
+		}else if(kind.equals("yeoncha")){
+			forwardURL = "authorization/yeonchawrite.jsp";
 		}
 		return forwardURL;
 	}

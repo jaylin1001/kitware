@@ -313,7 +313,9 @@ div.navbar-header>a.logout {
 					</a>
 					<div>&nbsp;</div>
 					&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/maillist.do">
-					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a>
+					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a><c:if test="${maillist.count ne '0'}">
+					<img src="${pageContext.request.contextPath}/img/mailinfo.gif" width="40" height="40">	
+					</c:if>
 					<hr>
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
@@ -351,6 +353,7 @@ div.navbar-header>a.logout {
 								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee&doc_kind=20">품의서</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju&doc_kind=30">발주서</a></li>
 								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang&doc_kind=40">출장신청</a></li>
+								<li class="yeoncha"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=yeoncha&doc_kind=50">휴가신청</a></li>
 								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga&doc_kind=60">병가신청</a></li>
 								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae&doc_kind=80">조퇴신청</a></li>
 							</ul></li>
