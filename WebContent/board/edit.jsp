@@ -165,7 +165,7 @@ h3{
 						  if($('input.flag').val() == "1"){
 							  location.href = "${pageContext.request.contextPath}/imgboardlist.do"; 
 						  }else{
-							  location.href = "${pageContext.request.contextPath}/boardlist.do?type=${param.mode}"; 
+							  location.href = "${pageContext.request.contextPath}/boardlist.do?mode=${param.mode}"; 
 						  }
 					  }else{
 						  alert("삭제실패!!");

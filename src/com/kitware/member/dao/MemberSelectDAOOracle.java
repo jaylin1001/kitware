@@ -805,7 +805,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectSDSQL = "select max(emp_num)+1 emp_num\r\n" + "from members";
+		String selectSDSQL = "select max(to_number(emp_num))+1 emp_num from members order by emp_num";
 		List<StatusDetailBoard> list = new ArrayList<StatusDetailBoard>();
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
@@ -815,7 +815,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 				return null;
 			} else {
 				Members mb = new Members();
-				mb.setEmp_num(rs.getString("emp_num"));
+				mb.setEmp_num(rs.getString(String.valueOf("emp_num")));
 				return mb;
 			}
 		} finally {
