@@ -63,7 +63,6 @@ public class CharEncodingFilter implements Filter {
 			}else {
 				try {
 					String date = sdf.format(c1.getTime());
-					System.out.println(date);
 					int doc_list = service.selectGJWait(mb.getEmp_num()).size();
 					List<Schedule> listSchedule = sservice.findSchPersonalToday(mb.getEmp_num(), date);
 					Mail mail_list = mservice.selectMailList3(mb.getEmp_num());

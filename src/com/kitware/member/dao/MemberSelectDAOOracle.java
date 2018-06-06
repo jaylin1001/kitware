@@ -160,7 +160,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		String selectMemberInfoSQL = "SELECT *\r\n" + "FROM members\r\n" + "where position_num=? and dept_num=?";
+		String selectMemberInfoSQL = "SELECT *\r\n" + "FROM members\r\n" + "where position_num=? and dept_num=? and memberyn ='Y'";
 
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();

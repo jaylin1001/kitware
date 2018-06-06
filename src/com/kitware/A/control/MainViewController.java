@@ -83,11 +83,6 @@ public class MainViewController implements Controller {
 			int list3 = service.selectCancle(emp_num).size();
 			int list4 = service.selectZero(emp_num).size();
 			
-			System.out.println("list1"+list1);
-			System.out.println("list2"+list2);
-			System.out.println("list3"+list3);
-			System.out.println("list4"+list4);
-			
 			request.setAttribute("board_list", board_list);
 			request.setAttribute("doc_list", doc_list);
 			request.setAttribute("schedule", listSchedule);

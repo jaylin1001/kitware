@@ -75,8 +75,6 @@ public class DocEditGianController implements Controller {
 		
 		try {
 			if(mode == null){
-				System.out.println("in");
-				System.out.println(doc_num);
 				service2.updateCJ(docvo, doc_num);
 				forwardURL = "/authorization/editresult.jsp";
 				request.setAttribute("result", "1");
@@ -86,7 +84,6 @@ public class DocEditGianController implements Controller {
 				request.setAttribute("doc_detail_list", doc_detail_list);
 				request.setAttribute("docvo_list", docvo_list);
 				forwardURL = "/authorization/docedit.jsp";
-				System.out.println("1111"+forwardURL);
 			}
 		} catch (Exception e) {
 			/*request.setAttribute("result", "-1");*/

@@ -474,7 +474,7 @@ public class DocDAOOracle implements DocDAO {
 		
 		String selectGJOkSQL = "select  rownum r, d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+ " from document d, doc_detail dd, doc_kind dk" + " where d.doc_num = dd.doc_num"
-				+ " and d.doc_kind = dk.doc_kind" + " and conf_num = ?" + " and acs_yn in(0,1,2,3) order by d.doc_num desc";
+				+ " and d.doc_kind = dk.doc_kind" + " and dd.conf_num = ?" + " and dd.acs_yn in(1,3) and d.doc_state in(1,2,3) order by d.doc_num desc";
 		List<DocVO> doclist2 = new ArrayList<>(); // 이부분부터 수정들어가야함 0525 오후 4:43
 		DocVO docvo2 = null; // doc 데이터 담음
 		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
