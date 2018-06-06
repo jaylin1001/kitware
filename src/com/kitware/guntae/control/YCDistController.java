@@ -40,8 +40,6 @@ public class YCDistController implements Controller {
 			years = format.format(new Date());
 		}
 		try {
-			//연차기간 doc_gigan에서 인설트
-			service.giganinsert(emp_num);
 			
 			// 연차기간 모든것 셀렉트
 			List<List<String>> yeonchagiganlist = service.giganselectAll(emp_num, years);

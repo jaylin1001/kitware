@@ -13,13 +13,17 @@
 
 <%-- <%List<Yeoncha> list = (List)request.getAttribute("Yeoncha"); %>  --%>
 <div>
-   	<div class="title" align="left"><h2>내 연차 현황</h2></div>
+   	<div class="title" align="left">
+   		<span><i class="fas fa-plane"></i></span>
+   		<label>연차현황</label>
+   	</div>
 	<br>
 	<div class="ycbtn" align="center">
-		<button class="btn btn-primary" id="prev"><</button>
-		<h2 style="display:inline-block;" id="years"><%=years %></h2>
+		<button class="btn btn-primary" id="prev"><</button>&nbsp;
+		<h2 style="display:inline-block;" id="years"><%=years %></h2>&nbsp;
 		<button class="btn btn-primary" id="next">></button>
 	</div>
+	&nbsp;
    	<div class="table">
       <table class="table table-bordered">
       	<tr>
@@ -57,6 +61,10 @@
 	font-family: "Lucida Grande", Helvetica, Arial, Verdana, sans-serif;
 	font-size: 14px;
 } */
+div.title {
+	font-size: 30px;
+}
+
 th {
 	text-align: center;
 }

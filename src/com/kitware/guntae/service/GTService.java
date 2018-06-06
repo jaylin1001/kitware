@@ -1,5 +1,6 @@
 package com.kitware.guntae.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.kitware.authorization.vo.DocGiganVO;
@@ -53,7 +54,17 @@ public class GTService {
 		return dao.giganselectAll(emp_num, years);
 	}
 
-	public void giganinsert(String emp_num) throws Exception {
-		dao.giganinsert(emp_num);
+	public List<Integer> getStatusCount(String years, String months, String emp_num) throws Exception{
+		List<Integer> list = new ArrayList<>();
+		list.add(dao.selectbyungamonth(years, months, 40, emp_num));
+		list.add(dao.selectbyungamonth(years, months, 50, emp_num));
+		list.add(dao.selectbyungamonth(years, months, 60, emp_num));
+		list.add(dao.selectbyungamonth(years, months, 80, emp_num));
+		return list;
 	}
+	
+	/*public String findbyungamonth(String years, String months) {
+		dao.selectbyungamonth(years,months);
+		
+	}*/
 }

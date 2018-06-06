@@ -365,7 +365,7 @@ div.navbar-header>a.logout {
 						<li class="schedule"><a href="#" id="schperson">개인일정</a> <a href="#" id="schdept">부서일정</a>
 							<a href="#" id="schcompany">회사일정</a> <a href="#" id="schtotal">전체일정</a></li>
 
-						<li class="attendance"><a href="${pageContext.request.contextPath}/attendance/attendance.jsp">내 근태 현황<span class="fa arrow"></span></a></li>
+						<li class="attendance"><a href="${pageContext.request.contextPath}/attendance/attendance.jsp">내 근태 현황</a></li>
 						<li class="attendance"><a href="${pageContext.request.contextPath}/ycdist.do">내 연차 현황</a></li>
 								
 								
