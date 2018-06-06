@@ -40,6 +40,7 @@ public class DocGJWaitController implements Controller {
 		Members loginInfo = (Members)session.getAttribute("loginInfo");	
 		String emp_num = loginInfo.getEmp_num();
 		List<DocVO> list= null;
+		String forwardURL = null;
 		String page = request.getParameter("page");
 		System.out.println("로그인번호"+emp_num);
 		String mode = request.getParameter("mode");
@@ -50,6 +51,9 @@ public class DocGJWaitController implements Controller {
 			intPage = Integer.parseInt(page);
 		}try {
 			
+			/*if(chart.equals("ok")) {
+				forwardURL = "/home/chartresult.jsp";
+			}*/
 			
 			if(mode.equals("ing")) {
 				list = service.findIng(emp_num);
@@ -61,7 +65,6 @@ public class DocGJWaitController implements Controller {
 				list = service.selectmyAll(emp_num);
 				System.out.println(list.size());
 			}
-			
 			int totalCount = list.size();
 			//총페이지수계산
 			int cntPerPage = 5;// 1페이지별 5건씩 보여준다
@@ -87,12 +90,13 @@ public class DocGJWaitController implements Controller {
 			request.setAttribute("mode", mode);
 			request.setAttribute("startRow", startRow);
 			request.setAttribute("endRow", endRow);
+		
 			
 		} catch (Exception e) {
 			e.printStackTrace();
 			request.setAttribute("result", e.getMessage());
 		}
-		String forwardURL = "/authorization/gj_wait_all.jsp";
+		forwardURL = "/authorization/gj_wait_all.jsp";
 		return forwardURL;
 	}
 }

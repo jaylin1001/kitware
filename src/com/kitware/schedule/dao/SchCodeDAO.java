@@ -18,4 +18,6 @@ public interface SchCodeDAO {
 	
 	//개인,부서,회사 일정을 한번에 볼 수 있는  [전체일정]
 	List<Schedule> selectTotal(String id) throws Exception;
+	
+	List<Schedule> selectPersonalToday(String id, String date) throws Exception;
 }

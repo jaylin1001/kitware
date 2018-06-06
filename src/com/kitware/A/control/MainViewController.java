@@ -76,13 +76,29 @@ public class MainViewController implements Controller {
 			List<List<String>> yeonchagiganlist = gservice.giganselectAll(emp_num, "2018");
 			Yeoncha yeonchalist = gservice.selectAll(emp_num, "2018");
 			List<Gunte> gslist = gservice.gselectAll(emp_num);
-			// 근태 값 들어가야함
+			
+			//chart value select
+			int list1 = service.findIng(emp_num).size();
+			int list2 = service.selectOK(emp_num).size();
+			int list3 = service.selectCancle(emp_num).size();
+			int list4 = service.selectZero(emp_num).size();
+			
+			System.out.println("list1"+list1);
+			System.out.println("list2"+list2);
+			System.out.println("list3"+list3);
+			System.out.println("list4"+list4);
+			
 			request.setAttribute("board_list", board_list);
 			request.setAttribute("doc_list", doc_list);
 			request.setAttribute("schedule", listSchedule);
 			request.setAttribute("Yeoncha_gigan", yeonchagiganlist);
 			request.setAttribute("Yeoncha", yeonchalist);
 			request.setAttribute("Gunte", gslist);
+			
+			request.setAttribute("chartlist1", list1);
+			request.setAttribute("chartlist2", list2);
+			request.setAttribute("chartlist3", list3);
+			request.setAttribute("chartlist4", list4);
 
 		} catch (Exception e) {
 			e.printStackTrace();

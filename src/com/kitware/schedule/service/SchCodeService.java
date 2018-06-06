@@ -22,7 +22,9 @@ public class SchCodeService {
 		return service;
 	}
 	
-	
+	public List<Schedule> findSchPersonalToday(String id, String date) throws Exception{
+		return dao.selectPersonalToday(id, date);
+	}
 	
 	public List<Schedule> findSchPersonal(String id) throws Exception{
 		return dao.selectPersonal(id);

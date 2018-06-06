@@ -247,7 +247,7 @@ div.navbar-header>a.logout {
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="navbar-header">
 				<a class="navbar-brand"
-					href="${pageContext.request.contextPath}/home/home.jsp">KIT
+					href="${pageContext.request.contextPath}/mainview.do">KIT
 					Ware</a> <a class="navbar-brand logout" href="#">Logout</a>
 				<div class="logininfo">${sessionScope.loginInfo.name}
 					${sessionScope.loginInfo.gradeinfo.position_name} 님 로그인 되었습니다.</div>

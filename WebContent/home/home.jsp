@@ -11,10 +11,11 @@
 <c:set var="yc" value="${requestScope.Yeoncha}"/>
 <c:set var="yg" value="${requestScope.Yeoncha_gigan}"/>
 <c:set var="listGunte" value="${requestScope.Gunte}"/>
-<h1>Hello Kitware!</h1>
-
-<div style="width:40%; height:350px; float:left; padding-right:10px;">
-<h3>공지사항</h3>
+<link rel="stylesheet" href="${pageContext.request.contextPath}/css/Nwagon.css" type="text/css">
+<script src="${pageContext.request.contextPath}/js/Nwagon.js"></script>
+<h1>Hello KITWARE!</h1>
+<div style="width:40%; height:300px; float:left; padding-right:10px;">
+<h3>공지입니다</h3>
 <table class="table table-hover table-bordered">
 		<thead id ="board">
 			<tr class="table-primary">
@@ -26,8 +27,7 @@
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach items="${boardlist}" var="b" varStatus="status"
-			 begin="0" end="4">
+			<c:forEach items="${boardlist}" var="b" varStatus="status">
 			<tr>
 			<td>${b.seq}</td>
 			<td>${b.title}</td>
@@ -39,28 +39,8 @@
 		</tbody>
 </table>
 </div>
-<div style="width:40%; float:left; height:350px; padding-right:20px;">
-<h3>부서게시판</h3>
-<table class="table table-hover table-bordered">
-		<thead class="thead-light" id ="board">
-			<tr>
-				<th width="10%">번호</th>
-				<th width="40%">제목</th>
-				<th width="15%">작성자</th>
-				<th width="30%">작성일</th>
-				<th width="10%">hit</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-			<td>1</td>
-			<td>sample</td>
-			<td>writer</td>
-			<td>180602</td>
-			<td>1</td>
-			</tr>
-		</tbody>
-</table>
+<div id ="Nwagon" style="width:40%; float:left; height:300px; border: 1px solid white /* padding-right:20px; */">
+<h3>내 기안문서 진행도</h3>
 </div>
  <div id='calendar' style = "float:right">
 <hr>
@@ -68,7 +48,7 @@
  </div>
  </div> <!-- 풀캘린더 뜨는 부분 -->
  
-<div style="width:80%;height:350px;">
+<div style="width:80%;height:300px;">
 </div>
 <div style="width:79%;height:300px;">
 <h3>결재 대기문서</h3>
@@ -108,10 +88,9 @@
 			</c:forEach>
 		</tbody>
 	</table>
-
 <div></div>
 </div>
-<div style="width:79%;height:250px;">
+<div style="width:79%;height:200px;">
 <h3>출퇴근 내역</h3>
  <table class="table table-bordered">
  	<thead id="board">
@@ -143,7 +122,8 @@
     </c:if>
     </tr>
      </c:forEach>
- </table>	
+ </table>
+ </div>	
 <div class="gtstyle">
 		<div id="gt1">
 			<span id="clock"></span>
@@ -153,8 +133,28 @@
 	        </span>
         </div>
 </div>
-
-
+<hr>
+<script>
+	
+	var list1 = parseInt("${requestScope.chartlist1}");
+	var list2 = parseInt("${requestScope.chartlist2}");
+	var list3 = parseInt("${requestScope.chartlist3}");
+	var list4 = parseInt("${requestScope.chartlist4}");
+	var options = {
+		'dataset':{
+			title: '내 기안 문서',
+			values:[list1,list2,list3,list4],
+			colorset: ['#2EB400', '#2BC8C9', "#666666", '#f09a93'],
+			fields: ['상신', '완료',  '취소', '진행'],
+		},
+		'donut_width' : 85,
+		'core_circle_radius':0,
+		'chartDiv': 'Nwagon',
+		'chartType': 'pie',
+		'chartSize': {width:400, height:200}
+	};
+	Nwagon.chart(options);
+</script>
 <script>
 function functionrt(data, data1) {
 	console.log(data);
