@@ -19,7 +19,7 @@
 <script
 	src="https://stackpath.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <!-- Custom Theme JavaScript -->
-<script src="${pageContext.request.contextPath}/js/custom/sb-admin-2.js"></script>
+<%-- <script src="${pageContext.request.contextPath}/js/custom/sb-admin-2.js"></script> --%>
 
 
 <!-- BootStrap 3.3.7 css CDN -->

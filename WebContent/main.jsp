@@ -20,7 +20,7 @@
 			location.href="${pageContext.request.contextPath}/attendance/attendance.jsp";
 		}
 		else if(className=='board'){
-			location.href="${pageContext.request.contextPath}/boardlist.do";
+			location.href="${pageContext.request.contextPath}/boardlist.do?mode=notice";
 		}
 		else if(className=='home'){
 			location.href="${pageContext.request.contextPath}/mainview.do";

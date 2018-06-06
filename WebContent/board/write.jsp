@@ -118,9 +118,10 @@ $(function(){
   	 	 formData.append("content", $('textarea[name=content]').text());
   	 	 formData.append("file1", $("input[name=file1]")[0].files[0]);
 		 formData.append("flag","${flag}"); <%--flag값을 사용해서 이미지인지 일반게시판인지 구별해낸다.--%>
+		
   	 	 
 	    $.ajax({
-			  url: '${pageContext.request.contextPath}/boardwrite.do',
+			  url: '${pageContext.request.contextPath}/boardwrite.do?mode=${param.mode}',
 			  type:'post',
 			  enctype:'multipart/form-data',
 			  processData: false,  <%--파일 업로드시 필요하다.--%>
@@ -134,7 +135,7 @@ $(function(){
 						 if("${flag}" == "1"){
 							 location.href="${pageContext.request.contextPath}/imgboardlist.do"; 
 						 }else{
-						 	location.href="${pageContext.request.contextPath}/boardlist.do";
+						 	location.href="${pageContext.request.contextPath}/boardlist.do?mode=${param.mode}";
 						 }
 					 }else{
 						 

@@ -2,8 +2,11 @@ package com.kitware.board.dao;
 
 import java.util.List;
 
+import com.kitware.board.vo.Comment;
+import com.kitware.board.vo.DepartBoard;
 import com.kitware.board.vo.NoticeBoard;
 import com.kitware.board.vo.PhotoBoard;
+import com.kitware.member.vo.Members;
 
 public interface BoardDAO {
 	//오버라이딩 될 추상메소드 적기
@@ -44,5 +47,20 @@ public interface BoardDAO {
 	PhotoBoard selectPBPrePost(String seq)throws Exception;
 	//사진게시판 다음글 가져와라
 	PhotoBoard selectPBNextPost(String seq) throws Exception;
+	
+	public int selectDeptCount(int dept_num) throws Exception;
+	public void insertDeptBoard(DepartBoard dpetboard) throws Exception;
+	public void updateDeptBoard(DepartBoard dpetboard) throws Exception;
+	public void delDeptBoard(int seq) throws Exception;
+	public void updateDeptHit(int seq) throws Exception;
+	public List<DepartBoard> getListBoard(int page, int dept_name) throws Exception;
+	public NoticeBoard selectPreDeptPost(String seq, int dept_name) throws Exception;
+	public NoticeBoard selectNextDeptPost(String seq, int dept_name) throws Exception;
+	public List<Comment> getCommentList(int seq) throws Exception;
+	public void insertComment(int seq,Members m, String content) throws Exception;
+	public void delComment(int seq) throws Exception;
+	public int countcommnet(int seq) throws Exception;
+	public void updateDeptBoardFile(DepartBoard deptBoard) throws Exception;
+	
 	
 }

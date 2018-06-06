@@ -189,7 +189,7 @@ button {
 				if("${param.flag}" == "1"){
 					location.href="${pageContext.request.contextPath}/imgboardlist.do";
 				}else{
-					location.href="${pageContext.request.contextPath}/boardlist.do";
+					location.href="${pageContext.request.contextPath}/boardlist.do?mode=notice";
 				};
 			});
 			return false;
@@ -233,6 +233,14 @@ button {
 				hiddenField.setAttribute("name", "originFName");
 				hiddenField.setAttribute("value",$('td>a').text().trim());
 				$form.append(hiddenField);
+				
+				if("${param.flag}"!=1){
+					var hiddenField = document.createElement("input");
+					hiddenField.setAttribute("type", "hidden");
+					hiddenField.setAttribute("name", "mode");
+					hiddenField.setAttribute("value","notice");
+					$form.append(hiddenField);
+				}
 				
 				
 				$(document.body).append($form);  <%--동적으로 만든 form을 document.body에 append--%>

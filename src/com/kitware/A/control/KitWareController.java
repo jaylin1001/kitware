@@ -111,7 +111,7 @@ public class KitWareController extends HttpServlet {
 			e.printStackTrace();
 		}
 		// forwardURL = c.execute(request, response);
-		
+		System.out.println("fw!!!!!!!!!!!!!"+forwardURL);
 			
 		if (forwardURL.contains("redirect:")) {
 			String redirectURL = forwardURL.substring(forwardURL.indexOf(":") + 1);

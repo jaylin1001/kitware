@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
+	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <script>
@@ -10,102 +10,106 @@ $('ul#side-menu').find('li.' + className).show();
 </script>
 <c:set var="pb" value="${requestScope.pagebean}"></c:set>
 <%-- 페이징 설정을 위한 변수들 --%>
-<c:set var="totalCount" value="${pb.totalCount}"/>
-<c:set var="currentPage" value="${pb.currentPage}"/>
-<c:set var="cntPerPage" value="${pb.cntPerPage}"/>
-<c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
+<c:set var="totalCount" value="${pb.totalCount}" />
+<c:set var="currentPage" value="${pb.currentPage}" />
+<c:set var="cntPerPage" value="${pb.cntPerPage}" />
+<c:set var="firstPN"
+	value="${totalCount - (cntPerPage * (currentPage-1))}" />
 <c:set var="list" value="${pb.list}"></c:set>
 <style>
 .pagination a.active {
-    background-color: #237abc;
-    color: white;
+	background-color: #237abc;
+	color: white;
 }
-h4.card-text:hover{
+
+h4.card-text:hover {
 	text-decoration: underline;
 }
-h4.card-text{
-	margin-top:auto;
-	margin-bottom:auto;
+
+h4.card-text {
+	margin-top: auto;
+	margin-bottom: auto;
 	text-align: center;
-	margin:auto;
+	margin: auto;
 	padding-top: 40px;
-	color:#585858;
+	color: #585858;
 }
-div.pagination{
-	margin:auto;
-} 
-#writeform{
-	 float:right;
-	 clear:both;
+
+div.pagination {
+	margin: auto;
 }
+
+#writeform {
+	float: right;
+	clear: both;
+}
+
 .card {
- 	margin:auto;
+	margin: auto;
 	border: 1px solid lightgray;
-	box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-    transition: 0.3s;
-    width: 603px;
-    height: 500px;
-    border-radius: 5px;
-    margin-top:50px;
-    margin-bottom: 30px;
+	box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+	transition: 0.3s;
+	width: 603px;
+	height: 500px;
+	border-radius: 5px;
+	margin-top: 50px;
+	margin-bottom: 30px;
 }
+
 .card:hover {
-    box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    
+	box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
-.card:hover .card-img-top{
-  opacity: 0.6;
+
+.card:hover .card-img-top {
+	opacity: 0.6;
 }
-.card img{
+
+.card img {
 	border-radius: 5px 5px 0 0;
 }
 </style>
 <div class="imagecontainer">
-<i class="far fa-images" style="font-size: 24px">&nbsp;사진게시판</i>
-<br>
-<button class="btn btn-primary" id="writeform">글쓰기</button>
-<ul class="list_type_tile" id="prdList">
-<c:forEach items="${list}" var="b" varStatus="status">
-<c:if test="${status.index != 0}">
-	<c:set var="firstPN" value="${firstPN -1}"/>
-</c:if>
-<div class="card">
-  <img class="card-img-top" src="/upload/thumbnail/${b.saveFileName}" alt="Card image cap" >
-  <div class="card-body">
-    <h4 class="card-text">${b.title}</h4>
-    <%--hidden으로 값 넘겨줄 부분--%>
-    <input type="hidden" class="seq" value="${b.seq}">
-	<textarea hidden="hidden" class="content">${b.content}</textarea>
-	<input type="hidden" class="originFName" value="${b.originFileName}">
-	<input type="hidden" class="path" value="${b.path}">
-	<input type="hidden" class="saveFName" value="${b.saveFileName}">
-	<input type="hidden" class="name" value="${b.name}">
-	<input type="hidden" class="log_time" value="${b.log_time}">
-	<input type="hidden" class="hit" value="${b.hit}">
-  </div>
-</div>
+	<i class="far fa-images" style="font-size: 24px">&nbsp;사진게시판</i> <br>
+	<button class="btn btn-primary" id="writeform">글쓰기</button>
+	<ul class="list_type_tile" id="prdList">
+		<c:forEach items="${list}" var="b" varStatus="status">
+			<c:if test="${status.index != 0}">
+				<c:set var="firstPN" value="${firstPN -1}" />
+			</c:if>
+			<div class="card">
+				<img class="card-img-top" src="/upload/thumbnail/${b.saveFileName}"
+					alt="Card image cap">
+				<div class="card-body">
+					<h4 class="card-text">${b.title}</h4>
+					<%--hidden으로 값 넘겨줄 부분--%>
+					<input type="hidden" class="seq" value="${b.seq}">
+					<textarea hidden="hidden" class="content">${b.content}</textarea>
+					<input type="hidden" class="originFName"
+						value="${b.originFileName}"> <input type="hidden"
+						class="path" value="${b.path}"> <input type="hidden"
+						class="saveFName" value="${b.saveFileName}"> <input
+						type="hidden" class="name" value="${b.name}"> <input
+						type="hidden" class="log_time" value="${b.log_time}"> <input
+						type="hidden" class="hit" value="${b.hit}">
+				</div>
+			</div>
 
-</c:forEach>
-</ul>
-	<c:set var="startPage" value="${pb.startPage}"/>
- 	<c:set var="endPage" value="${pb.endPage}"/>
- 		<div class="col-md-5">
- 		</div> 
-		  <ul class="pagination">
-		    <li class="page-item">
-		      <a class="page-link" href="" aria-label="Previous">
-		        <span aria-hidden="true">&laquo;</span>
-		      </a>
-		    </li>
-		    <c:forEach begin="${startPage}" end="${endPage}" var="i">  
-			  <li class="page-item"><a class="page-link" href="#">${i}</a></li> 
-			</c:forEach>
-		    <li class="page-item">
-		      <a class="page-link" href="" aria-label="Next">
-		        <span aria-hidden="true">&raquo;</span>
-		      </a>
-		    </li>
-		  </ul>
+		</c:forEach>
+	</ul>
+	<c:set var="startPage" value="${pb.startPage}" />
+	<c:set var="endPage" value="${pb.endPage}" />
+	<div class="col-md-5"></div>
+	<ul class="pagination">
+		<li class="page-item"><a class="page-link" href=""
+			aria-label="Previous"> <span aria-hidden="true">&laquo;</span>
+		</a></li>
+		<c:forEach begin="${startPage}" end="${endPage}" var="i">
+			<li class="page-item"><a class="page-link" href="#">${i}</a></li>
+		</c:forEach>
+		<li class="page-item"><a class="page-link" href=""
+			aria-label="Next"> <span aria-hidden="true">&raquo;</span>
+		</a></li>
+	</ul>
 </div>
 <script>
 
@@ -216,7 +220,7 @@ $(function() {
 			}
 		}else if(selectPage == '»'){
 			if(${pb.endPage} == ${pb.totalPage}){  <%--총페이지와 끝페이지가 다르면 return--%>
-				return;
+				page = ${pb.endPage};
 			}else{
 				page=${pb.endPage}+1;
 			}

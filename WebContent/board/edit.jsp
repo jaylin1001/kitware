@@ -123,7 +123,7 @@ h3{
 	  	 	formData.append("file1", $("input[name=file1]")[0].files[0]);
 			formData.append("editflag","${param.flag}");
 	  	 	$.ajax({
-				  url: '${pageContext.request.contextPath}/boardedit.do',
+				  url: '${pageContext.request.contextPath}/boardedit.do?mode=${param.mode}',
 				  type:'post',
 				  enctype:'multipart/form-data',
 				  processData: false,  <%--파일 업로드시 필요하다.--%>
@@ -137,7 +137,7 @@ h3{
 						  if($('input.flag').val() == "1"){ <%--공지,이미지 게시판에 따라 이동하는 경로 다르게 할것.--%>
 							  location.href = "${pageContext.request.contextPath}/imgboardlist.do";
 						  }else{
-							  location.href = "${pageContext.request.contextPath}/boardlist.do";  
+							  location.href = "${pageContext.request.contextPath}/boardlist.do?mode=${param.mode}";  
 						  }
 					  }else{
 						  alert("수정실패!!");
@@ -158,14 +158,14 @@ h3{
 			$.ajax({
 				url: '${pageContext.request.contextPath}/boardedit.do',
 				type: 'get',
-				data:{"delseq":$('input.seq').val(),"delflag":$('input.flag').val()},
+				data:{"delseq":$('input.seq').val(),"delflag":$('input.flag').val(), "mode":"${param.mode}"},
 				success:function(data){
 					var result = data.trim();
 					  if(result == '1'){
 						  if($('input.flag').val() == "1"){
 							  location.href = "${pageContext.request.contextPath}/imgboardlist.do"; 
 						  }else{
-							  location.href = "${pageContext.request.contextPath}/boardlist.do"; 
+							  location.href = "${pageContext.request.contextPath}/boardlist.do?type=${param.mode}"; 
 						  }
 					  }else{
 						  alert("삭제실패!!");

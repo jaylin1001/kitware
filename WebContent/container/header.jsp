@@ -93,7 +93,7 @@
 				break;
 			case 'board': // 게시판 tab 눌렀을 때 
 
-				location.href="${pageContext.request.contextPath}/boardlist.do";
+				location.href="${pageContext.request.contextPath}/boardlist.do?mode=notice";
 				break;
 			case 'attendance': // 근태 tab 눌렀을 때 
 				location.href="${pageContext.request.contextPath}/attendance/attendance.jsp";
@@ -177,7 +177,11 @@
 		});
 		//게시판 공지사항 눌렀을 때
 		$('.nav>li.noticeBoard').click(function(){
-			location.href="${pageContext.request.contextPath}/boardlist.do";
+			location.href="${pageContext.request.contextPath}/boardlist.do?mode=notice";
+		});
+		//부서게시판 눌렀을때
+		$('.nav>li.deptBoard').click(function(){
+			location.href="${pageContext.request.contextPath}/boardlist.do?mode=dept";
 		});
 		//사진게시판 눌렀을 때
 		$('.nav>li.imageBoard').click(function(){
@@ -348,7 +352,7 @@ div.navbar-header>a.logout {
 						<li class="board"><a href="#">게시판<span class="fa arrow"></span></a>
 							<ul class="nav nav-second-level">
 								<li class="noticeBoard"><a href="#">공지사항</a></li>
-								<li><a href="#">부서공지</a></li>
+								<li class="deptBoard"><a href="#">부서게시판</a></li>
 								<li class="imageBoard"><a href="#">사진게시판</a></li>
 							</ul></li>
 						<li class="modmember"><a href="#5">사원관리<span

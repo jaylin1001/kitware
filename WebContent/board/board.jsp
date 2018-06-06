@@ -5,7 +5,14 @@
 <!DOCTYPE html>
 <div id="div1"></div>
 <div class="container">
-	<%@include file="../board/nboardresult.jsp"%>
+	<c:choose>
+		<c:when test="${type eq 'notice'}">
+			<%@include file="../board/nboardresult.jsp"%>
+		</c:when>
+		<c:when test="${type eq 'dept'}">
+			<%@include file="../board/deptboardresult.jsp"%>
+		</c:when>
+	</c:choose>
 </div>
 <style>
 .pagination a.active {
