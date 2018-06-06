@@ -48,6 +48,43 @@ public class SchCodeDAOOracle implements SchCodeDAO {
 			MyConnection.close(rs, pstmt, con);
 		}
 	}
+	@Override
+	public List<Schedule> selectPersonalToday(String id, String date) throws Exception {
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectPersonalSQL = "select sch_no,emp_num,sch_name,sch_type,to_char(sch_startdate, 'yyyy-mm-dd') sch_startdate,sch_starthour,sch_startmin, \r\n" + 
+				"to_char(sch_enddate, 'yyyy-mm-dd') sch_enddate , sch_endhour , sch_endmin, sch_repeat , sch_repeatcycle , sch_contents, \r\n" + 
+				"sch_code,sch_useyn\r\n" + 
+				"from sch_schedule\r\n" + 
+				"where emp_num = ? \r\n" + 
+				"and sch_useyn = 'N'\r\n" + 
+				"and sch_code=0" +
+				"and SCH_STARTDATE = ? \r\n" + 
+				"and SCH_ENDDATE = ?";
+		List<Schedule> listSchedule = new ArrayList<>();
+		
+		try {
+			con = com.kitware.sql.MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectPersonalSQL);
+			pstmt.setString(1, id);
+			pstmt.setString(2, date);
+			pstmt.setString(3, date);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				Schedule sc = new Schedule(rs.getString("sch_no"),rs.getString("emp_num"),rs.getString("sch_name"),rs.getString("sch_type")
+						,rs.getString("sch_startdate"),rs.getString("sch_starthour"),rs.getString("sch_startmin")
+						,rs.getString("sch_enddate"),rs.getString("sch_endhour"),rs.getString("sch_endmin")
+						,rs.getString("sch_repeat"),rs.getString("sch_repeatcycle"),rs.getString("sch_contents")
+						,rs.getString("sch_code"),rs.getString("sch_useyn"));
+				listSchedule.add(sc);
+			}
+			return listSchedule;
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+	}
 
 	@Override
 	public List<Schedule> selectDepartment(String id) throws Exception {

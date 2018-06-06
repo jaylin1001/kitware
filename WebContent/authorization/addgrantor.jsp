@@ -20,7 +20,7 @@
    <ul>
    <%for(int i=0;i<memberlist.size();i++){ %>
       <li class="dept">
-         <label><%=deptlist.get(i).getDept_name()%><%=memberlist.size() %></label>
+         <label><%=deptlist.get(i).getDept_name()%></label>
          <ul>
          <% for(int j=0;j<memberlist.get(i).size();j++){%>
             <li class="grade"><label><%=gradelist.get(j).getPosition_name()%></label>
@@ -57,7 +57,7 @@
       
       $('#btnChoice').click(function(){
          $('#grantor<%=request.getParameter("id")%>_grade').html($('.easy-tree li.li_selected').closest('ul').siblings('span').find('a').html());
-         window.alert('<%=request.getParameter("id")%>')
+       <%--   window.alert('<%=request.getParameter("id")%>') --%>
          <%-- console.log($('.easy-tree li.li_selected').closest('ul').siblings('span').find('a').html());
          console.log($('.easy-tree li.li_selected').parents('li.grade').html());
          console.log('<%=request.getParameter("id")%>');

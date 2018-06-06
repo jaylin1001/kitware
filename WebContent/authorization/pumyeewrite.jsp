@@ -78,7 +78,7 @@ ${requstScope.loginInfo}
                <td colspan="3"><%=mb.getDeptinfo().getDept_name()%></td>
             </tr>
             <tr>
-				<th>대체근무자</th>
+				<th>참조자</th>
 				<td colspan="5">
 					<div class="replace">
 						<select name="dept" class="dept">

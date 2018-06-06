@@ -12,6 +12,9 @@ import com.kitware.authorization.service.DocSelectService;
 import com.kitware.authorization.vo.DocVO;
 import com.kitware.board.service.BoardService;
 import com.kitware.board.vo.NoticeBoard;
+import com.kitware.guntae.service.GTService;
+import com.kitware.guntae.vo.Gunte;
+import com.kitware.guntae.vo.Yeoncha;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.service.SchCodeService;
 import com.kitware.schedule.vo.Schedule;
@@ -20,6 +23,15 @@ public class MainViewController implements Controller {
 	DocSelectService service;
 	SchCodeService sservice;
 	BoardService bservice;
+	GTService gservice;
+
+	public GTService getGservice() {
+		return gservice;
+	}
+
+	public void setGservice(GTService gservice) {
+		this.gservice = gservice;
+	}
 
 	public DocSelectService getService() {
 		return service;
@@ -45,28 +57,6 @@ public class MainViewController implements Controller {
 		this.sservice = sservice;
 	}
 
-	public MainViewController(SchCodeService sservice) {
-		super();
-		this.sservice = sservice;
-	}
-
-	public MainViewController(BoardService bservice) {
-		super();
-		this.bservice = bservice;
-	}
-
-	public MainViewController(DocSelectService service) {
-		super();
-		this.service = service;
-	}
-
-	public MainViewController(DocSelectService service, BoardService bservice, SchCodeService sservice) {
-		super();
-		this.service = service;
-		this.bservice = bservice;
-		this.sservice = sservice;
-	}
-
 	public MainViewController() {
 		super();
 	}
@@ -75,24 +65,45 @@ public class MainViewController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		HttpSession session = request.getSession();
-		Members loginInfo = (Members)session.getAttribute("loginInfo");	
+		Members loginInfo = (Members) session.getAttribute("loginInfo");
 		String emp_num = loginInfo.getEmp_num();
-		int intPage =1;
-		
+		int intPage = 1;
+
 		try {
 			List<NoticeBoard> board_list = bservice.findAll(intPage);
-			/*List<NoticeBoard> dept_list = bservice.findAll(intPage); 부서 게시판*/
-			List<DocVO> doc_list =  service.selectGJWait(emp_num);
+			List<DocVO> doc_list = service.selectGJWait(emp_num);
 			List<Schedule> listSchedule = sservice.findSchPersonal(emp_num);
-			//근태 값 들어가야함 
+			List<List<String>> yeonchagiganlist = gservice.giganselectAll(emp_num, "2018");
+			Yeoncha yeonchalist = gservice.selectAll(emp_num, "2018");
+			List<Gunte> gslist = gservice.gselectAll(emp_num);
+			
+			//chart value select
+			int list1 = service.findIng(emp_num).size();
+			int list2 = service.selectOK(emp_num).size();
+			int list3 = service.selectCancle(emp_num).size();
+			int list4 = service.selectZero(emp_num).size();
+			
+			System.out.println("list1"+list1);
+			System.out.println("list2"+list2);
+			System.out.println("list3"+list3);
+			System.out.println("list4"+list4);
+			
 			request.setAttribute("board_list", board_list);
 			request.setAttribute("doc_list", doc_list);
 			request.setAttribute("schedule", listSchedule);
+			request.setAttribute("Yeoncha_gigan", yeonchagiganlist);
+			request.setAttribute("Yeoncha", yeonchalist);
+			request.setAttribute("Gunte", gslist);
 			
+			request.setAttribute("chartlist1", list1);
+			request.setAttribute("chartlist2", list2);
+			request.setAttribute("chartlist3", list3);
+			request.setAttribute("chartlist4", list4);
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		String forwardURL = "/home/home.jsp";
 		return forwardURL;
 	}

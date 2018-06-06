@@ -1,6 +1,7 @@
 package com.kitware.authorization.dao;
 
-import java.sql.Connection;
+import java.sql.Connection
+;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -14,6 +15,7 @@ import com.kitware.authorization.vo.DocVO;
 import com.kitware.member.vo.DeptInfo;
 import com.kitware.member.vo.GradeInfo;
 import com.kitware.member.vo.Members;
+import com.kitware.sql.MyConnection;
 
 public class DocDAOOracle implements DocDAO {
 
@@ -356,6 +358,42 @@ public class DocDAOOracle implements DocDAO {
 		return doclist2;
 
 	}
+	@Override
+	public List<DocVO> selectZero(String emp_num) throws Exception {
+		// 내가 올린 기안 취소
+		Connection con = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		
+		String selectSQL = "select rownum r, d.start_date, dk.doc_name, d.doc_title, d.doc_num, d.doc_state, d.doc_kind"
+				+" from document d, doc_kind dk" + " where d.doc_kind = dk.doc_kind" + " and d.doc_state = 0"
+				+" and d.emp_num = ? order by d.doc_num desc";
+		List<DocVO> doclist2 = new ArrayList<>(); // 사이즈 변경 가능하며 null허용하는 arraylist
+		DocVO docvo2 = null; // doc 데이터 담음
+		DocKindVO dock2 = new DocKindVO();// dockind 데이터 담음
+		try {
+			con = MyConnection.getConnection();
+			pstmt = con.prepareStatement(selectSQL);
+			pstmt.setString(1, emp_num);
+			rs = pstmt.executeQuery();
+			while (rs.next()) {
+				docvo2 = new DocVO();
+				docvo2.setStart_date(rs.getString("start_date"));
+				docvo2.setDoc_title(rs.getString("doc_title"));
+				docvo2.setDoc_num(rs.getString("doc_num"));
+				docvo2.setDoc_state(rs.getString("doc_state"));
+				docvo2.setDoc_kind(rs.getInt("doc_kind"));
+				dock2 = new DocKindVO(docvo2.getDoc_kind(), rs.getString("doc_name"));
+				docvo2.setDoc_kindvo(dock2);
+				doclist2.add(docvo2);
+			}
+			
+		} finally {
+			MyConnection.close(rs, pstmt, con);
+		}
+		return doclist2;
+		
+	}
 
 	@Override
 	public List<DocVO> selectExpected(String conf_num) throws Exception {
@@ -612,7 +650,7 @@ public class DocDAOOracle implements DocDAO {
 	 */
 
 	@Override
-	public String getMaxDocNum() {
+	public String getMaxDocNum() throws Exception{
 		Connection con = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

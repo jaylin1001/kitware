@@ -17,6 +17,7 @@ public interface DocDAO {
 	public List<DocVO> selectIng(String emp_num) throws Exception; //진행문서 select (내가 올린거)
 	public List<DocVO> selectmyAll(String emp_num) throws Exception; //내가 올린 기안 다 보기(page 매개변수 추가)
 	public List<DocVO> selectOk(String emp_num) throws Exception; //내가 올린 기안 완료   
+	public List<DocVO> selectZero(String emp_num) throws Exception;//내가 올린 기안 취소
 	public List<DocVO> selectCancle(String emp_num) throws Exception;//내가 올린 기안 취소
 	public List<DocVO> selectExpected(String conf_num) throws Exception; //언젠가 결재예정 select 
 	public List<DocVO> selectGJOk(String conf_num, String state) throws Exception; //내가 결재완료한거(결재완료 사이드메뉴 해당)

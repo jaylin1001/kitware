@@ -30,6 +30,9 @@ public class DocSelectService {
 	public List<DocVO> selectCancle(String emp_num) throws Exception{
 		return dao.selectCancle(emp_num);
 	}
+	public List<DocVO> selectZero(String emp_num) throws Exception{
+		return dao.selectZero(emp_num);
+	}
 	
 	public List<DocVO> selectExpected(String conf_num) throws Exception{
 		return dao.selectExpected(conf_num);

@@ -2,15 +2,14 @@
 	pageEncoding="UTF-8"%>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %> 
-
+<%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:set var="doclist" value="${sessionScope.doc_list}"></c:set>
 <c:set var="schelist" value="${sessionScope.schedule}"></c:set>
 <c:set var="maillist" value="${sessionScope.mail_list}"></c:set>
 <c:set var="loginInfo" value="${sessionScope.loginInfo}"></c:set>
+<c:set var="now" value="<%=new java.util.Date()%>" />
+<c:set var="sysYear"><fmt:formatDate value="${now}" pattern="yyyy-MM-dd" /></c:set>
 
-<%
-	String root = "/kitware_50101526/WebContent/";
-%>
 <!-- jQuery CDN-->
 <!DOCTYPE html>
 <html>
@@ -252,7 +251,7 @@ div.navbar-header>a.logout {
 		<nav class="navbar navbar-default navbar-static-top">
 			<div class="navbar-header">
 				<a class="navbar-brand"
-					href="${pageContext.request.contextPath}/home/home.jsp">KIT
+					href="${pageContext.request.contextPath}/mainview.do">KIT
 					Ware</a> <a class="navbar-brand logout" href="#">Logout</a>
 				<div class="logininfo">${sessionScope.loginInfo.name}
 					${sessionScope.loginInfo.gradeinfo.position_name} 님 로그인 되었습니다.</div>
@@ -287,7 +286,18 @@ div.navbar-header>a.logout {
 			<div class="sidebar">
 			<div>
 					<div style ="padding-left:15px; width: 50%; float:left">
-					<img src="${pageContext.request.contextPath}/img/lee.jpg" width="100" height="100"></div>
+					<c:choose>
+					<c:when test="${sessionScope.loginInfo.name eq '관리자'}">
+					<img src="${pageContext.request.contextPath}/img/teemo2.gif" width="100" height="100">
+					</c:when>
+					<c:when test="${sessionScope.loginInfo.name eq '이혜련'}">
+					<img src="${pageContext.request.contextPath}/img/lee.jpg" width="100" height="100">
+					</c:when>
+					<c:otherwise>
+					<img src="${pageContext.request.contextPath}/img/teemo.gif" width="100" height="100">	
+					</c:otherwise>
+					</c:choose>				
+					</div>
 					<div style = "padding-left:15px; width: 50%; float:left;">
 					<h3>${sessionScope.loginInfo.name}</h3><h5>${sessionScope.loginInfo.gradeinfo.position_name}
 					<br>${sessionScope.loginInfo.deptinfo.dept_name}
@@ -297,10 +307,19 @@ div.navbar-header>a.logout {
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/gjmywaitlist.do">&nbsp;결재할 문서:&nbsp; &nbsp; &nbsp;${doclist}</a>
 					<div>&nbsp;</div>
 					&nbsp; &nbsp;<a href="${pageContext.request.contextPath}/schedule/schedulecalendar.jsp?list=개인일정">
-					내 일정:&nbsp; &nbsp; &nbsp;${schelist}</a>
+					내 일정:&nbsp; &nbsp; &nbsp;
+					<%-- <c:forEach items="${schelist}" var="item" varStatus="status">
+					<c:if test="${item.sch_startdate eq 'sysYear'}"> --%>
+					<%-- ${fn:length(item.sch_startdate)} --%>
+					${fn:length(schelist)}
+					<%--  </c:if>
+					</c:forEach> --%>
+					</a>
 					<div>&nbsp;</div>
 					&nbsp;&nbsp;&nbsp;<a href="${pageContext.request.contextPath}/maillist.do">
-					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a>
+					안읽은 쪽지:&nbsp; &nbsp; &nbsp;${maillist.count}</a><c:if test="${maillist.count ne '0'}">
+					<img src="${pageContext.request.contextPath}/img/mailinfo.gif" width="40" height="40">	
+					</c:if>
 					<hr>
 				<div class="sidebar-nav navbar-collapse">
 					<ul class="nav" id="side-menu">
@@ -338,6 +357,7 @@ div.navbar-header>a.logout {
 								<li class="pumyee"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=pumyee&doc_kind=20">품의서</a></li>
 								<li class="balju"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=balju&doc_kind=30">발주서</a></li>
 								<li class="chuljang"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=chuljang&doc_kind=40">출장신청</a></li>
+								<li class="yeoncha"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=yeoncha&doc_kind=50">휴가신청</a></li>
 								<li class="byungga"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=byungga&doc_kind=60">병가신청</a></li>
 								<li class="jotae"><a href="${pageContext.request.contextPath}/docgianinfo.do?kind=jotae&doc_kind=80">조퇴신청</a></li>
 							</ul></li>

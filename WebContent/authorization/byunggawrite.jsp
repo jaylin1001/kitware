@@ -14,7 +14,10 @@
           <c:when test="${param.doc_kind eq '60'}">
           <h2>병가작성</h2>
           </c:when>
-          <c:otherwise>
+		  <c:when test="${param.doc_kind eq '50'}">
+			<h2>휴가작성</h2> 
+ 		  </c:when>
+           <c:otherwise>
           <h2>결근작성</h2>
           </c:otherwise>
           </c:choose>
@@ -53,6 +56,9 @@
 				 <c:choose>
                <c:when test="${param.doc_kind eq '60'}">
                <td>병가</td>
+               </c:when>
+               <c:when test="${param.doc_kind eq '50'}">
+               <td>휴가</td>
                </c:when>
                <c:otherwise>
                <td>결근</td>
@@ -145,25 +151,24 @@
 			</tr>
 
 			<tr>
-				<th>사유</th>
-				<td colspan="5"><textarea rows="4" cols="100">
-				</textarea></td>
-			</tr>
-			<tr>
+					<th>사유</th>
+					<td colspan="5"><textarea rows="20" cols="100" id="chuljang_textarea"></textarea></td>
+				</tr>
+			<!-- <tr>
 				<th>첨부파일</th>
 				<td colspan="5"><input type="text">
 
 					<button>첨부파일</button></td>
-			</tr>
+			</tr> -->
 
 
 			<tr>
-				<td colspan="6" align="center">상기와 같은 사유로 인하여 결근(병가)계를 제출하오니
+				<td colspan="6" align="center">상기와 같은 사유로 인하여 제출하오니
 					재가바랍니다.</td>
 			</tr>
 			<tr>
 				<td colspan="6" align="center"><input type="button" value="제출" id="go">
-					<input type="button" value="취소"></td>
+				<input type="button" value="취소" onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
 			</tr>
 		</table>
 	</div>
@@ -240,7 +245,7 @@
 	            },
 	            success : function(data) {
 	               if(data==1){
-	                  alert("결근(병가)계 제출 성공");
+	                  alert("제출 성공");
 	                  location.href="/kitware_v1/doclist.do";
 	               }else if(data==-1){
 	                  alert("실-패");

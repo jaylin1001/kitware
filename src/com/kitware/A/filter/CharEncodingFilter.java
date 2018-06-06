@@ -1,6 +1,7 @@
 package com.kitware.A.filter;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,10 +20,16 @@ import com.kitware.member.service.MemberService;
 import com.kitware.member.vo.Mail;
 import com.kitware.member.vo.Members;
 import com.kitware.schedule.service.SchCodeService;
+import com.kitware.schedule.vo.Schedule;
+
+import java.util.Calendar;
+import java.text.SimpleDateFormat;
 
 public class CharEncodingFilter implements Filter {
 	String encoding;
 	private List<String> permitList;
+	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+    Calendar c1 = Calendar.getInstance();
 
 	public CharEncodingFilter() {
 		// 로그인 유무를 묻지 않는 페이지들 guest 상태를 허용한다.
@@ -55,8 +62,10 @@ public class CharEncodingFilter implements Filter {
 				return;
 			}else {
 				try {
+					String date = sdf.format(c1.getTime());
+					System.out.println(date);
 					int doc_list = service.selectGJWait(mb.getEmp_num()).size();
-					int listSchedule = sservice.findSchPersonal(mb.getEmp_num()).size();
+					List<Schedule> listSchedule = sservice.findSchPersonalToday(mb.getEmp_num(), date);
 					Mail mail_list = mservice.selectMailList3(mb.getEmp_num());
 					session.setAttribute("mail_list", mail_list);
 					session.setAttribute("doc_list", doc_list);

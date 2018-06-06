@@ -1,22 +1,28 @@
-<%@page import="com.kitware.member.vo.GradeInfo"%>
-<%@page import="com.kitware.member.vo.DeptInfo"%>
-<%@page import="java.util.List"%>
 <%@page import="java.util.Date"%>
 <%@page import="java.text.SimpleDateFormat"%>
-<%@page import="com.kitware.member.vo.Members"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+    pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@include file="../container/header.jsp"%>
 <%
 	SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
 %>
-<c:set var="session" value="${sessionScope.loginInfo}"/>
+<c:set var="session" value="${sessionScope.loginInfo}"/><form>
 <div>
-	<div class="title" align="center">
-		<h2>조퇴계 작성</h2>
+   <div class="title" align="center">
+   		 <c:choose>
+          <c:when test="${param.doc_kind eq '60'}">
+          <h2>병가작성</h2>
+          </c:when>
+		  <c:when test="${param.doc_kind eq '50'}">
+			<h2>휴가작성</h2> 
+ 		  </c:when>
+           <c:otherwise>
+          <h2>결근작성</h2>
+          </c:otherwise>
+          </c:choose>
 	</div>
-	<div class="table">
+   <div class="table">
 		<table class="table table-bordered">
 			<tr>
 				<th>문서번호</th>
@@ -47,7 +53,17 @@
 			</tr>
 			<tr>
 				<th>문서종류</th>
-				<td>조퇴서</td>
+				 <c:choose>
+               <c:when test="${param.doc_kind eq '60'}">
+               <td>병가</td>
+               </c:when>
+               <c:when test="${param.doc_kind eq '50'}">
+               <td>휴가</td>
+               </c:when>
+               <c:otherwise>
+               <td>결근</td>
+               </c:otherwise>
+               </c:choose>
 			</tr>
 			<tr>
 				<th>기안일</th>
@@ -138,18 +154,21 @@
 					<th>사유</th>
 					<td colspan="5"><textarea rows="20" cols="100" id="chuljang_textarea"></textarea></td>
 				</tr>
-			<tr>
+			<!-- <tr>
 				<th>첨부파일</th>
 				<td colspan="5"><input type="text">
+
 					<button>첨부파일</button></td>
-			</tr>
+			</tr> -->
+
+
 			<tr>
-				<td colspan="6" align="center">상기와 같은 사유로 인하여 조퇴계를 제출하오니
+				<td colspan="6" align="center">상기와 같은 사유로 인하여 제출하오니
 					재가바랍니다.</td>
 			</tr>
 			<tr>
 				<td colspan="6" align="center"><input type="button" value="제출" id="go">
-					<input type="button" value="취소"></td>
+				<input type="button" value="취소" onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
 			</tr>
 		</table>
 	</div>
@@ -205,7 +224,7 @@
 		
 		$('#go').click(function() {
 			$.ajax({
-	            url :'docwritegian.do?kind=80',
+	            url :'docwritegian.do?kind=50',
 	            method:'POST',
 	            data : {
 	               doc_num:$('input[name=doc_num]').val(),
@@ -226,7 +245,7 @@
 	            },
 	            success : function(data) {
 	               if(data==1){
-	                  alert("조퇴서 제출 성공");
+	                  alert("제출 성공");
 	                  location.href="/kitware_v1/doclist.do";
 	               }else if(data==-1){
 	                  alert("실-패");
