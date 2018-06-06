@@ -42,7 +42,7 @@ public class BoardWriteController implements Controller {
 		System.out.println("mode!!!!!!!!!!!!!"+mode);
 		// 현재 컨텍스트의 톰캣 절대경로를 반환한다.
 		String contextPath = request.getSession().getServletContext().getRealPath("/");
-		String saveDirectory = "E:\\apache-tomcat-8.5.30-windows-x64\\apache-tomcat-8.5.30\\webapps\\upload";
+		String saveDirectory = "D:\\apache-tomcat-8.5.30\\webapps\\upload";
 
 		request.setCharacterEncoding("UTF-8");
 		// 로그인 세션값 가져오기.

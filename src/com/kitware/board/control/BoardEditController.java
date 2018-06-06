@@ -43,7 +43,7 @@ public class BoardEditController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		request.setCharacterEncoding("UTF-8");
-		String saveDirectory = "E:\\apache-tomcat-8.5.30-windows-x64\\apache-tomcat-8.5.30\\webapps\\upload";
+		String saveDirectory = "D:\\apache-tomcat-8.5.30\\webapps\\upload";
 		String delseq = request.getParameter("delseq");
 		String delflag = request.getParameter("delflag");
 		String mode = request.getParameter("mode");

@@ -34,7 +34,7 @@ public class WriteRepController implements Controller {
 	public String execute(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String contextPath = request.getSession().getServletContext().getRealPath("/");
-		String saveDirectory = "E:\\apache-tomcat-8.5.30-windows-x64\\apache-tomcat-8.5.30\\webapps\\upload";
+		String saveDirectory = "D:\\apache-tomcat-8.5.30\\webapps\\upload";
 
 		// 로그인 세션값 가져오기.
 		HttpSession session = request.getSession();
