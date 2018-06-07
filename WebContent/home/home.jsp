@@ -101,9 +101,9 @@
 		</tr>
 		</thead>
 		<tr>
-			<td>${yc.all_yeoncha}</td>
-			<td>${yc.use_yeoncha}</td>
-			<td>${yc.all_yeoncha-yc.use_yeoncha}</td>
+			<td>15</td>
+			<td>${use }</td>
+			<td>${15-use }</td>
 		</tr>
 		<thead id="board">
 		<tr>

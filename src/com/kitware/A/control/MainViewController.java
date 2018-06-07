@@ -74,8 +74,14 @@ public class MainViewController implements Controller {
 			List<DocVO> doc_list = service.selectGJWait(emp_num);
 			List<Schedule> listSchedule = sservice.findSchPersonal(emp_num);
 			List<List<String>> yeonchagiganlist = gservice.giganselectAll(emp_num, "2018");
-			Yeoncha yeonchalist = gservice.selectAll(emp_num, "2018");
 			List<Gunte> gslist = gservice.gselectAll(emp_num);
+			List<Yeoncha> yeonchalist = gservice.selectAll(emp_num, "2018");
+			request.setAttribute("yclist", yeonchalist);
+			int useyc = 0;
+			for (Yeoncha yc : yeonchalist) {
+				useyc+=yc.getUse_yeoncha();
+			}
+			request.setAttribute("use", Integer.toString(useyc));
 			
 			//chart value select
 			int list1 = service.findIng(emp_num).size();

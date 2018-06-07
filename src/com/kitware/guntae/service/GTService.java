@@ -42,7 +42,7 @@ public class GTService {
 		return dao.dockindselectAll(emp_num, doc_kind);
 	}
 
-	public Yeoncha selectAll(String emp_num, String years) throws Exception {
+	public List<Yeoncha> selectAll(String emp_num, String years) throws Exception {
 		return dao.selectAll(emp_num, years);
 	}
 

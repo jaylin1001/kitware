@@ -18,11 +18,14 @@ import com.kitware.member.vo.Members;
 public class YCDistController implements Controller {
 	private GTService service;
 	SimpleDateFormat format = new SimpleDateFormat("yyyy");
+
 	public YCDistController() {
 	}
+
 	public GTService getService() {
 		return service;
 	}
+
 	public void setService(GTService service) {
 		this.service = service;
 	}
@@ -35,28 +38,26 @@ public class YCDistController implements Controller {
 		Members loginInfo = (Members) session.getAttribute("loginInfo");
 		String emp_num = loginInfo.getEmp_num();
 		String years = request.getParameter("years");
-		
-		if(years==null) {
+
+		if (years == null) {
 			years = format.format(new Date());
 		}
 		try {
-			
-			// 연차기간 모든것 셀렉트
-			List<List<String>> yeonchagiganlist = service.giganselectAll(emp_num, years);
-			request.setAttribute("Yeoncha_gigan", yeonchagiganlist);
-			
-			// 총 사용연차 업데이트
-			service.useupdate(emp_num, years);
-			
 			// 연차 모두 셀렉트
-			Yeoncha yeonchalist = service.selectAll(emp_num, years);
-			request.setAttribute("Yeoncha", yeonchalist);
+			List<Yeoncha> yeonchalist = service.selectAll(emp_num, years);
+			request.setAttribute("yclist", yeonchalist);
+			int useyc = 0;
+			for (Yeoncha yc : yeonchalist) {
+				useyc+=yc.getUse_yeoncha();
+			}
+			request.setAttribute("use", Integer.toString(useyc));
+			System.out.println("사용연차아아!!!!!!!!!"+Integer.toString(useyc));
 
 			// System.out.println(yeonchalist.size());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		String forwardURL = "attendance/myyeoncha.jsp?years="+years;
+		String forwardURL = "attendance/myyeoncha.jsp?years=" + years;
 		return forwardURL;
 	}
 

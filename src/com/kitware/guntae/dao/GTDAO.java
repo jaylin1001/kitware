@@ -19,7 +19,7 @@ public interface GTDAO {
 	//void dockindcountselect(String emp_num, String doc_kind) throws Exception;
 	
 	//연차 모든것 셀렉트
-	Yeoncha selectAll(String emp_num, String years) throws Exception;
+	List<Yeoncha> selectAll(String emp_num, String years) throws Exception;
 	//연차 총 사용기간 업데이트
 	void useupdate(String emp_num, String years) throws Exception;
 	//연차기간 모든것 셀렉트
