@@ -29,7 +29,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 		List<DeptInfo> deptList = new ArrayList<>();
 		String selectMemberInfoSQL = "select m.* , g.position_name , d.dept_name\r\n"
 				+ "from members m join grade_info g\r\n" + "on m.position_num = g.position_num\r\n"
-				+ "join dept_info d\r\n" + "on m.dept_num = d.dept_num\r\n" + "where m.id = ?";
+				+ "join dept_info d\r\n" + "on m.dept_num = d.dept_num\r\n" + "where m.id = ? and memberyn = 'Y'";
 
 		try {
 			con = com.kitware.sql.MyConnection.getConnection();
