@@ -14,6 +14,11 @@
 	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script>
 	$(function() {
+		var deptnum = ${rs.dept_num};
+		var positionnum = ${rs.position_num};
+		$('#dept_num option[value='+ deptnum+']').attr('selected', 'selected');	
+		$('#position_num option[value='+ positionnum +']').attr('selected', 'selected');
+		
 		$('form#modmember').submit(function() {
 			$.ajax({
 				url : '${pageContext.request.contextPath}/correctmember.do',
@@ -80,16 +85,26 @@
 									id="emp_num">
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>부서번호</label> <input type="text" required="required"
-									class="form-control" name="dept_num" value="${rs.dept_num}"
-									placeholder="100:개발부/200:기획부/300:인사부/400:영업부/500:사업부">
+							<label>부서번호</label><select required="required" id="dept_num"
+									class="form-control" name="dept_num" style="display: inline;">
+							<option value="100">개발부</option>
+							<option value="200">기획부</option>
+							<option value="300">인사부</option>
+							<option value="400">영업부</option>
+							<option value="500">사업부</option>							
+							</select>
 							</div>
 							<div class="col-sm-6 form-group">
-								<label>직급번호</label> <input type="text" required="required"
-									class="form-control" name="position_num"
-									value="${rs.position_num}"
-									placeholder="10:사장 / 20:이사 / 30:부장 / 40:과장 / 50:대리 / 60:사원">
-							</div>
+							<label>직급번호</label><select required="required" id="position_num"
+									class="form-control" name="position_num">
+							<option value="60">사원</option>	
+							<option value="50">대리</option>	
+							<option value="40">과장</option>
+							<option value="30">부장</option>
+							<option value="20">이사</option>
+							<option value="10">사장</option>												
+							</select>
+							</div>							
 							<div class="col-sm-6 form-group">
 								<label>ID</label> <input type="text" required="required"
 									class="form-control" name="id" value="${rs.id}">
