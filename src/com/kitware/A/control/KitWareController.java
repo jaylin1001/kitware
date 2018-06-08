@@ -60,7 +60,7 @@ public class KitWareController extends HttpServlet {
 			throws ServletException, IOException {
 		String path = request.getServletPath();
 		String forwardURL = "";
-		// my.properties 파일을 ㅇㄺ어서 Properties 객체화
+		// my.properties 파일을 읽어서 Properties 객체화
 
 		String key = path;
 		String className = env.getProperty(key);
@@ -111,8 +111,6 @@ public class KitWareController extends HttpServlet {
 			e.printStackTrace();
 		}
 		// forwardURL = c.execute(request, response);
-		System.out.println("fw!!!!!!!!!!!!!"+forwardURL);
-			
 		if (forwardURL.contains("redirect:")) {
 			String redirectURL = forwardURL.substring(forwardURL.indexOf(":") + 1);
 			if (redirectURL.equals("")) {
