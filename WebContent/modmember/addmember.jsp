@@ -82,7 +82,7 @@
 							<option value="200">기획부</option>
 							<option value="300">인사부</option>
 							<option value="400">영업부</option>
-							<option value="100">사업부</option>							
+							<option value="500">사업부</option>							
 							</select>
 							</div>
 							<div class="col-sm-6 form-group">
