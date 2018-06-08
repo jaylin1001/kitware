@@ -248,7 +248,7 @@ div.navbar-header>a.logout {
 <body>
 	<div id="wrapper">
 		<!-- Navigation -->
-		<nav class="navbar navbar-default navbar-static-top">
+		<nav class="navbar navbar-default navbar-static-top" style="margin-bottom: 0px !important;">
 			<div class="navbar-header">
 				<a class="navbar-brand"
 					href="${pageContext.request.contextPath}/mainview.do">KIT

@@ -2,10 +2,9 @@
 	pageEncoding="UTF-8"%>
 <%@include file="../container/header.jsp"%>
 <%-- <c:set var="gt" value="${requestScope.Gunte}"/> --%>
-
+<h2 style="margin-top: 0px !important; padding-top: 15px;"><i class="fa fa-clock-o"></i>근태현황</h2>
 <div id="gt1">
 	<div class="title" align="left">
-		<span><i class="fa fa-clock-o"></i></span> <label>근태현황</label>
 	</div>
 	<!-- <div align="right">
 		<a href='basicsetting.jsp' class="btn btn-default">★</a>

@@ -10,6 +10,8 @@
 <c:set var="cntPerPage" value="${pb.cntPerPage}"/>
 <c:set var="firstPN" value="${totalCount - (cntPerPage * (currentPage-1))}"/>
 <c:set var="list" value="${pb.list}"></c:set>
+<h2 style="margin-top: 0px !important; padding-bottom:10px;">공지게시판</h2>
+
 <div class="panel panel-primary">
   	<div class="panel-heading">공지사항</div>
  	 <table class="table table-hover">

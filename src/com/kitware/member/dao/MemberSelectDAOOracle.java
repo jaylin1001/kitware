@@ -192,7 +192,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 
 		String selectMailListSQL = "select rownum, m.mail_num, mb.name, mb2.name name2, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
 				+ " from mail m, members mb, members mb2" + " where m.rcv_num = mb2.emp_num"
-				+ " and m.emp_num = mb.emp_num" + " and m.rcv_num = ? order by m.mail_num desc";
+				+ " and m.emp_num = mb.emp_num" + " and m.rcv_num = ? order by rownum desc";
 		List<Mail> maillist = new ArrayList<>();
 		Mail mail = null;
 		Members mem = new Members();
@@ -229,7 +229,7 @@ public class MemberSelectDAOOracle implements MemberSelectDAO {
 
 		String selectMailListSQL = "select rownum, m.mail_num, mb.name, mb2.name name2, m.mail_title, m.mail_content, m.send_date, m.watch_yn"
 				+ " from mail m, members mb, members mb2" + " where m.rcv_num = mb2.emp_num"
-				+ " and m.emp_num = mb.emp_num" + " and m.emp_num = ? order by m.mail_num desc";
+				+ " and m.emp_num = mb.emp_num" + " and m.emp_num = ? order by rownum desc";
 		List<Mail> maillist = new ArrayList<>();
 		Mail mail = null;
 		Members mem = new Members();

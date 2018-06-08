@@ -13,7 +13,7 @@
 <c:set var="listGunte" value="${requestScope.Gunte}"/>
 <link rel="stylesheet" href="${pageContext.request.contextPath}/css/Nwagon.css" type="text/css">
 <script src="${pageContext.request.contextPath}/js/Nwagon.js"></script>
-<h1>Hello KITWARE!</h1>
+<h1 style="margin-top: 0px !important; padding-top: 15px;">Hello KITWARE!</h1>
 <div style="width:40%; height:300px; float:left; padding-right:10px;">
 <h3>공지입니다</h3>
 <table class="table table-hover table-bordered">

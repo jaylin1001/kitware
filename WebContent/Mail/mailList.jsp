@@ -14,9 +14,9 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>받은 쪽지함</title>
-<h1>받은 쪽지함</h1>
 </head>
 <body>
+<h2 style="margin-top: 0px !important; padding-top: 20px; padding-bottom:10px">받은 쪽지함</h2>
 <table class="table table-border table-hover">
 <thead>
 	<tr>
@@ -47,7 +47,7 @@
 </tbody>
 </table>
 
-<h1>보낸 쪽지함</h1>
+<h2>보낸 쪽지함</h2>
 <table class="table table-border table-hover">
 <thead>
 	<tr>
