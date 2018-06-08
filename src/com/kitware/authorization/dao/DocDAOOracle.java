@@ -293,7 +293,7 @@ public class DocDAOOracle implements DocDAO {
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
-		String selectOkSQL = "select d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
+		String selectOkSQL = "select distinct d.doc_num, d.doc_title, d.doc_state, d.start_date, dk.doc_name, d.doc_kind"
 				+" from document d, doc_detail dd, doc_kind dk where d.doc_num = dd.doc_num"
 				+" and d.doc_kind = dk.doc_kind and d.emp_num =?"
 				+" and d.doc_state = 2 order by d.doc_num desc";

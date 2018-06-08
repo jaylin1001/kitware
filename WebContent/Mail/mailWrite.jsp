@@ -43,7 +43,7 @@
 				</td>
 			</tr>
 		</table>
-		<br> <label>제목 : </label> <input type="text" name="mail_title"
+		<br> <label>제목 : </label> <input type="text" name="mail_title" id="mail_title"
 			size="35" required="required">
 		<hr>
 		<div style="width: 400px">
@@ -140,8 +140,8 @@ thead {
 				});
 
 		$('#go').click(function() {
-			if ($('select').val() == "0") {
-				alert("수신인을 지정해 주세요");
+			if ($('select.name').val() == 0||$('input[name=mail_title]').val() == "") {
+				alert("수신인 및 제목을 지정해 주세요");
 				return false;
 			} else {
 				$.ajax({
