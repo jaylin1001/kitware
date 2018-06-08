@@ -11,7 +11,7 @@
 <%
 	SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd");
 %>
-<c:set var="session" value="${sessionScope.loginInfo}"/>
+<c:set var="session" value="${sessionScope.loginInfo}" />
 <div>
 	<div class="title" align="center">
 		<h2>조퇴계 작성</h2>
@@ -101,13 +101,13 @@
 			<tr>
 				<th>제목</th>
 				<td colspan="5"><input type="text" name="title"
-					style="width: 700px"></td>
+					style="width: 700px" required></td>
 			</tr>
 			<tr>
 				<th>기간</th>
-				<td><input type="text" id="datepicker" value="시작일" class="start_date">
-					&nbsp;~&nbsp; <input type="text" id="datepicker2" value="종료일" class="end_date">
-				</td>
+				<td><input type="text" id="datepicker" value="시작일"
+					class="start_date"> &nbsp;~&nbsp; <input type="text"
+					id="datepicker2" value="종료일" class="end_date"></td>
 			</tr>
 
 			<tr>
@@ -125,9 +125,10 @@
 								<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
 							</c:forEach>
 						</select> <select name="name" class="name">
-							<option id="init">사원 선택</option>
+							<option id="init" value="0" selected="selected">사원 선택</option>
 							<c:forEach var="emp" items="${requestScope.memberlist }">
-								<option id="${emp.dept_num }${emp.position_num}" style="display: none" value="${emp.emp_num }">${emp.name }</option>
+								<option id="${emp.dept_num }${emp.position_num}"
+									style="display: none" value="${emp.emp_num }">${emp.name }</option>
 							</c:forEach>
 						</select>
 					</div>
@@ -135,9 +136,10 @@
 			</tr>
 
 			<tr>
-					<th>사유</th>
-					<td colspan="5"><textarea rows="20" cols="100" id="chuljang_textarea"></textarea></td>
-				</tr>
+				<th>사유</th>
+				<td colspan="5"><textarea rows="20" cols="100"
+						id="chuljang_textarea"></textarea></td>
+			</tr>
 			<tr>
 				<th>첨부파일</th>
 				<td colspan="5"><input type="text">
@@ -148,16 +150,16 @@
 					재가바랍니다.</td>
 			</tr>
 			<tr>
-				<td colspan="6" align="center"><input type="button" value="제출" id="go">
-					<input type="button" value="취소"></td>
+				<td colspan="6" align="center"><input type="button" value="제출"
+					id="go"> <input type="button" value="취소"></td>
 			</tr>
 		</table>
 	</div>
 </div>
 <div id="myModal" class="modal fade">
-   <div class="modal-dialog">
-      <div class="modal-content"></div>
-   </div>
+	<div class="modal-dialog">
+		<div class="modal-content"></div>
+	</div>
 </div>
 <script>
 	$(function() {
@@ -166,34 +168,42 @@
 		console.log($('div#menutab li.' + className));
 		$('ul#side-menu').find('li.' + className).show();
 
-		$('.dept').change(function() {
-			if ($(this).val() == '부서 선택') {
-				$(this).siblings('.grade').children('option#init').show();
-				$(this).siblings('.grade').children('option').hide();
-			} else {
-				$(this).siblings('.grade').children('option').show();
-			}
-			$(this).siblings('.grade').children('option#init').prop('selected', true);
-		});
-
-		$('.grade').change(function() {
-			
-			if ($(this).val() == '직급 선택') {
-				$(this).siblings('.name').children('option').hide();
-				$(this).siblings('.name').children('option#init').show();
-			} else {
-				$(this).siblings('.name').children('option').hide();
-				var dept = $(this).siblings('.dept').val();
-				var grade = $(this).val();
-				$(this).siblings('.name').children('option').each(function() {
-					if($(this).prop('id').trim()==dept+grade){
-						$(this).show();
+		$('.dept').change(
+				function() {
+					if ($(this).val() == '부서 선택') {
+						$(this).siblings('.grade').children('option#init')
+								.show();
+						$(this).siblings('.grade').children('option').hide();
+					} else {
+						$(this).siblings('.grade').children('option').show();
 					}
+					$(this).siblings('.grade').children('option#init').prop(
+							'selected', true);
 				});
-			}
-			$(this).siblings('.name').children('option#init').prop('selected',true);
-		});
-		
+
+		$('.grade').change(
+				function() {
+
+					if ($(this).val() == '직급 선택') {
+						$(this).siblings('.name').children('option').hide();
+						$(this).siblings('.name').children('option#init')
+								.show();
+					} else {
+						$(this).siblings('.name').children('option').hide();
+						var dept = $(this).siblings('.dept').val();
+						var grade = $(this).val();
+						$(this).siblings('.name').children('option').each(
+								function() {
+									if ($(this).prop('id').trim() == dept
+											+ grade) {
+										$(this).show();
+									}
+								});
+					}
+					$(this).siblings('.name').children('option#init').prop(
+							'selected', true);
+				});
+
 		$('#datepicker').datepicker({
 			showOn : 'both',
 			dateFormat : 'yy-mm-dd'
@@ -202,38 +212,46 @@
 			showOn : 'both',
 			dateFormat : 'yy-mm-dd'
 		});
-		
-		$('#go').click(function() {
-			$.ajax({
-	            url :'docwritegian.do?kind=80',
-	            method:'POST',
-	            data : {
-	               doc_num:$('input[name=doc_num]').val(),
-	               date:$('div#date').html(),
-	               dept:$('select[name=dept]').val(),
-	               title:$('input[name=title]').val(),
-	               content:$('textarea').val(),
-	               g1_grade:$('#grantor1_grade').html().trim(),
-	               g1:$('#grantor1').html().trim(),
-	               g2_grade:$('#grantor2_grade').html().trim(),
-	               g2:$('#grantor2').html().trim(),
-	               g3_grade:$('#grantor3_grade').html().trim(),
-	               g3:$('#grantor3').html().trim(),
-	               //refmod:$('ref .name').val(),
-	               start_date:$('.start_date').val(),
-	               end_date:$('.end_date').val(),
-	               replace : $("select[name=name]").val()
-	            },
-	            success : function(data) {
-	               if(data==1){
-	                  alert("조퇴서 제출 성공");
-	                  location.href="/kitware_v1/doclist.do";
-	               }else if(data==-1){
-	                  alert("실-패");
-	               }
-	            }
-	         });
-		});
+
+		$('#go').click(
+				function() {
+					if ($('#grantor1_grade').html().trim() == ""
+							|| $('select.name').val() == 0) {
+						alert("승인자와 참조자를 모두 선택 해주세요");
+						return false;
+					} else {
+						$.ajax({
+							url : 'docwritegian.do?kind=80',
+							method : 'POST',
+							data : {
+								doc_num : $('input[name=doc_num]').val(),
+								date : $('div#date').html(),
+								dept : $('select[name=dept]').val(),
+								title : $('input[name=title]').val(),
+								content : $('textarea').val(),
+								g1_grade : $('#grantor1_grade').html().trim(),
+								g1 : $('#grantor1').html().trim(),
+								g2_grade : $('#grantor2_grade').html().trim(),
+								g2 : $('#grantor2').html().trim(),
+								g3_grade : $('#grantor3_grade').html().trim(),
+								g3 : $('#grantor3').html().trim(),
+								//refmod:$('ref .name').val(),
+								start_date : $('.start_date').val(),
+								end_date : $('.end_date').val(),
+								replace : $("select[name=name]").val()
+							},
+							success : function(data) {
+								if (data == 1) {
+									alert("조퇴서 제출 성공");
+									location.href = "/kitware_v1/doclist.do";
+								} else if (data == -1) {
+									alert("실-패");
+								}
+							}
+						});
+					}
+					return false;
+				});
 	});
 </script>
 <%@include file="../container/footer.jsp"%>

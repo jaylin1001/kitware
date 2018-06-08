@@ -97,7 +97,7 @@
 				<tr>
 					<th>제목</th>
 					<td colspan="5"><input type="text" name="title"
-						style="width: 700px"></td>
+						style="width: 700px" required></td>
 				</tr>
 				<tr>
 					<th>기간</th>
@@ -121,7 +121,7 @@
 									<option style="display: none" value="${grade.position_num }">${grade.position_name }</option>
 								</c:forEach>
 							</select> <select name="name" class="name">
-								<option id="init">사원 선택</option>
+								<option id="init" value="0" selected="selected">사원 선택</option>
 								<c:forEach var="emp" items="${requestScope.memberlist }">
 									<option id="${emp.dept_num }${emp.position_num}"
 										style="display: none" value="${emp.emp_num}">${emp.name}</option>
@@ -131,7 +131,7 @@
 					</td>
 				</tr>
 
-					<!-- <tr>
+				<!-- <tr>
 						<th>출장지</th>
 						<td colspan="5"><input type="text" style="width: 500px"
 							id="chuljang_space">
@@ -140,7 +140,8 @@
 
 				<tr>
 					<th>출장목적</th>
-					<td colspan="5"><textarea rows="20" cols="100" id="chuljang_textarea"></textarea></td>
+					<td colspan="5"><textarea rows="20" cols="100"
+							id="chuljang_textarea"></textarea></td>
 				</tr>
 				<!-- <tr>
 					<th>첨부파일</th>
@@ -154,11 +155,10 @@
 					<td colspan="6" align="center">상기와 같이 출장 신청서를 제출하오니 재가바랍니다.</td>
 				</tr>
 				<tr>
-					<td colspan="6" align="center">
-					<input type="button" value="제출"
-						id="go"> 
-					<input type="button" value="취소" onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
-						</td>
+					<td colspan="6" align="center"><input type="button" value="제출"
+						id="go"> <input type="button" value="취소"
+						onclick="window.location.href='${pageContext.request.contextPath}/doclist.do'"></td>
+					</td>
 				</tr>
 			</table>
 		</div>
@@ -237,37 +237,45 @@
 			dateFormat : 'yy-mm-dd'
 		});
 
-		$('#go').click(function() {
-			$.ajax({
-				url : 'docwritegian.do?kind=40',
-				method : 'POST',
-				data : {
-					doc_num : $('input[name=doc_num]').val(),
-					date : $('div#date').html(),
-					dept : $('select[name=dept]').val(),
-					title : $('input[name=title]').val(),
-					content : $('textarea').val(),
-					g1_grade : $('#grantor1_grade').html().trim(),
-					g1 : $('#grantor1').html().trim(),
-					g2_grade : $('#grantor2_grade').html().trim(),
-					g2 : $('#grantor2').html().trim(),
-					g3_grade : $('#grantor3_grade').html().trim(),
-					g3 : $('#grantor3').html().trim(),
-					//refmod:$('ref .name').val(),
-					start_date : $('.start_date').val(),
-					end_date : $('.end_date').val(),
-					replace : $("select[name=name]").val()
-				},
-				success : function(data) {
-					if (data == 1) {
-						alert("출장 신청서 제출 성공");
-						location.href = "/kitware_v1/doclist.do";
-					} else if (data == -1) {
-						alert("실-패");
+		$('#go').click(
+				function() {
+					if ($('#grantor1_grade').html().trim() == ""
+							|| $('select.name').val() == 0) {
+						alert("승인자와 참조자를 모두 선택 해주세요");
+						return false;
+					} else {
+						$.ajax({
+							url : 'docwritegian.do?kind=40',
+							method : 'POST',
+							data : {
+								doc_num : $('input[name=doc_num]').val(),
+								date : $('div#date').html(),
+								dept : $('select[name=dept]').val(),
+								title : $('input[name=title]').val(),
+								content : $('textarea').val(),
+								g1_grade : $('#grantor1_grade').html().trim(),
+								g1 : $('#grantor1').html().trim(),
+								g2_grade : $('#grantor2_grade').html().trim(),
+								g2 : $('#grantor2').html().trim(),
+								g3_grade : $('#grantor3_grade').html().trim(),
+								g3 : $('#grantor3').html().trim(),
+								//refmod:$('ref .name').val(),
+								start_date : $('.start_date').val(),
+								end_date : $('.end_date').val(),
+								replace : $("select[name=name]").val()
+							},
+							success : function(data) {
+								if (data == 1) {
+									alert("출장 신청서 제출 성공");
+									location.href = "/kitware_v1/doclist.do";
+								} else if (data == -1) {
+									alert("실-패");
+								}
+							}
+						});
 					}
-				}
-			});
-		});
+					return false;
+				});
 	});
 </script>
 <%@ include file="../container/footer.jsp"%>

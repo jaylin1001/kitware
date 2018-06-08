@@ -3,9 +3,6 @@
 <%@include file="../container/header.jsp"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="list0" value="${requestScope.docvo_list0}" />
-<script
-	src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<body onload="document.refresh();">
 <div id="list"></div>
 <div class="container">
 	<p>
