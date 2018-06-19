@@ -1,9 +1,6 @@
 # kitware
 ### Groupware
 
-참여자 : 5명
-개발기간 :4주
-
 ### 개발 기술
 Java, Servlet, JSP, JQuery, Ajax, JSON, JavaScript, CSS3, HTML5
 
